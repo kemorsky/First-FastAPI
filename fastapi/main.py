@@ -6,13 +6,13 @@ import app.models.models as models
 from app.db.database import engine, get_db
 import app.schemas.schemas as schemas
 import app.db.crud as crud
-from app.api.routes.subscriptions import router as issues_router
+from app.api.routes.subscriptions import router as subscriptions_router
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-app.include_router(issues_router)
+app.include_router(subscriptions_router)
 
 app.add_middleware(
     CORSMiddleware,
