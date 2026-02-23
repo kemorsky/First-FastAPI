@@ -1,22 +1,36 @@
-from typing import Optional
 from fastapi import FastAPI, HTTPException, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import app.models.models as models
 from app.db.database import engine, get_db
+from app.utils.config import Settings
+from app.core.security import get_current_user
 import app.schemas.schemas as schemas
 import app.db.crud as crud
 from app.api.routes.subscriptions import router as subscriptions_router
+from app.api.routes.auth import router as auth_router
+from app.api.routes.user import router as user_router
 
 models.Base.metadata.create_all(bind=engine)
 
+settings = Settings()
+
 app = FastAPI()
 
+# app = FastAPI(swagger_ui_init_oauth={
+#         "clientId": settings.GOOGLE_CLIENT_ID,
+#         "clientSecret": settings.GOOGLE_CLIENT_SECRET,
+#         "useBasicAuthenticationWithAccessCodeGrant": True,
+#         "scopes": ["openid", "email", "profile"]
+#     })
+
 app.include_router(subscriptions_router)
+app.include_router(auth_router)
+app.include_router(user_router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Or better: ["http://localhost:3000"]
+    allow_origins=["http://localhost:5173"],  # Or * when in dev
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

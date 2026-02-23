@@ -21,6 +21,22 @@ class ProductResponse(ProductCreate):
 
     model_config = ConfigDict(from_attributes=True)
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: str | None = None
+
+class User(BaseModel):
+    username: str
+    email: str | None = None
+    full_name: str | None = None
+    disabled: bool | None = None
+
+class UsrInDB(User):
+    hashed_password: str
+
 class SubscriptionCreate(BaseModel):
     name: str = Field(..., min_length=3, max_length=35)
     description: str = Field(..., min_length=10, max_length= 140)
