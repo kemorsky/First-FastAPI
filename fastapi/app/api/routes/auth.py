@@ -1,5 +1,8 @@
+from app.db.database import get_db
+from app.models.models import User
 from typing import Optional, Annotated
 from fastapi import Request, APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse, RedirectResponse
 from app.utils.config import Settings
 import jwt
@@ -45,7 +48,7 @@ def login():
     return RedirectResponse(url)
 
 @router.get("/callback")
-async def auth_callback(request: Request):
+async def auth_callback(request: Request, db: Session = Depends(get_db)):
     code = request.query_params.get("code")
     if not code:
         raise HTTPException(status_code=400, detail="Authorization Code not found")
@@ -76,11 +79,32 @@ async def auth_callback(request: Request):
             to_encode.update({"exp": expire})
             return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
         
+        google_id = userinfo["id"]
+        email = userinfo["email"]
+
+        user = db.query(User).filter(User.oauth_id == google_id).first()
+
+        if not user:
+            user = User(
+                oauth_provider="google",
+                oauth_id=google_id,
+                email=email,
+                full_name=userinfo.get("name"),
+                picture=userinfo.get("picture"),
+                created_at=datetime.now(),
+                disabled=False,
+                purchases=[]
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+        
         app_access_token = create_access_token(
             {
-                "sub": userinfo["email"], 
-                "name": userinfo["name"], 
-                "picture": userinfo["picture"]
+                "sub": str(user.id), 
+                "email": user.email,
+                "name": user.full_name, 
+                "picture": user.picture,
             }
         )
 
@@ -94,10 +118,10 @@ async def auth_callback(request: Request):
         # )
     
 @router.get("/profile", response_class=HTMLResponse)
-async def profile(current_user: dict = Depends(get_current_user)):
-    name = current_user["name"]
-    email = current_user["email"]
-    picture = current_user["picture"]
+async def profile(current_user: User = Depends(get_current_user)):
+    name = current_user.full_name
+    email = current_user.email
+    picture = current_user.picture
 
     return f"""
                 <html>

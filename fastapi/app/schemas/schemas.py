@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
+from datetime import datetime
 
 class PetCreate(BaseModel):
     name: str
@@ -28,14 +29,43 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: str | None = None
 
-class User(BaseModel):
-    username: str
+class UserCreate(BaseModel):
     email: str | None = None
     full_name: str | None = None
+    picture: str | None = None
     disabled: bool | None = None
 
-class UsrInDB(User):
+    model_config = ConfigDict(from_attributes=True)
+
+class UserResponse(UserCreate):
+    id: int
+    oauth_provider: str | None = None
+    email: str | None = None
+    full_name: str | None = None
+    picture: str | None = None
+    disabled: bool | None = None
+    created_at: datetime
+
+    purchases: list[UserSubscriptionResponse] = []
+    
+    model_config = ConfigDict(from_attributes=True)
+
+class UsrInDB(UserResponse):
     hashed_password: str
+
+class UserSubscriptionCreate(BaseModel):
+    subscription_id: int
+
+class UserSubscriptionResponse(BaseModel):
+    id: int
+    status: str
+    price_paid: float
+    started_at: datetime
+    expires_at: datetime | None
+
+    subscription: SubscriptionResponse
+
+    model_config = ConfigDict(from_attributes=True)
 
 class SubscriptionCreate(BaseModel):
     name: str = Field(..., min_length=3, max_length=35)
