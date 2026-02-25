@@ -55,13 +55,15 @@ class UsrInDB(UserResponse):
 
 class UserSubscriptionCreate(BaseModel):
     subscription_id: int
+    user_id: int
 
 class UserSubscriptionResponse(BaseModel):
     id: int
-    status: str
-    price_paid: float
-    started_at: datetime
-    expires_at: datetime | None
+    user_id: int
+    status: str | None = None
+    price_paid: float | None = None
+    started_at: datetime | None = None
+    expires_at: datetime | None = None
 
     subscription: SubscriptionResponse
 

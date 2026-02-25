@@ -47,10 +47,10 @@ class UserSubscription(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     subscription_id = Column(Integer, ForeignKey("subscriptions.id"))
 
-    status = Column(String)
-    price_paid = Column(Float)
-    started_at = Column(DateTime)
-    expires_at = Column(DateTime)
+    status = Column(String, nullable=False)
+    price_paid = Column(Float, nullable=False)
+    started_at = Column(DateTime, nullable=False)
+    expires_at = Column(DateTime, nullable=False)
 
     user = relationship("User", back_populates="purchases")
     subscription = relationship("Subscription", back_populates="purchases")
