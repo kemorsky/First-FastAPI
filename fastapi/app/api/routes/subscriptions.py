@@ -25,6 +25,10 @@ async def create_purchase(purchase: schemas.UserSubscriptionCreate, db: Session 
         raise HTTPException(status_code=400, detail="Purchase could not go through")
     return purchase
 
+@router.delete("/purchase/{purchase_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_purchase(purchase_id: int, db: Session = Depends(get_db)):
+    return crud.delete_purchase(db, purchase_id)
+
 @router.delete("/{subscription_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_subscription(subscription_id: int, db: Session = Depends(get_db)):
     subscription = crud.delete_subscription(db, subscription_id)

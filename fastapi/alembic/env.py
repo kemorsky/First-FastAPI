@@ -9,7 +9,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from app.db.database import Base
-from app.models import models
+from app.models import models # importing it allows for all models to pass migration without risk of being deleted
 
 load_dotenv()
 
@@ -17,6 +17,7 @@ load_dotenv()
 # access to the values within the .ini file in use.
 config = context.config
 
+# links to database url
 database_url = os.getenv("DATABASE_URL")
 config.set_main_option("sqlalchemy.url", database_url)
 

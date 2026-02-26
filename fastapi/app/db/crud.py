@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from sqlalchemy.orm import Session
 import app.models.models as models
@@ -38,6 +38,7 @@ def delete_subscription(db: Session, subscription_id: int):
     return db_subscription
 
 def create_purchase(db: Session, purchase: schemas.UserSubscriptionCreate):
+    # used to copy price of subscription and bring it over to the purchase row
     subscription = (db.query(models.Subscription).filter_by(id=purchase.subscription_id).first())
     if not subscription:
         raise ValueError("Subscription does not exist")
@@ -48,12 +49,21 @@ def create_purchase(db: Session, purchase: schemas.UserSubscriptionCreate):
         status="active",
         price_paid=subscription.price,
         started_at=datetime.now(),
-        # expires_at=purchase.expires_at
+        expires_at=datetime.now() + timedelta(days=30),
     )
     db.add(db_purchase)
     db.commit()
     db.refresh(db_purchase)
     return db_purchase
+
+def delete_purchase(db: Session, purchase_id: int):
+    # used to copy price of subscription and bring it over to the purchase row
+    db_subscription = (db.query(models.UserSubscription).filter_by(id=purchase_id).first())
+    if not db_subscription:
+        raise ValueError("Purchase does not exist")
+    
+    db.delete(db_subscription)
+    db.commit()
 
 # users
 

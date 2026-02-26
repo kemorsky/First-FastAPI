@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped
 from app.db.database import Base
 from datetime import datetime
 
@@ -37,7 +37,7 @@ class User(Base):
     disabled = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.now)
 
-    purchases = relationship("UserSubscription", back_populates="user")
+    purchases: Mapped[list[UserSubscription]] = relationship("UserSubscription", back_populates="user")
 
 class UserSubscription(Base):
     __tablename__ = "user_subscriptions"
@@ -49,8 +49,8 @@ class UserSubscription(Base):
 
     status = Column(String, nullable=False)
     price_paid = Column(Float, nullable=False)
-    started_at = Column(DateTime, nullable=False)
-    expires_at = Column(DateTime, nullable=False)
+    started_at = Column(DateTime)
+    expires_at = Column(DateTime)
 
     user = relationship("User", back_populates="purchases")
     subscription = relationship("Subscription", back_populates="purchases")
