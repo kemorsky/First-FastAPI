@@ -1,8 +1,8 @@
-"""changed id in subscription table
+"""add missing field to user.purchases
 
-Revision ID: 934136154ab2
-Revises: 
-Create Date: 2026-02-25 13:49:12.340282
+Revision ID: 936550aedf45
+Revises: 7835c6d9cf1a
+Create Date: 2026-02-27 14:09:52.274326
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '934136154ab2'
-down_revision: Union[str, Sequence[str], None] = None
+revision: str = '936550aedf45'
+down_revision: Union[str, Sequence[str], None] = '7835c6d9cf1a'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

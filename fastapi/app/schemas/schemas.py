@@ -2,26 +2,6 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 from datetime import datetime
 
-class PetCreate(BaseModel):
-    name: str
-    age: int
-    type: str
-
-class PetResponse(PetCreate):
-    id: int
-
-    model_config = ConfigDict(from_attributes=True)
-
-class ProductCreate(BaseModel):
-    name: str
-    description: str = Field(..., min_length=10, max_length= 140)
-    price: float
-
-class ProductResponse(ProductCreate):
-    id: int
-
-    model_config = ConfigDict(from_attributes=True)
-
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -53,28 +33,44 @@ class UserResponse(UserCreate):
 class UsrInDB(UserResponse):
     hashed_password: str
 
-class UserSubscriptionCreate(BaseModel):
-    subscription_id: int
+class UserSubscriptionBase(BaseModel):
     user_id: int
+    plan_id: int
 
-class UserSubscriptionResponse(BaseModel):
+class UserSubscriptionResponse(UserSubscriptionBase):
     id: int
     user_id: int
-    status: str | None = None
+    plan_id: str
     price_paid: float | None = None
     started_at: datetime | None = None
     expires_at: datetime | None = None
+    stripe_subscription_id: str
 
-    subscription: SubscriptionResponse
+    status: str
+    current_period_start: datetime
+    current_period_end: datetime
 
     model_config = ConfigDict(from_attributes=True)
 
-class SubscriptionCreate(BaseModel):
-    name: str = Field(..., min_length=3, max_length=35)
-    description: str = Field(..., min_length=10, max_length= 140)
+class PlanBase(BaseModel):
+    name: str
+    description: str
     price: float
 
-class SubscriptionResponse(SubscriptionCreate):
+class PlanResponse(PlanBase):
     id: int
+    stripe_product_name: str
+    stripe_price_id: str
 
     model_config = ConfigDict(from_attributes=True)
+
+class CreateCheckoutSession(BaseModel):
+    price_id: str
+    product_id: str
+
+class Credits(BaseModel):
+    remaining_post_creations: str
+    remaining_post_cretions_one_time: str
+
+class CheckoutSessionResponse(BaseModel):
+    checkout_url: str
