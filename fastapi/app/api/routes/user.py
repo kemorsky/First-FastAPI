@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 import app.db.crud as crud
-import app.schemas.schemas as schemas
+from app.schemas.schemas import UserResponse
 from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.core.security import get_current_user
@@ -11,11 +11,11 @@ router = APIRouter(prefix="/api/users", tags=["user"])
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
-@router.get("/", response_model=list[schemas.UserResponse])
+@router.get("/", response_model=list[UserResponse])
 async def get_users(db: Session = Depends(get_db)):
     return crud.get_users(db)
 
-@router.get("/me", response_model=schemas.UserResponse)
+@router.get("/me", response_model=UserResponse)
 async def get_user(current_user: User = Depends(get_current_user)):
     user = {
         "id": current_user.id,
@@ -28,12 +28,11 @@ async def get_user(current_user: User = Depends(get_current_user)):
         "purchases": current_user.purchases
     }
         
-    print(user)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-@router.get("/{user_id}", response_model=schemas.UserResponse)
+@router.get("/{user_id}", response_model=UserResponse)
 async def get_user(user_id: int, db: Session = Depends(get_db)):
     user = crud.get_user(db, user_id)
     if not user:

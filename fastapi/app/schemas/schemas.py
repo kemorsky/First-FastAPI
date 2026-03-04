@@ -40,15 +40,13 @@ class UserSubscriptionBase(BaseModel):
 class UserSubscriptionResponse(UserSubscriptionBase):
     id: int
     user_id: int
-    plan_id: str
-    price_paid: float | None = None
-    started_at: datetime | None = None
-    expires_at: datetime | None = None
+    plan_id: int
+    price: float
     stripe_subscription_id: str
 
     status: str
     current_period_start: datetime
-    current_period_end: datetime
+    current_period_end: datetime | None
 
     model_config = ConfigDict(from_attributes=True)
 

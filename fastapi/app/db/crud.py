@@ -9,8 +9,8 @@ def get_products(db: Session):
 def get_plans(db: Session):
     return db.query(models.Plan).all()
 
-def get_user_subscription(db: Session, plan_id: int):
-    return db.query(models.UserSubscription).filter(models.UserSubscription.plan_id == plan_id).all()
+def get_user_subscription(db: Session, user_id: int):
+    return db.query(models.UserSubscription).filter(models.UserSubscription.user_id == models.User.id).all()
 
 def create_checkout_session(db: Session, plan_id: int):
     return db.query(models.Plan).filter(models.Plan.id == plan_id).first()
