@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import logging
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import app.models.models as models
@@ -13,12 +14,12 @@ models.Base.metadata.create_all(bind=engine)
 
 settings = Settings()
 
-# @asynccontextmanager
-# async def lifespan(app: FastAPI):
-#     # Run Stripe → DB sync on startup
-#     sync_stripe_products()
-#     yield
-#     # optional shutdown code here
+logging.basicConfig(
+    level=logging.INFO, 
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
@@ -44,4 +45,6 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
+    logger.debug("Debug info - verbose details for troubleshooting")
+    logger.info("Processing request to root endpoint")
     return {"message": "Hello World"}

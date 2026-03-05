@@ -41,7 +41,7 @@ class UserSubscriptionResponse(UserSubscriptionBase):
     id: int
     user_id: int
     plan_id: int
-    price: float
+    price: float | None = None
     stripe_subscription_id: str
 
     status: str

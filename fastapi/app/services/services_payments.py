@@ -114,3 +114,6 @@ async def customer_subscription_created(subscription_data: dict, db: Session = D
     db.refresh(new_purchase)
 
     return {"status": "success"}
+
+async def customer_subscription_updated(subscription_data: dict, db: Session = Depends(get_db)):
+    fdfd

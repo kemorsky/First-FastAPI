@@ -1,3 +1,4 @@
+import logging
 from app.db.database import get_db
 from app.models.models import User
 from typing import Optional, Annotated
@@ -13,6 +14,8 @@ from pathlib import Path
 from urllib.parse import urlencode
 from app.core.security import get_current_user
 
+logger = logging.getLogger(__name__)
+
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 env_path = Path(__file__).resolve().parent.parent.parent.parent / ".env"
@@ -21,6 +24,7 @@ load_dotenv(dotenv_path=env_path)
 settings = Settings()
 
 if not all ([settings.GOOGLE_CLIENT_ID, settings.GOOGLE_CLIENT_SECRET, settings.GOOGLE_REDIRECT_URI]):
+    logger.error("Missing environment variables")
     raise RuntimeError("Missing environment variables")
 
 GOOGLE_AUTH_ENDPOINT = "https://accounts.google.com/o/oauth2/v2/auth"
@@ -34,18 +38,22 @@ async def home():
         <a href="/api/auth/login">Login with Google</a>
         """
 
-@router.get("/login")
-def login():
-    query_parems = {
-        "client_id": settings.GOOGLE_CLIENT_ID,
-        "redirect_uri": settings.GOOGLE_REDIRECT_URI,
-        "response_type": "code",
-        "scope": "openid email profile",
-        "access_type": "offline",
-        "prompt": "consent"
-    }
-    url = f"{GOOGLE_AUTH_ENDPOINT}?{urlencode(query_parems)}"
-    return RedirectResponse(url)
+@router.get("/signin")
+def sign_in():
+    try:
+        query_parems = {
+            "client_id": settings.GOOGLE_CLIENT_ID,
+            "redirect_uri": settings.GOOGLE_REDIRECT_URI,
+            "response_type": "code",
+            "scope": "openid email profile",
+            "access_type": "offline",
+            "prompt": "consent"
+        }
+        url = f"{GOOGLE_AUTH_ENDPOINT}?{urlencode(query_parems)}"
+        return RedirectResponse(url)
+    except Exception as e:
+        logger.error(f"Error logging in: {e}")
+        raise HTTPException(status_code=500, detail="Error logging in")
 
 @router.get("/callback")
 async def auth_callback(request: Request, db: Session = Depends(get_db)):
@@ -67,6 +75,7 @@ async def auth_callback(request: Request, db: Session = Depends(get_db)):
 
         google_access_token = token_data.get("access_token")
         if not google_access_token:
+            logger.error("Access token not found")
             raise HTTPException(status_code=400, detail="Access token not found")
         
         headers = {"Authorization": f"Bearer {google_access_token}"}
@@ -112,26 +121,3 @@ async def auth_callback(request: Request, db: Session = Depends(get_db)):
             "access_token": app_access_token,
             "token_type": "Bearer"
         }
-
-        # return RedirectResponse(
-        #     f"/profile?name={userinfo['name']}&email={userinfo['email']}&picture={userinfo['picture']}"
-        # )
-    
-@router.get("/profile", response_class=HTMLResponse)
-async def profile(current_user: User = Depends(get_current_user)):
-    name = current_user.full_name
-    email = current_user.email
-    picture = current_user.picture
-
-    return f"""
-                <html>
-                    <head>
-                        <title>Profile</title>
-                    </head>
-                    <body style="text-align:center;">
-                        <h1>Welcome, {name}</h1>
-                        <img src="{picture}" alt="{name}" width="120"><br>
-                        <p>Email: {email}</p>
-                    </body>
-                </html>
-            """
