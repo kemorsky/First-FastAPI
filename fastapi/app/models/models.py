@@ -21,7 +21,6 @@ class Plan(Base):
     stripe_product_name = Column(String, unique=True, nullable=False)
     stripe_price_id = Column(String, unique=True, nullable=False)
 
-    # price_id = Column(String, unique=True, nullable=False)
     price = Column(Float, nullable=False)
 
     purchases = relationship("UserSubscription", back_populates="plan")

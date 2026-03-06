@@ -11,6 +11,10 @@ from app.models.models import User, UserSubscription
 from app.core.security import get_current_user
 from app.services.services_payments import create_checkout_session, customer_subscription_created, handle_user_subscription
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/payments", tags=["payments"])
@@ -40,12 +44,15 @@ async def create_checkout_session_route(plan_id: int, current_user: User = Depen
 async def stripe_webhook(request: Request, stripe_signature: str = Header(None), db: Session = Depends(get_db)):
     payload = await request.body()
 
+    logger.info(f"Received webhook payload: {payload}")
+
     try:
         event = stripe.Webhook.construct_event(
             payload,
             stripe_signature,
             settings.STRIPE_WEBHOOK_SECRET
         )
+        logger.info(f'Sending event info: {event["type"]}')
     except ValueError:
         logger.error("Invalid webhook payload")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid payload")
@@ -54,10 +61,14 @@ async def stripe_webhook(request: Request, stripe_signature: str = Header(None),
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid signature")
     
     try:
-        if event["type"] == "customer.subscription.created":
-            await customer_subscription_created(event["data"]["object"], db)
+        if event["type"] == "checkout.session.completed":
+            session = event["data"]["object"]
+            stripe_subscription_id = session["subscription"]
+            subscription = stripe.Subscription.retrieve(stripe_subscription_id)
+            await customer_subscription_created(subscription, db)
+            logger.info(f"Sending event info: {session}")
         # elif event["type" == "customer.subscription.updated"]:
-        #     abc
+        #     await customer_subscription_updated(event["data"]["object"], db)
         # elif event["type" == "customer.subscription.deleted"]:
         #     abc
 
