@@ -52,8 +52,13 @@ async def create_checkout_session(plan_id: int, current_user: User = Depends(get
 
     return {"checkout_url": session.url}
 
-async def handle_user_subscription(current_user: User = Depends(get_current_user)):
-    subscription = current_user.purchases[-1] if current_user.purchases else None # TODO - refactor logic so that it shows by active subscription
+async def handle_user_subscription(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    subscription = (
+        db.query(UserSubscription).filter(
+            UserSubscription.user_id == current_user.id,
+            UserSubscription.status == "active"
+        ).first() # TODO - return all active subscriptions (test feature)
+    )
 
     if not subscription:
         raise HTTPException(status_code=404, detail="No subscriptions found for user")
@@ -127,54 +132,68 @@ async def customer_subscription_created(subscription_data: dict, db: Session):
         logger.error(f"Failed to commit subscription to DB: {e}")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to commit subscription to DB")
 
-# async def customer_subscription_updated(subscription_data: dict, db: Session = Depends(get_db)):
-#     stripe_subscription_id = subscription_data["id"]
+async def customer_subscription_updated(subscription: dict, db: Session = Depends(get_db)):
+    stripe_subscription_id = subscription["id"]
 
-#     if not stripe_subscription_id:
-#         raise HTTPException(status_code=400, detail="No subscription ID")
+    if not stripe_subscription_id:
+        raise HTTPException(status_code=400, detail="No subscription ID")
+
+    existing = db.query(UserSubscription).filter(
+        UserSubscription.stripe_subscription_id == stripe_subscription_id
+    ).first()
+
+    if not existing:
+        logger.warning(f"No subscription found for {stripe_subscription_id}")
+        return {"status": "not_found"}
     
-#     # Retrieve the full subscription object from Stripe
-#     subscription = stripe.Subscription.retrieve(stripe_subscription_id)
+     # Get price from the first subscription item
+    price_id = subscription["items"]["data"][0]["price"]["id"]
 
-#     user_id = subscription["metadata"].get("user_id")
-#     plan_id = subscription["metadata"].get("plan_id")
+    # Map Stripe price → internal plan
+    plan = db.query(Plan).filter(Plan.stripe_price_id == price_id).first()
 
-#     existing = db.query(UserSubscription).filter(
-#         UserSubscription.stripe_subscription_id == stripe_subscription_id
-#     ).first()
+    if plan:
+        existing.plan_id = plan.id
 
-#     if not existing:
-#         print(f"No subscription found in DB for Stripe ID {stripe_subscription_id}")
-#         return {"status": "subscription already exists"}
-    
-#      # Get price from the first subscription item
-#     price_id = subscription["items"]["data"][0]["price"]["id"]
+    current_period_start_ts = subscription.get("current_period_start")
+    current_period_end_ts = subscription.get("current_period_end")
 
-#     # Map Stripe price → internal plan
-#     plan = db.query(Plan).filter(Plan.stripe_price_id == price_id).first()
+    current_period_start = (
+        datetime.fromtimestamp(current_period_start_ts, tz=datetime.timezone.utc)
+        if current_period_start_ts is not None else None
+    )
 
-#     if plan:
-#         existing.plan_id = plan.id
+    current_period_end = (
+        datetime.fromtimestamp(current_period_end_ts, tz=datetime.timezone.utc)
+        if current_period_end_ts is not None else None
+    )# TODO - calculate end of period based on subscription plan (duration)
 
-#     current_period_start_ts = subscription.get("current_period_start")
-#     current_period_end_ts = subscription.get("current_period_end")
+    existing.plan_id = plan.id
+    existing.status = subscription.get("status")
+    existing.current_period_start = current_period_start
+    existing.current_period_end = current_period_end
 
-#     current_period_start = (
-#         datetime.fromtimestamp(current_period_start_ts, tz=datetime.timezone.utc)
-#         if current_period_start_ts is not None else None
-#     )
+    db.commit()
+    db.refresh(existing)
 
-#     current_period_end = (
-#         datetime.fromtimestamp(current_period_end_ts, tz=datetime.timezone.utc)
-#         if current_period_end_ts is not None else None
-#     )# TODO - calculate end of period based on subscription plan (duration)
+    return {"status": "updated"}
 
-#     existing.plan_id = plan.id
-#     existing.status = subscription.get("status")
-#     existing.current_period_start = current_period_start
-#     existing.current_period_end = current_period_end
+async def customer_subscription_deleted(subscription: dict, db: Session = Depends(get_db)):
+    stripe_subscription_id = subscription["id"]
 
-#     db.commit()
-#     db.refresh(existing)
+    if not stripe_subscription_id:
+        raise HTTPException(status_code=400, detail="No subscription ID")
 
-#     return {"status": "success"}
+    existing = db.query(UserSubscription).filter(
+        UserSubscription.stripe_subscription_id == stripe_subscription_id
+    ).first()
+
+    if not existing:
+        logger.warning(f"No subscription found for {stripe_subscription_id}")
+        return {"status": "not_found"}
+
+    existing.status = "canceled"
+
+    db.commit()
+
+    return {"status": "canceled"}

@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.models.models import User, UserSubscription
 from app.core.security import get_current_user
-from app.services.services_payments import create_checkout_session, customer_subscription_created, handle_user_subscription
+from app.services.services_payments import create_checkout_session, customer_subscription_created, customer_subscription_updated, customer_subscription_deleted, handle_user_subscription
 
 logging.basicConfig(
     level=logging.INFO,
@@ -22,9 +22,9 @@ router = APIRouter(prefix="/api/payments", tags=["payments"])
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 @router.get("/get-user-subscription", response_model=UserSubscriptionResponse)
-async def get_user_subscription(current_user: User = Depends(get_current_user)):
+async def get_user_subscription(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
-        return await handle_user_subscription(current_user)
+        return await handle_user_subscription(current_user, db)
     except stripe.error.StripeError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -66,10 +66,12 @@ async def stripe_webhook(request: Request, stripe_signature: str = Header(None),
             subscription = stripe.Subscription.retrieve(stripe_subscription_id)
             await customer_subscription_created(subscription, db)
             logger.info(f"Sending event info: {session}")
-        # elif event["type" == "customer.subscription.updated"]:
-        #     await customer_subscription_updated(event["data"]["object"], db)
-        # elif event["type" == "customer.subscription.deleted"]:
-        #     abc
+        elif event["type" == "customer.subscription.updated"]:
+            subscription = event["data"]["object"]
+            await customer_subscription_updated(subscription, db)
+        elif event["type" == "customer.subscription.deleted"]:
+            subscription = event["data"]["object"]
+            await customer_subscription_deleted(subscription, db)
 
         return {"status": "success"}
     except Exception as e:

@@ -16,17 +16,9 @@ logging.basicConfig(
     level=logging.INFO, 
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
-
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
-
-# app = FastAPI(swagger_ui_init_oauth={
-#         "clientId": settings.GOOGLE_CLIENT_ID,
-#         "clientSecret": settings.GOOGLE_CLIENT_SECRET,
-#         "useBasicAuthenticationWithAccessCodeGrant": True,
-#         "scopes": ["openid", "email", "profile"]
-#     })
 
 app.include_router(products_router)
 app.include_router(payments_router)
