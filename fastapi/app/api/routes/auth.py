@@ -5,23 +5,25 @@ from typing import Optional, Annotated
 from fastapi import Request, APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse, RedirectResponse
-from app.utils.config import Settings
+from app.utils.config import settings
 import jwt
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import httpx
 from dotenv import load_dotenv
 from pathlib import Path
 from urllib.parse import urlencode
 from app.core.security import get_current_user
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 env_path = Path(__file__).resolve().parent.parent.parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
-
-settings = Settings()
 
 if not all ([settings.GOOGLE_CLIENT_ID, settings.GOOGLE_CLIENT_SECRET, settings.GOOGLE_REDIRECT_URI]):
     logger.error("Missing environment variables")
@@ -82,9 +84,9 @@ async def auth_callback(request: Request, db: Session = Depends(get_db)):
         userinfo_response = await client.get(GOOGLE_USERINFO_ENDPOINT, headers=headers)
         userinfo = userinfo_response.json()
 
-        def create_access_token(data: dict, expires_delta: timedelta = timedelta(hours=1)):
+        def create_access_token(data: dict, expires_delta: timedelta = timedelta(minutes=30)):
             to_encode = data.copy()
-            expire = datetime.now() + expires_delta
+            expire = datetime.now(timezone.utc) + expires_delta
             to_encode.update({"exp": expire})
             return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
         

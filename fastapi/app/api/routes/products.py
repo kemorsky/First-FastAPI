@@ -6,6 +6,10 @@ from app.db.crud import get_products
 from app.db.database import get_db
 from app.services.services_products import sync_products_from_stripe
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/products", tags=["products"])

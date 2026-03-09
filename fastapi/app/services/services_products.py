@@ -1,10 +1,9 @@
 import stripe
 from sqlalchemy.orm import Session
 from app.models.models import Plan
-from app.utils.config import Settings
+from app.utils.config import settings
 from app.db.database import get_db
 
-settings = Settings()
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def sync_products_from_stripe(db: Session):

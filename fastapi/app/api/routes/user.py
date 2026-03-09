@@ -8,6 +8,10 @@ from app.db.database import get_db
 from app.core.security import get_current_user
 from app.models.models import User
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/users", tags=["user"])

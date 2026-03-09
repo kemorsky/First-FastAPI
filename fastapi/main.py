@@ -4,15 +4,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import app.models.models as models
 from app.db.database import engine
-from app.utils.config import Settings
+from app.utils.config import settings
 from app.api.routes.payments import router as payments_router
 from app.api.routes.auth import router as auth_router
 from app.api.routes.user import router as user_router
 from app.api.routes.products import router as products_router
 
 models.Base.metadata.create_all(bind=engine)
-
-settings = Settings()
 
 logging.basicConfig(
     level=logging.INFO, 

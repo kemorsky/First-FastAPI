@@ -4,7 +4,7 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Header
 import app.db.crud as crud
 from app.schemas.schemas import PlanResponse, UserSubscriptionResponse, CheckoutSessionResponse
-from app.utils.config import Settings
+from app.utils.config import settings
 from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.models.models import User, UserSubscription
@@ -19,7 +19,6 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/payments", tags=["payments"])
 
-settings = Settings()
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 @router.get("/get-user-subscription", response_model=UserSubscriptionResponse)
