@@ -33,8 +33,8 @@ async def create_checkout_session(plan_id: int, current_user: User = Depends(get
         mode="subscription",
         client_reference_id=str(current_user.id),
         metadata={
-            "user_id": str(current_user.id),
-            "plan_id": str(plan.id),
+            "user_id": current_user.id,
+            "plan_id": plan.id,
         },
         line_items=[{
             "price": plan.stripe_price_id,
@@ -42,8 +42,8 @@ async def create_checkout_session(plan_id: int, current_user: User = Depends(get
         }],
         subscription_data={
             "metadata": {
-                "user_id": str(current_user.id),
-                "plan_id": str(plan.id),
+                "user_id": current_user.id,
+                "plan_id": plan.id,
             }
         },
         success_url="http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}",
@@ -128,8 +128,8 @@ async def customer_subscription_created(subscription_data: dict, db: Session):
     )
 
     new_purchase = UserSubscription(
-        user_id=int(user_id),
-        plan_id=int(plan_id),
+        user_id=user_id,
+        plan_id=plan_id,
         stripe_subscription_id=stripe_subscription_id,
         status=subscription_data["status"],
         current_period_start=current_period_start,
