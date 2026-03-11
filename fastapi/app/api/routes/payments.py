@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.models.models import User, UserSubscription
 from app.core.security import get_current_user
-from app.services.services_payments import create_checkout_session, customer_subscription_created, customer_subscription_updated, customer_subscription_deleted, handle_user_subscription
+from app.services.services_payments import create_checkout_session, customer_subscription_created, customer_subscription_updated, customer_subscription_deleted, handle_user_subscription, handle_cancel_user_subscription
 
 logging.basicConfig(
     level=logging.INFO,
@@ -38,7 +38,15 @@ async def create_checkout_session_route(plan_id: int, current_user: User = Depen
         return await create_checkout_session(plan_id, current_user, db) # /api/payments/create-checkout-session?plan_id=2 - example query
     except stripe.error.StripeError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-
+    
+@router.post("/cancel-subscription")
+async def cancel_user_subscription(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    try:
+        return await handle_cancel_user_subscription(current_user, db)
+    except Exception as e:
+        logger.error(f"Error canceling subscription: {e}")
+        raise HTTPException(status_code=500, detail="Could not cancel subscription")
+    
 @router.post("/webhook")
 async def stripe_webhook(request: Request, stripe_signature: str = Header(None), db: Session = Depends(get_db)):
     payload = await request.body()
@@ -60,16 +68,14 @@ async def stripe_webhook(request: Request, stripe_signature: str = Header(None),
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid signature")
     
     try:
-        if event["type"] == "checkout.session.completed":
-            session = event["data"]["object"]
-            stripe_subscription_id = session["subscription"]
-            subscription = stripe.Subscription.retrieve(stripe_subscription_id)
+        if event["type"] == "customer.subscription.created": # listed events determine db actions per event. Purpose is to inject certain database logic into fired events
+            subscription = event["data"]["object"]          # event["data"]["object"] contains the actual event data that can then be used to manipulate the db
+            logger.info(f"Sending event info: {subscription}")
             await customer_subscription_created(subscription, db)
-            logger.info(f"Sending event info: {session}")
-        elif event["type" == "customer.subscription.updated"]:
+        elif event["type"] == "customer.subscription.updated":
             subscription = event["data"]["object"]
             await customer_subscription_updated(subscription, db)
-        elif event["type" == "customer.subscription.deleted"]:
+        elif event["type"] == "customer.subscription.deleted":
             subscription = event["data"]["object"]
             await customer_subscription_deleted(subscription, db)
 

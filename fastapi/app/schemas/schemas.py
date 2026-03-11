@@ -45,7 +45,7 @@ class UserSubscriptionResponse(UserSubscriptionBase):
     stripe_subscription_id: str
 
     status: str
-    current_period_start: datetime
+    current_period_start: datetime | None
     current_period_end: datetime | None
 
     model_config = ConfigDict(from_attributes=True)

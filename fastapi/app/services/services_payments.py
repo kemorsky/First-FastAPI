@@ -1,6 +1,6 @@
 import stripe
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from fastapi import Depends, HTTPException, status
 import app.db.crud as crud
 from sqlalchemy.orm import Session
@@ -76,48 +76,62 @@ async def handle_user_subscription(current_user: User = Depends(get_current_user
 
     return user_subscription
 
+# Cancel user subscription call to Stripe (not deleting from db)
+async def handle_cancel_user_subscription(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    logger.info(f"Current user id: {current_user.id} ({type(current_user.id)})")
+    
+    subscription = db.query(UserSubscription).filter(
+        UserSubscription.user_id == current_user.id,
+        UserSubscription.status == "active"
+    ).first()
+
+    if not subscription:
+        logger.warning(f"No active subscription found")
+        raise HTTPException(status_code=404, detail="No active subscription")
+    
+    try:
+        stripe.Subscription.cancel(subscription.stripe_subscription_id, cancel_at_period_end=True)
+        subscription.status = "canceled"
+        db.commit()
+
+        return {"status": "canceled"}
+    
+    except stripe.error.StripeError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 # Webhook event - customer subscription created
 async def customer_subscription_created(subscription_data: dict, db: Session):
+    logger.info(f"Checking data info: {subscription_data}")
     stripe_subscription_id = subscription_data["id"]
 
     if not stripe_subscription_id:
         raise HTTPException(status_code=400, detail="No subscription ID")
+
+    user_id = subscription_data["metadata"].get("user_id")
+    plan_id = subscription_data["metadata"].get("plan_id")
+
+    logger.info(f"Current user id: {user_id}, ({type(user_id)}), current plan id: {plan_id}, ({type(plan_id)})")
+
+    item = subscription_data["items"]["data"][0]
     
-    # Retrieve the full subscription object from Stripe
-    subscription = stripe.Subscription.retrieve(stripe_subscription_id)
-
-    user_id = subscription["metadata"].get("user_id")
-    plan_id = subscription["metadata"].get("plan_id")
-
-    existing = db.query(UserSubscription).filter(
-        UserSubscription.user_id == user_id,
-        UserSubscription.plan_id == plan_id,
-        UserSubscription.status != "canceled"
-    ).first()
-
-    if existing:
-        print(f"Subscription already exists for user {user_id} and plan {plan_id}")
-        return {"status": "subscription already exists"}
-
-    current_period_start_ts = subscription.get("current_period_start")
-    current_period_end_ts = subscription.get("current_period_end")
+    current_period_start_ts = item.get("current_period_start")
+    current_period_end_ts = item.get("current_period_end")
 
     current_period_start = (
-        datetime.fromtimestamp(current_period_start_ts, tz=datetime.timezone.utc)
+        datetime.fromtimestamp(current_period_start_ts, tz=timezone.utc)
         if current_period_start_ts is not None else None
     )
 
     current_period_end = (
-        datetime.fromtimestamp(current_period_end_ts, tz=datetime.timezone.utc)
+        datetime.fromtimestamp(current_period_end_ts, tz=timezone.utc)
         if current_period_end_ts is not None else None
-    )# TODO - calculate end of period based on subscription plan (duration)
+    )
 
     new_purchase = UserSubscription(
         user_id=int(user_id),
         plan_id=int(plan_id),
         stripe_subscription_id=stripe_subscription_id,
-        status=subscription.get("status"),
-        
+        status=subscription_data["status"],
         current_period_start=current_period_start,
         current_period_end=current_period_end,
     )
@@ -132,6 +146,7 @@ async def customer_subscription_created(subscription_data: dict, db: Session):
         logger.error(f"Failed to commit subscription to DB: {e}")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to commit subscription to DB")
 
+# Webhook event - customer subscription updated
 async def customer_subscription_updated(subscription: dict, db: Session = Depends(get_db)):
     stripe_subscription_id = subscription["id"]
 
@@ -178,6 +193,7 @@ async def customer_subscription_updated(subscription: dict, db: Session = Depend
 
     return {"status": "updated"}
 
+# Webhook event - customer subscription deleted
 async def customer_subscription_deleted(subscription: dict, db: Session = Depends(get_db)):
     stripe_subscription_id = subscription["id"]
 

@@ -56,8 +56,8 @@ class UserSubscription(Base):
     stripe_subscription_id = Column(String, unique=True, nullable=False)
 
     status = Column(String, nullable=False)
-    current_period_start = Column(DateTime, default=datetime.now)
-    current_period_end = Column(DateTime)
+    current_period_start = Column(DateTime(timezone=True))
+    current_period_end = Column(DateTime(timezone=True))
 
     user = relationship("User", back_populates="purchases")
     plan = relationship("Plan", back_populates="purchases")
