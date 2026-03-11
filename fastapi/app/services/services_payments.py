@@ -52,6 +52,7 @@ async def create_checkout_session(plan_id: int, current_user: User = Depends(get
 
     return {"checkout_url": session.url}
 
+# Show user's active subscription without fetching the whole user like in api/auth/users/me
 async def handle_user_subscription(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     subscription = (
         db.query(UserSubscription).filter(
@@ -63,18 +64,23 @@ async def handle_user_subscription(current_user: User = Depends(get_current_user
     if not subscription:
         raise HTTPException(status_code=404, detail="No subscriptions found for user")
     
-    user_subscription = {
-        "id": subscription.id,
-        "user_id": current_user.id,
-        "plan_id": subscription.plan_id,
-        "price": subscription.plan.price, # not plan.price
-        "stripe_subscription_id": subscription.stripe_subscription_id,
-        "status": subscription.status,
-        "current_period_start": subscription.current_period_start,
-        "current_period_end": subscription.current_period_end
-    }
+    try:
+        user_subscription = {
+            "id": subscription.id,
+            "user_id": current_user.id,
+            "plan_id": subscription.plan_id,
+            "price": subscription.plan.price, # not plan.price
+            "stripe_subscription_id": subscription.stripe_subscription_id,
+            "status": subscription.status,
+            "current_period_start": subscription.current_period_start,
+            "current_period_end": subscription.current_period_end
+        }
 
-    return user_subscription
+        return user_subscription
+    
+    except Exception as e:
+        logger.error(f"Failed to retrieve user's subscription: {e}")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str("Failed to retrieve user's subscription"))
 
 # Cancel user subscription call to Stripe (not deleting from db)
 async def handle_cancel_user_subscription(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -96,23 +102,24 @@ async def handle_cancel_user_subscription(current_user: User = Depends(get_curre
 
         return {"status": "canceled"}
     
-    except stripe.error.StripeError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Failed to cancel user's subscription: {e}")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str("Failed to cancel user's subscription"))
 
 # Webhook event - customer subscription created
-async def customer_subscription_created(subscription_data: dict, db: Session):
-    logger.info(f"Checking data info: {subscription_data}")
-    stripe_subscription_id = subscription_data["id"]
+async def customer_subscription_created(subscription: dict, db: Session):
+    logger.info(f"Checking data info: {subscription}")
+    stripe_subscription_id = subscription["id"]
 
     if not stripe_subscription_id:
         raise HTTPException(status_code=400, detail="No subscription ID")
 
-    user_id = subscription_data["metadata"].get("user_id")
-    plan_id = subscription_data["metadata"].get("plan_id")
+    user_id = subscription["metadata"].get("user_id")
+    plan_id = subscription["metadata"].get("plan_id")
 
     logger.info(f"Current user id: {user_id}, ({type(user_id)}), current plan id: {plan_id}, ({type(plan_id)})")
 
-    item = subscription_data["items"]["data"][0]
+    item = subscription["items"]["data"][0]
     
     current_period_start_ts = item.get("current_period_start")
     current_period_end_ts = item.get("current_period_end")
@@ -131,7 +138,7 @@ async def customer_subscription_created(subscription_data: dict, db: Session):
         user_id=user_id,
         plan_id=plan_id,
         stripe_subscription_id=stripe_subscription_id,
-        status=subscription_data["status"],
+        status=subscription["status"],
         current_period_start=current_period_start,
         current_period_end=current_period_end,
     )
@@ -170,18 +177,20 @@ async def customer_subscription_updated(subscription: dict, db: Session = Depend
     if plan:
         existing.plan_id = plan.id
 
-    current_period_start_ts = subscription.get("current_period_start")
-    current_period_end_ts = subscription.get("current_period_end")
+    item = subscription["items"]["data"][0]
+
+    current_period_start_ts = item.get("current_period_start")
+    current_period_end_ts = item.get("current_period_end")
 
     current_period_start = (
-        datetime.fromtimestamp(current_period_start_ts, tz=datetime.timezone.utc)
+        datetime.fromtimestamp(current_period_start_ts, tz=timezone.utc)
         if current_period_start_ts is not None else None
     )
 
     current_period_end = (
-        datetime.fromtimestamp(current_period_end_ts, tz=datetime.timezone.utc)
+        datetime.fromtimestamp(current_period_end_ts, tz=timezone.utc)
         if current_period_end_ts is not None else None
-    )# TODO - calculate end of period based on subscription plan (duration)
+    )
 
     existing.plan_id = plan.id
     existing.status = subscription.get("status")
