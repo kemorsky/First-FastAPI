@@ -27,30 +27,42 @@ async def create_checkout_session(plan_id: int, current_user: User = Depends(get
         current_user.stripe_customer_id=customer.id
         db.commit()
 
-    session = stripe.checkout.Session.create(
-        customer=current_user.stripe_customer_id,
-        payment_method_types=["card"],
-        mode="subscription",
-        client_reference_id=str(current_user.id),
-        metadata={
-            "user_id": current_user.id,
-            "plan_id": plan.id,
-        },
-        line_items=[{
-            "price": plan.stripe_price_id,
-            "quantity": 1,
-        }],
-        subscription_data={
-            "metadata": {
+    existing = db.query(UserSubscription).filter(
+        UserSubscription.user_id == current_user.id,
+        UserSubscription.plan_id == plan.id
+    ).first()
+
+    if existing: # check whether user is subscribed to the plan via its id. If yes, prevent checkout link from being formed
+        logger.warning(f"Subscription already exists for user {current_user.id} and plan {plan_id}")
+        raise HTTPException(status_code=400, detail="User already has this plan")
+    
+    try: # if not, create checkout session and move on with the payment process
+        session = stripe.checkout.Session.create(
+            customer=current_user.stripe_customer_id,
+            payment_method_types=["card"],
+            mode="subscription",
+            client_reference_id=str(current_user.id),
+            metadata={
                 "user_id": current_user.id,
                 "plan_id": plan.id,
-            }
-        },
-        success_url="http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url="http://localhost:3000/cancel",
-    )
+            },
+            line_items=[{
+                "price": plan.stripe_price_id,
+                "quantity": 1,
+            }],
+            subscription_data={
+                "metadata": {
+                    "user_id": current_user.id,
+                    "plan_id": plan.id,
+                }
+            },
+            success_url="http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url="http://localhost:3000/cancel",
+        )
 
-    return {"checkout_url": session.url}
+        return {"checkout_url": session.url}
+    except stripe.error.StripeError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 # Show user's active subscription without fetching the whole user like in api/auth/users/me
 async def handle_user_subscription(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -62,6 +74,7 @@ async def handle_user_subscription(current_user: User = Depends(get_current_user
     )
 
     if not subscription:
+        logger.warning(f"No active subscription has been found")
         raise HTTPException(status_code=404, detail="No subscriptions found for user")
     
     try:
@@ -109,6 +122,7 @@ async def handle_cancel_user_subscription(current_user: User = Depends(get_curre
 # Webhook event - customer subscription created
 async def customer_subscription_created(subscription: dict, db: Session):
     logger.info(f"Checking data info: {subscription}")
+    
     stripe_subscription_id = subscription["id"]
 
     if not stripe_subscription_id:
@@ -133,7 +147,7 @@ async def customer_subscription_created(subscription: dict, db: Session):
         datetime.fromtimestamp(current_period_end_ts, tz=timezone.utc)
         if current_period_end_ts is not None else None
     )
-
+    
     new_purchase = UserSubscription(
         user_id=user_id,
         plan_id=plan_id,
