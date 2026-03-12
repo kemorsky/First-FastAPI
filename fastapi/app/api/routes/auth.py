@@ -1,18 +1,19 @@
 import logging
+import secrets
 from app.db.database import get_db
 from app.models.models import User
-from typing import Optional, Annotated
-from fastapi import Request, APIRouter, Depends, HTTPException, status
+from fastapi import Request, APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse, RedirectResponse
 from app.utils.config import settings
 import jwt
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 import httpx
 from dotenv import load_dotenv
 from pathlib import Path
 from urllib.parse import urlencode
-from app.core.security import get_current_user
+from app.services.services_auth import create_access_token
 
 logging.basicConfig(
     level=logging.INFO,
@@ -25,13 +26,11 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 env_path = Path(__file__).resolve().parent.parent.parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
 
+state = secrets.token_urlsafe(32)
+
 if not all ([settings.GOOGLE_CLIENT_ID, settings.GOOGLE_CLIENT_SECRET, settings.GOOGLE_REDIRECT_URI]):
     logger.error("Missing environment variables")
     raise RuntimeError("Missing environment variables")
-
-GOOGLE_AUTH_ENDPOINT = "https://accounts.google.com/o/oauth2/v2/auth"
-GOOGLE_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
-GOOGLE_USERINFO_ENDPOINT = "https://www.googleapis.com/oauth2/v2/userinfo"
 
 @router.get("/", response_class=HTMLResponse)
 async def home():
@@ -49,9 +48,10 @@ def sign_in():
             "response_type": "code",
             "scope": "openid email profile",
             "access_type": "offline",
-            "prompt": "consent"
+            "prompt": "consent",
+            "state": state
         }
-        url = f"{GOOGLE_AUTH_ENDPOINT}?{urlencode(query_parems)}"
+        url = f"{settings.GOOGLE_AUTH_ENDPOINT}?{urlencode(query_parems)}"
         return RedirectResponse(url)
     except Exception as e:
         logger.error(f"Error logging in: {e}")
@@ -72,7 +72,7 @@ async def auth_callback(request: Request, db: Session = Depends(get_db)):
     }
 
     async with httpx.AsyncClient() as client:
-        token_response = await client.post(GOOGLE_TOKEN_ENDPOINT, data=data)
+        token_response = await client.post(settings.GOOGLE_TOKEN_ENDPOINT, data=data)
         token_data = token_response.json()
 
         google_access_token = token_data.get("access_token")
@@ -81,14 +81,8 @@ async def auth_callback(request: Request, db: Session = Depends(get_db)):
             raise HTTPException(status_code=400, detail="Access token not found")
         
         headers = {"Authorization": f"Bearer {google_access_token}"}
-        userinfo_response = await client.get(GOOGLE_USERINFO_ENDPOINT, headers=headers)
+        userinfo_response = await client.get(settings.GOOGLE_USERINFO_ENDPOINT, headers=headers)
         userinfo = userinfo_response.json()
-
-        def create_access_token(data: dict, expires_delta: timedelta = timedelta(minutes=30)):
-            to_encode = data.copy()
-            expire = datetime.now(timezone.utc) + expires_delta
-            to_encode.update({"exp": expire})
-            return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
         
         google_id = userinfo["id"]
         email = userinfo["email"]
@@ -112,14 +106,19 @@ async def auth_callback(request: Request, db: Session = Depends(get_db)):
         
         app_access_token = create_access_token(
             {
-                "sub": str(user.id), 
-                "email": user.email,
-                "name": user.full_name, 
-                "picture": user.picture,
+                "sub": str(user.id),
             }
         )
 
-        return {
-            "access_token": app_access_token,
-            "token_type": "Bearer"
-        }
+        response = JSONResponse({"message": "Sign in successful"})
+
+        response.set_cookie(
+            key="access_token",
+            value=app_access_token,
+            httponly=True,
+            secure=True,
+            samesite="lax",
+            max_age=1800
+        )
+
+        return response
