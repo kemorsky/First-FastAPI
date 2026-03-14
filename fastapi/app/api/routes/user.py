@@ -25,17 +25,7 @@ async def get_users(db: Session = Depends(get_db)):
 @router.get("/me", response_model=UserResponse)
 async def get_user(current_user: User = Depends(get_current_user)):
     try:
-        user = {
-            "id": current_user.id,
-            "full_name": current_user.full_name,
-            "email": current_user.email,
-            "picture": current_user.picture,
-            "disabled": current_user.disabled,
-            "oauth_provider": current_user.oauth_provider,
-            "created_at": current_user.created_at,
-            "purchases": current_user.purchases
-        }
-        return user
+        return current_user
     except Exception as e:
         logger.error("Error retrieving user information")
         raise HTTPException(status_code=404, detail=f"User not found, {e}")
@@ -48,4 +38,3 @@ async def get_user(user_id: int, db: Session = Depends(get_db)):
     except Exception as e:
         logger.error("Error retrieving user")
         raise HTTPException(status_code=404, detail="User not found")
-

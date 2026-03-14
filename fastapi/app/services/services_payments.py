@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.models.models import User, UserSubscription, Plan
 from app.core.security import get_current_user
+from app.utils.config import settings
 
 logging.basicConfig(
     level=logging.INFO,
@@ -58,8 +59,8 @@ async def create_checkout_session(plan_id: int, current_user: User = Depends(get
                     "plan_id": plan.id,
                 }
             },
-            success_url="http://localhost:5173/success?session_id={CHECKOUT_SESSION_ID}",
-            cancel_url="http://localhost:3000/cancel",
+            success_url=settings.FRONTEND_SUCCESS_URI + "?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=settings.FRONTEND_CANCEL_URI,
         )
 
         return {"checkout_url": session.url}
