@@ -16,9 +16,20 @@ logger = logging.getLogger(__name__)
 
 async def create_checkout_session(plan_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     logger.info("Checkout session creation hit")
+
     plan = crud.create_checkout_session(db, plan_id)
     if not plan:
         raise HTTPException(status_code=400, detail="Plan could not go through")
+
+    existing = db.query(UserSubscription).filter(
+        UserSubscription.user_id == current_user.id,
+        UserSubscription.plan_id == plan.id,
+        UserSubscription.status == "active"
+    ).first()
+
+    if existing: # check whether user is subscribed to the plan via its id. If yes, prevent checkout link from being formed
+        logger.warning(f"Subscription already exists for user {current_user.id} and plan {plan_id}")
+        raise HTTPException(status_code=400, detail="User already has this plan")
     
     if not current_user.stripe_customer_id:
         customer = stripe.Customer.create(
@@ -26,15 +37,6 @@ async def create_checkout_session(plan_id: int, current_user: User = Depends(get
         )
         current_user.stripe_customer_id=customer.id
         db.commit()
-
-    existing = db.query(UserSubscription).filter(
-        UserSubscription.user_id == current_user.id,
-        UserSubscription.plan_id == plan.id
-    ).first()
-
-    if existing: # check whether user is subscribed to the plan via its id. If yes, prevent checkout link from being formed
-        logger.warning(f"Subscription already exists for user {current_user.id} and plan {plan_id}")
-        raise HTTPException(status_code=400, detail="User already has this plan")
     
     try: # if not, create checkout session and move on with the payment process
         session = stripe.checkout.Session.create(

@@ -3,7 +3,7 @@ import secrets
 from app.db.database import get_db
 from app.models.models import User
 from fastapi import Request, APIRouter, Depends, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse, RedirectResponse
 from app.utils.config import settings
@@ -110,7 +110,7 @@ async def auth_callback(request: Request, db: Session = Depends(get_db)):
             }
         )
 
-        response = JSONResponse({"message": "Sign in successful"})
+        response = RedirectResponse({settings.FRONTEND_URI}, status_code=302)
 
         response.set_cookie(
             key="access_token",

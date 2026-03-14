@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def get_current_user(request: Request, token_header: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     # get token from cookie or header
     token = request.cookies.get("access_token") or token_header # TODO - remove when in prod
-    if not token:
+    if not token: # checking it here allows the server to request identification without bloating the routes themselves
         raise HTTPException(status_code=401, detail="Not authenticated")
     
     try:
@@ -33,15 +33,8 @@ def get_current_user(request: Request, token_header: str = Depends(oauth2_scheme
             raise HTTPException(status_code=401, detail="Invalid token - sub")
         
     except (InvalidTokenError, ExpiredSignatureError, DecodeError) as e:
-        if InvalidTokenError:
-            logger.error(f"Error using token: {e}")
-            raise HTTPException(status_code=401, detail="Invalid token")
-        elif ExpiredSignatureError:
-            logger.error(f"Error using token: {e}")
-            raise HTTPException(status_code=401, detail="Expired signature")
-        elif DecodeError:
-            logger.error(f"Error using token: {e}")
-            raise HTTPException(status_code=401, detail="Unable to decode token")
+        logger.error(f"Error using token: {e}")
+        raise HTTPException(status_code=401, detail="Token Error: Invalid token")
 
     user = crud.get_user(db, user_id)
 

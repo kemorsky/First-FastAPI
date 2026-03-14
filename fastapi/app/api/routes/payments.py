@@ -67,16 +67,15 @@ async def stripe_webhook(request: Request, stripe_signature: str = Header(None),
         logger.error("Invalid webhook signature")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid signature")
     
+    subscription = event["data"]["object"] # event["data"]["object"] contains the actual event data that can then be used to manipulate the db
+    
     try:
         if event["type"] == "customer.subscription.created": # listed events determine db actions per event. Purpose is to inject certain database logic into fired events
-            subscription = event["data"]["object"]          # event["data"]["object"] contains the actual event data that can then be used to manipulate the db
             logger.info(f"Sending event info: {subscription}")
             await customer_subscription_created(subscription, db)
         elif event["type"] == "customer.subscription.updated":
-            subscription = event["data"]["object"]
             await customer_subscription_updated(subscription, db)
         elif event["type"] == "customer.subscription.deleted":
-            subscription = event["data"]["object"]
             await customer_subscription_deleted(subscription, db)
 
         return {"status": "success"}
