@@ -2,9 +2,17 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
+import createProductsQueryOptions from './queries/productsQueryOptions';
 
 export default function App() {
-  const [count, setCount] = useState(0)
+  // const products = use(productsPromise)
+
+  const queryClient = useQueryClient()
+
+  const [{data: plans}] = useQueries(
+    {queries: [createProductsQueryOptions()]}
+  )
 
   return (
     <>
@@ -16,18 +24,14 @@ export default function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        SaaS frontend is loaded and ready for work
-      </p>
+      <h1>Fetching Test</h1>
+      {plans?.map((plan) => (
+        <div key={plan.id}>
+          <p>{plan.name}</p>
+          <p>{plan.description}</p>
+          <p>{plan.price}</p>
+        </div>
+      ))}
     </>
   )
 }
