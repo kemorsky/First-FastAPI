@@ -6,4 +6,4 @@ export default function createPlansQueryOptions() {
         queryKey: ["plans"],
         queryFn: () => getPlans()
     })
-}
+};

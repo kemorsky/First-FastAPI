@@ -12,7 +12,6 @@ type Plan = {
     stripe_product_name: string;
     stripe_price_id: string;
     price: number;
-    // purchases = relationship("UserSubscription", back_populates="plan")
 }
 
 const URL = "http://localhost:8000/api"
