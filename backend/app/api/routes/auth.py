@@ -110,7 +110,7 @@ async def auth_callback(request: Request, db: Session = Depends(get_db)):
             }
         )
 
-        response = RedirectResponse({settings.FRONTEND_URI}, status_code=302)
+        response = RedirectResponse(settings.FRONTEND_URI, status_code=302)
 
         response.set_cookie(
             key="access_token",

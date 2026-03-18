@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 import createProductsQueryOptions from './queries/plansQueryOptions';
+import { signIn } from './api/api';
 
 export default function App() {
   // const products = use(productsPromise)
@@ -13,6 +14,10 @@ export default function App() {
   const [{data: plans}] = useQueries(
     {queries: [createProductsQueryOptions()]}
   )
+
+  const handleSignIn = async () => {
+    await signIn()
+  }
 
   return (
     <>
@@ -32,6 +37,7 @@ export default function App() {
           <p>{plan.price}</p>
         </div>
       ))}
+      <button onClick={() => handleSignIn()}>Sign In</button>
     </>
   )
 }

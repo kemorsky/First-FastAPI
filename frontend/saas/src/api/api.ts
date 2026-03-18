@@ -50,3 +50,7 @@ export const getPlans = async (): Promise<Plan[]> => {
     const data = await apiRequest(`${URL}/payments/get-plans`)
     return data
 }
+
+export const signIn = async () => {
+    window.location.href = `${URL}/auth/signin` // fetch doesn't allow OAuth2 to work due to CORS issues
+}
