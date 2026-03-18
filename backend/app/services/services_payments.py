@@ -112,7 +112,7 @@ async def handle_cancel_user_subscription(current_user: User = Depends(get_curre
         raise HTTPException(status_code=404, detail="No active subscription")
     
     try:
-        stripe.Subscription.cancel(subscription.stripe_subscription_id, cancel_at_period_end=True)
+        stripe.Subscription.modify(subscription.stripe_subscription_id, cancel_at_period_end=True)
         subscription.status = "canceled"
         db.commit()
 

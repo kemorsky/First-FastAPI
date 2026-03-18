@@ -3,7 +3,10 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from main import app
+from datetime import datetime, timezone
 from app.db.database import Base, get_db
+from app.models.models import User
+from app.core.security import get_current_user
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 
@@ -34,16 +37,37 @@ def db_session():
     transaction.rollback()
     connection.close()
 
+@pytest.fixture
+def test_user(db_session):
+    user = User(
+        id=1, 
+        email="test@gmail.com", 
+        oauth_provider="google", 
+        oauth_id="test", 
+        stripe_customer_id="test", 
+        full_name="Testy Tester", 
+        picture="test-picture", 
+        disabled=False, 
+        created_at=datetime.now(timezone.utc) )
+    db_session.add(user)
+    db_session.commit()
+    return user
 
 @pytest.fixture(scope="function")
-def client(db_session):
+def client(db_session, test_user): # always add new values that may come up to the fixture
     def override_get_db():
         try:
             yield db_session
         finally:
             pass
+    
+    def override_get_current_user():
+        return test_user
 
-        app.dependency_override[get_db] = override_get_db
-        with TestClient(app) as c:
-            yield c
-        app.dependency_overrides.clear()
+    # This section overrides dependencies in prod so any new value needed to be overridden should be placed here
+    app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[get_current_user] = override_get_current_user
+    
+    with TestClient(app) as c:
+        yield c
+    app.dependency_overrides.clear()
