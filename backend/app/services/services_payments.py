@@ -88,6 +88,7 @@ async def handle_user_subscription(current_user: User = Depends(get_current_user
             "price": subscription.plan.price, # not plan.price
             "stripe_subscription_id": subscription.stripe_subscription_id,
             "status": subscription.status,
+            "cancel_at_period_end": subscription.cancel_at_period_end,
             "current_period_start": subscription.current_period_start,
             "current_period_end": subscription.current_period_end
         }
@@ -104,7 +105,8 @@ async def handle_cancel_user_subscription(current_user: User = Depends(get_curre
     
     subscription = db.query(UserSubscription).filter(
         UserSubscription.user_id == current_user.id,
-        UserSubscription.status == "active"
+        UserSubscription.status == "active",
+        UserSubscription.cancel_at_period_end == False
     ).first()
 
     if not subscription:
@@ -113,10 +115,10 @@ async def handle_cancel_user_subscription(current_user: User = Depends(get_curre
     
     try:
         stripe.Subscription.modify(subscription.stripe_subscription_id, cancel_at_period_end=True)
-        subscription.status = "canceled"
+        subscription.cancel_at_period_end = True
         db.commit()
 
-        return {"status": "canceled"}
+        return {"status": "active", "cancel_at_period_end": True}
     
     except Exception as e:
         logger.error(f"Failed to cancel user's subscription: {e}")

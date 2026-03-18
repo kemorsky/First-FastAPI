@@ -45,6 +45,7 @@ class UserSubscriptionResponse(UserSubscriptionBase):
     stripe_subscription_id: str
 
     status: str
+    cancel_at_period_end: bool
     current_period_start: datetime | None
     current_period_end: datetime | None
 

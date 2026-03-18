@@ -17,6 +17,7 @@ def create_subscription(db_session, user):
         plan_id=plan.id,
         stripe_subscription_id="sub_123",
         status="active",
+        cancel_at_period_end=False,
         current_period_start=datetime.now(timezone.utc), # TODO - change as this is not optimal
         current_period_end=datetime.now(timezone.utc)
     )
@@ -77,4 +78,5 @@ def test_cancel_user_subscription(client, db_session, test_user, monkeypatch):
     response = client.post("/api/payments/cancel-subscription")
     assert response.status_code == 200
     data = response.json()
-    assert data["status"] == "canceled"
+    assert data["status"] == "active"
+    assert data["cancel_at_period_end"] == True

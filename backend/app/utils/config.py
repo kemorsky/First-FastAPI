@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     MYSQL_DATABASE: str
     MYSQL_USER: str
     MYSQL_PASSWORD: str
+    FRONTEND_URI: str
     FRONTEND_SUCCESS_URI: str
     FRONTEND_CANCEL_URI: str
     GOOGLE_CLIENT_ID: str

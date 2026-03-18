@@ -56,6 +56,7 @@ class UserSubscription(Base):
     stripe_subscription_id = Column(String, unique=True, nullable=False)
 
     status = Column(String, nullable=False)
+    cancel_at_period_end = Column(Boolean, default=False)
     current_period_start = Column(DateTime(timezone=True))
     current_period_end = Column(DateTime(timezone=True))
 
