@@ -1,3 +1,5 @@
+import { type Plan, type User, type UserSubscription } from "../types/types"
+
 type RequestOptions = {
     method?: string,
     headers?: { [key: string]: string },
@@ -5,26 +7,17 @@ type RequestOptions = {
     credentials?: RequestCredentials;
   }
 
-type Plan = {
-    id: number;
-    name: string;
-    description: string;
-    stripe_product_name: string;
-    stripe_price_id: string;
-    price: number;
-}
-
 const URL = "http://localhost:8000/api"
 
 export const apiRequest = async (url: string, options: RequestOptions = {}) => {
     try {
         const response = await fetch(url, {
             method: "GET",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
                 ...options.headers
             },
-            credentials: "include",
             ...options
         })
         if (!response.ok) {
@@ -53,4 +46,26 @@ export const getPlans = async (): Promise<Plan[]> => {
 
 export const signIn = async () => {
     window.location.href = `${URL}/auth/signin` // fetch doesn't allow OAuth2 to work due to CORS issues
+}
+
+export const getMe = async (): Promise<User> => {
+    try {
+        const data = await apiRequest(`${URL}/users/me`, {
+            credentials: "include"
+        })
+        return data
+    } catch (error) {
+        throw new Error (`Error fetching user: ${error}`);
+    }
+}
+
+export const getUserSubscription = async (): Promise<UserSubscription> => {
+    try {
+        const data = await apiRequest(`${URL}/users/get-user-subscription`, {
+            credentials: "include"
+        })
+        return data
+    } catch (error) {
+        throw new Error (`Error fetching user: ${error}`);
+    }
 }

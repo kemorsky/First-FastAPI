@@ -1,5 +1,6 @@
 import logging
 from fastapi import HTTPException, Depends, Request
+from typing import Optional
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
 import jwt
@@ -9,7 +10,7 @@ from app.utils.config import settings
 from app.db.database import get_db
 import app.db.crud as crud
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/signin")
+# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/signin")
 
 logging.basicConfig(
     level=logging.INFO,
@@ -17,14 +18,18 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def get_current_user(request: Request, token_header: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+def get_current_user(request: Request, db: Session = Depends(get_db)): # add token_header: Optional[str] = Depends(oauth2_scheme) when working in Postman
+
     # get token from cookie or header
-    token = request.cookies.get("access_token") or token_header # TODO - remove when in prod
+    token = request.cookies.get("access_token") # or token_header --- TODO - remove when in prod
+    
     if not token: # checking it here allows the server to request identification without bloating the routes themselves
         raise HTTPException(status_code=401, detail="Not authenticated")
     
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        logger.info(f"Raw cookies: {request.cookies}")
+        logger.info(f"Token used: {token}")
         if not payload:
             raise HTTPException(status_code=401, detail="Invalid token - payload")
 
