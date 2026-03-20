@@ -66,6 +66,6 @@ export const getUserSubscription = async (): Promise<UserSubscription> => {
         })
         return data
     } catch (error) {
-        throw new Error (`Error fetching user: ${error}`);
+        throw new Error (`Error fetching user subscription: ${error}`);
     }
 }
