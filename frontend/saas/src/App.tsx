@@ -8,6 +8,10 @@ import { Header } from './ui/blocks/shared/header';
 import { Hero } from './ui/blocks/home/hero';
 import { Features } from './ui/blocks/home/features';
 import { HowToUse } from './ui/blocks/home/how-to-use';
+import { Testimonials } from './ui/blocks/home/testimonials';
+import { FAQ } from './ui/blocks/home/faq';
+import { ReadyToJoin } from './ui/blocks/home/ready-to-join';
+import { Footer } from './ui/blocks/shared/footer';
 
 export default function App() {
   const queryClient = useQueryClient()
@@ -29,6 +33,10 @@ export default function App() {
       <Hero />
       <Features />
       <HowToUse />
+      <Testimonials />
+      <FAQ />
+      <ReadyToJoin />
+      <Footer />
       <div>
         {user?.full_name}
         {user?.email}
@@ -36,13 +44,13 @@ export default function App() {
       {/* <div>
         {user_subscription?.id}
       </div> */}
-      {plans?.map((plan) => (
+      {/* {plans?.map((plan) => (
         <div key={plan.id}>
           <p>{plan.name}</p>
           <p>{plan.description}</p>
           <p>{plan.price}</p>
         </div>
-      ))}
+      ))} */}
       <button onClick={() => handleSignIn()}>Sign In</button>
     </main>
   )

@@ -1,0 +1,14 @@
+import { cn } from "../../lib/utils";
+
+interface WrapperProps {
+    children: React.ReactNode;
+    className?: string;
+}
+
+export default function Wrapper(props: WrapperProps) {
+    return (
+        <section className={cn("w-full py-20", props.className)}>
+            {props.children}
+        </section>
+    )
+}
