@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import App from "../App";
-import Success from "../pages/Success";
+import Success from "../pages/success";
+import Pricing from "../pages/pricing";
 
 const router = createBrowserRouter([
     {
@@ -10,6 +11,10 @@ const router = createBrowserRouter([
     {
         path: "/success",
         Component: Success,
+    },
+    {
+        path: "/pricing",
+        Component: Pricing
     },
 ])
 

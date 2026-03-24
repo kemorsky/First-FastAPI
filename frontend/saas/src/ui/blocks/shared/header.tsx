@@ -11,17 +11,17 @@ export const Header = () => {
                         </article>
                     </section>
                     <section className="flex gap-8">
-                        <a href="">
+                        <a href="/#features">
                             <article>
                                 Features
                             </article>
                         </a>
-                        <a href="">
+                        <a href="/pricing">
                             <article>
                                 Pricing
                             </article>
                         </a>
-                        <a href="">
+                        <a href="/#contact">
                             <article>
                                 Contact
                             </article>

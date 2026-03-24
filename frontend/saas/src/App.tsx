@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
-import createProductsQueryOptions from './queries/plansQueryOptions';
+import plansQueryOptions from './queries/plansQueryOptions';
 import { userQueryOptions, userSubscriptionQueryOptions } from './queries/userQueryOptions';
 import { signIn } from './api/api';
 import { Header } from './ui/blocks/shared/header';
@@ -17,7 +17,7 @@ export default function App() {
   const queryClient = useQueryClient()
 
   const [{data: plans}, {data: user}, {data: user_subscription}] = useQueries(
-    {queries: [createProductsQueryOptions(), userQueryOptions(), userSubscriptionQueryOptions()]}
+    {queries: [plansQueryOptions(), userQueryOptions(), userSubscriptionQueryOptions()]}
   );
 
   const handleSignIn = async () => {
@@ -44,13 +44,6 @@ export default function App() {
       {/* <div>
         {user_subscription?.id}
       </div> */}
-      {/* {plans?.map((plan) => (
-        <div key={plan.id}>
-          <p>{plan.name}</p>
-          <p>{plan.description}</p>
-          <p>{plan.price}</p>
-        </div>
-      ))} */}
       <button onClick={() => handleSignIn()}>Sign In</button>
     </main>
   )

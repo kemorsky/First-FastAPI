@@ -1,6 +1,7 @@
 import { cn } from "../../lib/utils";
 
 interface WrapperProps {
+    id?: string;
     children: React.ReactNode;
     className?: string;
 }
