@@ -1,39 +1,22 @@
-export const SignInButton = () => {
-    return (
-        <main>
-            <button>Sign In Button</button>
-        </main>
-    )
+import { cn } from "../../lib/utils";
+
+type ButtonProps = {
+    text: string;
+    onClick?: () => void;
+    disabled?: boolean;
+    className?: string;
+    variant?: "primary" | "secondary";
 }
 
-export const SignOutButton = () => {
+export const Button = (props: ButtonProps) => {
     return (
-        <main>
-            <button>Sign Out Button</button>
-        </main>
+        <button className={cn("flex bg-gray-200 items-center text-base", 
+                props.variant === "primary" ? "bg-red-200" : "",
+                props.variant === "secondary" ? "bg-red-400" : "",
+                props.className
+            )} 
+                onClick={props.onClick}>
+            {props.text}
+        </button>
     )
-}
-
-export const SelectButton = () => {
-    return (
-        <main>
-            <button>Select Button</button>
-        </main>
-    )
-}
-
-export const CancelButton = () => {
-    return (
-        <main>
-            <button>Cancel Button</button>
-        </main>
-    )
-}
-
-export const CancelSubscriptionButton = () => {
-    return (
-        <main>
-            <button>Cancel Subscription Button</button>
-        </main>
-    )
-}
+};

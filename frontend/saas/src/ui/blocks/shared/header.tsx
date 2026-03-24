@@ -1,3 +1,5 @@
+import { Button } from "../../shared/buttons"
+
 export const Header = () => {
     return (
         <header className="w-full bg-red-300 py-6 ">
@@ -26,9 +28,9 @@ export const Header = () => {
                         </a>
                     </section>
                 </section>
-                <section className="flex gap-8 px-4">
-                    <button>Sign In</button>
-                    <button>Sign Up</button>
+                <section className="flex gap-4 px-4">
+                    <Button text="Sign In" variant="primary" />
+                    <Button text="Sign Up" variant="secondary" />
                 </section>
             </nav>
         </header>

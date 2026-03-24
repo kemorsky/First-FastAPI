@@ -24,7 +24,7 @@ export default function App() {
   console.log(user_subscription); // TODO - figure out the 422 error (user_id is thought of as string instead of integer)
 
   return (
-    <main className="max-w-[90rem] w-full min-h-[100vh] h-full bg-orange-200 flex flex-col justify-start items-center">
+    <main className="max-w-360 w-full min-h-screen h-full bg-orange-200 flex flex-col justify-start items-center">
       <Header />
       <Hero />
       <Features />
