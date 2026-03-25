@@ -41,7 +41,7 @@ export const apiRequest = async (url: string, options: RequestOptions = {}) => {
 
 export const getPlans = async (): Promise<Plan[]> => {
     const data = await apiRequest(`${URL}/payments/get-plans`)
-    return data
+    return data;
 }
 
 export const signIn = async () => {
@@ -53,7 +53,7 @@ export const getMe = async (): Promise<User> => {
         const data = await apiRequest(`${URL}/users/me`, {
             credentials: "include"
         })
-        return data
+        return data;
     } catch (error) {
         throw new Error (`Error fetching user: ${error}`);
     }
@@ -61,11 +61,36 @@ export const getMe = async (): Promise<User> => {
 
 export const getUserSubscription = async (): Promise<UserSubscription> => {
     try {
-        const data = await apiRequest(`${URL}/users/get-user-subscription`, {
+        const data = await apiRequest(`${URL}/payments/get-user-subscription`, {
             credentials: "include"
         })
-        return data
+        return data;
     } catch (error) {
         throw new Error (`Error fetching user subscription: ${error}`);
+    }
+}
+
+export const cancelSubscription = async (): Promise<UserSubscription> => {
+    try {
+        const data = await apiRequest(`${URL}/payments/cancel-subscription`, {
+            method: "POST",
+            credentials: "include"
+        })
+        return data;
+    } catch (error) {
+        throw new Error (`Error canceling user subscription: ${error}`);
+    }
+}
+
+export const createCheckoutSession = async (plan_id: number) => {
+    try {
+        const data = await apiRequest(`${URL}/payments/create-checkout-session`, {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify({ plan_id }),
+        })
+        window.location.href = data.checkout_url
+    } catch (error) {
+        throw new Error (`Error creating checkout session: ${error}`);
     }
 }

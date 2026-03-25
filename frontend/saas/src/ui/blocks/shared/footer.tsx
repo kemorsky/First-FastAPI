@@ -4,10 +4,14 @@ export const Footer = () => {
             <h1>Footer</h1>
             <section className="max-w-300 w-full flex justify-between">
                 <ul>
-                    <li>test</li>
+                    <a href="">
+                        <li>test</li>
+                    </a>
                 </ul>
                 <ul>
-                    <li>test</li>
+                    <a href="">
+                        <li>test</li>
+                    </a>
                 </ul>
             </section>
         </footer>

@@ -29,12 +29,3 @@ async def get_user(current_user: User = Depends(get_current_user)):
     except Exception as e:
         logger.error("Error retrieving user information")
         raise HTTPException(status_code=404, detail=f"User not found, {e}")
-
-@router.get("/{user_id}", response_model=UserResponse)
-async def get_user(user_id: int, db: Session = Depends(get_db)):
-    try:
-        user = crud.get_user(db, user_id)
-        return user
-    except Exception as e:
-        logger.error("Error retrieving user")
-        raise HTTPException(status_code=404, detail="User not found")

@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import './App.css'
-import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
-import plansQueryOptions from './queries/plansQueryOptions';
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { userQueryOptions, userSubscriptionQueryOptions } from './queries/userQueryOptions';
 import { signIn } from './api/api';
 import { Header } from './ui/blocks/shared/header';
@@ -16,16 +14,17 @@ import { Footer } from './ui/blocks/shared/footer';
 export default function App() {
   const queryClient = useQueryClient()
 
-  const [{data: plans}, {data: user}, {data: user_subscription}] = useQueries(
-    {queries: [plansQueryOptions(), userQueryOptions(), userSubscriptionQueryOptions()]}
-  );
+  const { data: user } = useQuery(userQueryOptions());
+
+  const { data: user_subscription } = useQuery({
+      ...userSubscriptionQueryOptions(), 
+      enabled: !user
+    });
 
   const handleSignIn = async () => {
-    await signIn()
+    await signIn();
+    queryClient.invalidateQueries({ queryKey: ["user"] });
   };
-
-  console.log(user);
-  console.log(user_subscription); // TODO - figure out the 422 error (user_id is thought of as string instead of integer)
 
   return (
     <main className="max-w-360 w-full min-h-screen h-full bg-orange-200 flex flex-col justify-start items-center">
@@ -41,9 +40,9 @@ export default function App() {
         {user?.full_name}
         {user?.email}
       </div>
-      {/* <div>
+      <div>
         {user_subscription?.id}
-      </div> */}
+      </div>
       <button onClick={() => handleSignIn()}>Sign In</button>
     </main>
   )
