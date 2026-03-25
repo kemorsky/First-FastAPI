@@ -63,13 +63,12 @@ class PlanResponse(PlanBase):
 
     model_config = ConfigDict(from_attributes=True)
 
-class CreateCheckoutSession(BaseModel):
-    price_id: str
-    product_id: str
+class CheckoutSessionCreate(BaseModel):
+    plan_id: int
+
+class CheckoutSessionResponse(BaseModel):
+    checkout_url: str
 
 class Credits(BaseModel):
     remaining_post_creations: str
     remaining_post_cretions_one_time: str
-
-class CheckoutSessionResponse(BaseModel):
-    checkout_url: str

@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Header
 import app.db.crud as crud
-from app.schemas.schemas import PlanResponse, UserSubscriptionResponse, CheckoutSessionResponse
+from app.schemas.schemas import CheckoutSessionCreate, PlanResponse, UserSubscriptionResponse, CheckoutSessionResponse
 from app.utils.config import settings
 from sqlalchemy.orm import Session
 from app.db.database import get_db
@@ -33,9 +33,9 @@ async def get_plans(db: Session = Depends(get_db)):
     return crud.get_plans(db)
 
 @router.post("/create-checkout-session", response_model=CheckoutSessionResponse, status_code=status.HTTP_201_CREATED)
-async def create_checkout_session_route(plan_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+async def create_checkout_session_route(payload: CheckoutSessionCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
-        return await create_checkout_session(plan_id, current_user, db) # /api/payments/create-checkout-session?plan_id=2 - example query
+        return await create_checkout_session(payload.plan_id, current_user, db) # /api/payments/create-checkout-session?plan_id=2 - example query
     except stripe.error.StripeError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     
