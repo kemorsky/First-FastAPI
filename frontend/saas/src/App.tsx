@@ -29,10 +29,6 @@ export default function App() {
       <ReadyToJoin />
       <Footer />
       <div>
-        {user?.full_name}
-        {user?.email}
-      </div>
-      <div>
         {user_subscription?.id}
       </div>
     </main>
