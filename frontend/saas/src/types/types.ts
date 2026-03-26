@@ -1,10 +1,10 @@
 export type Plan = {
     id?: number;
-    name: string;
-    description: string;
+    name?: string;
+    description?: string;
     stripe_product_name?: string;
     stripe_price_id?: string;
-    price: number;
+    price?: number;
 }
 
 export type User = {
