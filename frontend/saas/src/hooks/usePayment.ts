@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { userQueryOptions } from "../queries/userQueryOptions";
+import { userQueryOptions, userSubscriptionQueryOptions } from "../queries/userQueryOptions";
 import { cancelSubscription, createCheckoutSession } from "../api/api";
 
 export default function usePayment() {
@@ -7,7 +7,7 @@ export default function usePayment() {
     
     const { mutate: mutateCancelSubscription } = useMutation({ mutationFn: () => cancelSubscription(),
                 onSuccess: () => {
-                    queryClient.invalidateQueries({queryKey: userQueryOptions().queryKey})
+                    queryClient.invalidateQueries({queryKey: userSubscriptionQueryOptions().queryKey})
                 },
                 // onError: (error: Error) => { TODO - setup error handling later
                 //     showToastError(error.message);

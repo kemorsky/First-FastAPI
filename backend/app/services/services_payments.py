@@ -115,7 +115,7 @@ async def handle_cancel_user_subscription(current_user: User = Depends(get_curre
     
     try:
         stripe.Subscription.modify(subscription.stripe_subscription_id, cancel_at_period_end=True)
-        subscription.cancel_at_period_end = True
+        # subscription.cancel_at_period_end = True
         db.commit()
 
         return {"status": "active", "cancel_at_period_end": True}

@@ -76,6 +76,7 @@ export const cancelSubscription = async (): Promise<UserSubscription> => {
             method: "POST",
             credentials: "include"
         })
+        console.log(data)
         return data;
     } catch (error) {
         throw new Error (`Error canceling user subscription: ${error}`);

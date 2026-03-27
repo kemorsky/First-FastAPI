@@ -53,6 +53,15 @@ def test_user(db_session):
     db_session.commit()
     return user
 
+def test_request():
+    return {"id": "sub_123", "status": "active"}
+
+def test_stripe_signature():
+    return "test_signature" # Needs to be a Header (stripe_signature: str = Header(None))
+
+def test_stripe_event_data():
+    return {"id": "sub_123", "status": "active"} # for subscription = event["data"]["object"]
+
 @pytest.fixture(scope="function")
 def client(db_session, test_user): # always add new values that may come up to the fixture
     def override_get_db():

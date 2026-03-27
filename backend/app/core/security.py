@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 def get_current_user(request: Request, db: Session = Depends(get_db)): # add token_header: Optional[str] = Depends(oauth2_scheme) when working in Postman
 
     # get token from cookie or header
-    token = request.cookies.get("access_token") # or token_header --- TODO - remove when in prod
+    token = request.cookies.get("access_token") # or token_header # --- TODO - remove when in prod
     
     if not token: # checking it here allows the server to request identification without bloating the routes themselves
         raise HTTPException(status_code=401, detail="Not authenticated")

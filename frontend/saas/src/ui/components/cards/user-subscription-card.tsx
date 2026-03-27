@@ -14,6 +14,7 @@ export const UserSubscriptionCard = (props: CardProps) => {
                 <li>Status: {props.status}</li>
                 <li>Subscription Created: {props.current_period_start}</li>
                 <li>Subscription Ends: {props.current_period_end}</li>
+                <li>Cancel At Period End: {props.cancel_at_period_end.toString()}</li>
             </ul>
             {props.children}
         </div>

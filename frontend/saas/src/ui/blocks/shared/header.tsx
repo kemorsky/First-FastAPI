@@ -7,7 +7,11 @@ import { Button } from "../../shared/buttons"
 export const Header = () => {
     const queryClient = useQueryClient()
 
-    const { data: user, isLoading } = useQuery(userQueryOptions());
+    const { data: user } = useQuery(userQueryOptions());
+
+    if (!user) console.log("Sign In");
+
+    console.log(user)
 
     const handleSignIn = async () => {
         await signIn();
@@ -41,13 +45,23 @@ export const Header = () => {
                         </a>
                     </section>
                 </section>
-                <section className="flex gap-4 px-4">
-                    <Button onClick={() => handleSignIn()} text="Sign In" variant="primary" />
-                    <Button text="Sign Up" variant="secondary" />
-                </section>
-                <section>
-                    <p>{user?.full_name}</p>
-                </section>
+                <Activity mode={!user ? "visible" : "hidden"}>
+                    <section className="flex gap-4 px-4">
+                        <Button onClick={() => handleSignIn()} text="Sign In" variant="primary" />
+                        <Button text="Sign Up" variant="secondary" />
+                    </section>
+                </Activity>
+                <Activity mode={user ? "visible" : "hidden"}>
+                    <section className="flex items-center gap-4 px-4">
+                        <a href="/user">
+                            <img 
+                                className="w-10 h-10 rounded-full"
+                                src={user?.picture.toString()} 
+                                alt="user profile image" width={40} height={40}/>
+                        </a>
+                        <p>{user?.full_name}</p>
+                    </section>
+                </Activity>
             </nav>
         </header>
     )

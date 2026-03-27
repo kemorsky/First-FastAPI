@@ -80,3 +80,10 @@ def test_cancel_user_subscription(client, db_session, test_user, monkeypatch):
     data = response.json()
     assert data["status"] == "active"
     assert data["cancel_at_period_end"] == True
+
+# TODO - webhook test, incomplete
+# def test_webhook(client, db_session, test_user, monkeypatch, test_request, test_stripe_signature, test_STRIPE_WEBHOOK_SECRET, test_stripe_event_data):
+#     def mock_modify(*args, **kwargs): # mock Stripe requests as to not use the actual API
+#         return {"payload": test_request, "stripe_signature": test_stripe_signature, test_STRIPE_WEBHOOK_SECRET: "testsecret"}
+    
+#     monkeypatch.setattr("stripe.Webhook.construct_event", mock_modify)
