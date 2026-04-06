@@ -23,9 +23,9 @@ export default function usePayment() {
                 // }
             });
 
-    const handleCancelSubscription = async () => {
-        mutateCancelSubscription();
-    }
+        const handleCancelSubscription = async () => {
+            mutateCancelSubscription();
+        }
 
     const handleCreateCheckoutSession = async (plan_id: number) => {
         mutateCreateCheckoutSession({ plan_id });

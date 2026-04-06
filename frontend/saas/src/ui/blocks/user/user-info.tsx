@@ -12,9 +12,12 @@ export const UserInfo = () => {
         enabled: !user
     });
 
-    if (!user || !user_subscription) return null
+    if (!user || !user_subscription) return console.log("Fetching user and user subscription...");
 
     console.log(user_subscription);
+
+    // TODO - refresh user and user subscription upon changes in data
+    // when passed to UserInfoCard and UserSubscriptionCard
 
     return (
         <div className="w-full flex justify-between">
