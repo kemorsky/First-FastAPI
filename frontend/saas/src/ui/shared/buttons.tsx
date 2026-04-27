@@ -14,6 +14,7 @@ export const Button = (props: ButtonProps) => {
                 props.variant === "primary" ? "bg-red-200" : "",
                 props.variant === "secondary" ? "bg-red-400" : "",
                 props.variant === "learn-more" ? "bg-red-600" : "",
+                props.disabled ? "cursor-not-allowed, bg-gray-600" : "cursor-pointer",
                 props.className
             )} 
                 onClick={props.onClick}>

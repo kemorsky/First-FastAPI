@@ -1,4 +1,4 @@
-import { Activity } from "react"
+import { Activity, useState, useEffect } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { userQueryOptions } from '../../../queries/userQueryOptions';
 import { signIn } from '../../../api/api';
@@ -13,13 +13,28 @@ export const Header = () => {
 
     console.log(user)
 
+    const [isScrolled, setIsScrolled] = useState(false);
+
     const handleSignIn = async () => {
         await signIn();
         queryClient.invalidateQueries({ queryKey: ["user"] });
     };
 
+    useEffect(() => { // initial setup, ver 0.1 basically
+        const handleScroll = () => {
+            const scrolled = window.scrollY > 105; 
+            setIsScrolled(scrolled);
+        }
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            if (window) {
+                window.removeEventListener("scroll", handleScroll)
+            }
+        }
+    }, []);
+    
     return (
-        <header className="w-full bg-red-300 py-6 ">
+        <header className={`w-full py-6 transition-all ease-in-out duration-300 fixed ${isScrolled ? 'max-w-350 bg-red-200/40 backdrop-blur-lg sm:top-3 rounded-xl' : 'max-w-360 top-0 bg-red-200 backdrop-blur-lg'}`}>
             <nav className="w-full flex justify-between items-center">
                 <section className="flex items-center gap-16">
                     <section className="px-4">
@@ -29,19 +44,19 @@ export const Header = () => {
                     </section>
                     <section className="flex gap-8">
                         <a href="/#features">
-                            <article>
+                            <p className="font-semibold text-black hover:text-gray-700 transition-colors">
                                 Features
-                            </article>
+                            </p>
                         </a>
                         <a href="/pricing">
-                            <article>
+                            <p className="font-semibold text-black hover:text-gray-700 transition-colors">
                                 Pricing
-                            </article>
+                            </p>
                         </a>
                         <a href="/#contact">
-                            <article>
+                            <p className="font-semibold text-black hover:text-gray-700 transition-colors">
                                 Contact
-                            </article>
+                            </p>
                         </a>
                     </section>
                 </section>

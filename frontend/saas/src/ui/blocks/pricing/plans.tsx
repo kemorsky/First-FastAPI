@@ -5,11 +5,15 @@ import { Button } from "../../shared/buttons"
 import { useQuery } from "@tanstack/react-query"
 import usePayment from "../../../hooks/usePayment"
 import plansQueryOptions from "../../../queries/plansQueryOptions"
+import { userQueryOptions } from "../../../queries/userQueryOptions"
 
 export const Plans = () => {
     const { handleCreateCheckoutSession } = usePayment();
     const { data: plans } = useQuery(
         plansQueryOptions()
+    );
+    const { data: user } = useQuery(
+        userQueryOptions()
     );
 
     return (
@@ -23,7 +27,7 @@ export const Plans = () => {
                                 description= {plan.description} 
                                 price={plan.price}
                         >
-                            <Button onClick={() => {handleCreateCheckoutSession(plan.id as number)}} text="Subscribe" variant="secondary" />
+                            <Button onClick={() => {handleCreateCheckoutSession(plan.id as number)}} text="Subscribe" variant="secondary" disabled={!user ? true : false} />
                         </PlanCard>
                     ))}
                 </section>
