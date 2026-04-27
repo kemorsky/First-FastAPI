@@ -71,4 +71,37 @@ summary::-webkit-details-marker {
 
 @theme {
   --font-play: "Play", sans-serif;
+  --color-dark: oklch(0.1 0.1 203);
+  --color-bg: oklch(0.15 0.1 203);
+  --color-card: oklch(0.2 0.1 203);
+  --color-text: oklch(0.96 0.1 203);
+  --color-text-muted: oklch(0.76 0.1 203);
+  --highlight: oklch(0.5 0.2 203);
+  --color-border: oklch(0.4 0.2 203);
+  --color-border-muted: oklch(0.3 0.2 203);
+  --color-primary: oklch(0.76 0.2 203);
+  --color-secondary: oklch(0.76 0.2 23);
+  --danger: oklch(0.7 0.2 30);
+  --warning: oklch(0.7 0.2 100);
+  --success: oklch(0.7 0.2 160);
+  --info: oklch(0.7 0.2 260);
+
+  /* light mode values stored for later
+  **
+  --color-dark: oklch(0.92 0.1 203);
+  --color-bg: oklch(0.96 0.1 203);
+  --color-light: oklch(1 0.1 203);
+  --color-text: oklch(0.15 0.2 203);
+  --color-text-muted: oklch(0.4 0.2 203);
+  --highlight: oklch(1 0.2 203);
+  --color-border: oklch(0.6 0.2 203);
+  --color-border-muted: oklch(0.7 0.2 203);
+  --color-primary: oklch(0.4 0.2 203);
+  --color-secondary: oklch(0.4 0.2 23);
+  --danger: oklch(0.5 0.2 30);
+  --warning: oklch(0.5 0.2 100);
+  --success: oklch(0.5 0.2 160);
+  --info: oklch(0.5 0.2 260); 
+  **
+  */
 }

@@ -4,7 +4,7 @@ import { FeaturesCard } from "../../components/cards/features-card"
 
 export const Features = () => {
     return (
-        <Wrapper id="features">
+        <Wrapper id="features" className="bg-dark">
             <Container className="flex flex-col items-center justify-center gap-8">
                 <h1 className="font-play">Features</h1>
                 <section className="flex items-center justify-center gap-8">

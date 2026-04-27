@@ -3,36 +3,34 @@ import Container from "../../shared/container"
 
 export const HowToUse = () => {
     return (
-        <Wrapper>
-            <Container className="bg-gray-400 w-full flex flex-col items-center justify-center">
+        <Wrapper className="bg-bg">
+            <Container className="w-full flex flex-col items-center justify-center gap-10">
                 <h1>How To Use</h1>
-                <div className="bg-gray-400 flex gap-12 items-center justify-between">
-                    <div className="bg-gray-600 min-w-120 w-full">
+                <div className="flex gap-12 items-center justify-between">
+                    <div className="border border-border rounded-xl min-w-120 h-80 w-full">
                         {/* <img src="" alt="" /> */}
-                        <h2>example picture</h2>
                     </div>
-                    <article className="bg-gray-500 min-w-120 w-full flex flex-col items-start p-3">
-                        <h2>Instructions</h2>
+                    <article className="min-w-120 w-full flex flex-col items-start p-3">
+                        <p className="text-left text-[1.125rem] text-text">From setup to usage stage, the software is very easy and intuitive to use:</p>
                         <ul className="list-dist">
-                            <li>
-                                instruction
+                            <li className="mb-4 text-text-muted">
+                                step: instruction
                             </li>
-                            <li>
-                                instruction
+                            <li className="mb-4 text-text-muted">
+                                step: instruction
                             </li>
-                            <li>
-                                instruction
+                            <li className="mb-4 text-text-muted">
+                                step: instruction
                             </li>
-                            <li>
-                                instruction
+                            <li className="mb-4 text-text-muted">
+                                step: instruction
                             </li>
-                            <li>
-                                instruction
+                            <li className="mb-4 text-text-muted">
+                                step: instruction
                             </li>
                         </ul>
                     </article>
                 </div>
-                
             </Container>
         </Wrapper>
     )

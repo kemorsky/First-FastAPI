@@ -34,7 +34,7 @@ export const Header = () => {
     }, []);
     
     return (
-        <header className={`w-full py-6 transition-all ease-in-out duration-300 fixed ${isScrolled ? 'max-w-350 bg-red-200/40 backdrop-blur-lg sm:top-3 rounded-xl' : 'max-w-360 top-0 bg-red-200 backdrop-blur-lg'}`}>
+        <header className={`w-full max-w-360 py-6 transition-all ease-in-out duration-300 fixed ${isScrolled ? 'py-8 bg-bg-light backdrop-blur-lg px-5 rounded-xl' : 'top-0 bg-bg'}`}>
             <nav className="w-full flex justify-between items-center">
                 <section className="flex items-center gap-16">
                     <section className="px-4">
@@ -44,17 +44,17 @@ export const Header = () => {
                     </section>
                     <section className="flex gap-8">
                         <a href="/#features">
-                            <p className="font-semibold text-black hover:text-gray-700 transition-colors">
+                            <p className="font-semibold text-text hover:text-text-muted transition-colors">
                                 Features
                             </p>
                         </a>
                         <a href="/pricing">
-                            <p className="font-semibold text-black hover:text-gray-700 transition-colors">
+                            <p className="font-semibold text-text hover:text-text-muted transition-colors">
                                 Pricing
                             </p>
                         </a>
                         <a href="/#contact">
-                            <p className="font-semibold text-black hover:text-gray-700 transition-colors">
+                            <p className="font-semibold text-text hover:text-text-muted transition-colors">
                                 Contact
                             </p>
                         </a>
