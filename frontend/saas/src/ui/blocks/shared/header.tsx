@@ -20,27 +20,29 @@ export const Header = () => {
         queryClient.invalidateQueries({ queryKey: ["user"] });
     };
 
-    useEffect(() => { // initial setup, ver 0.1 basically
-        const handleScroll = () => {
-            const scrolled = window.scrollY > 105; 
-            setIsScrolled(scrolled);
-        }
-        window.addEventListener("scroll", handleScroll);
-        return () => {
-            if (window) {
-                window.removeEventListener("scroll", handleScroll)
-            }
-        }
+    useEffect(() => { // ver 0.2, replace scroll listener with intersection observer
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsScrolled(!entry.isIntersecting)
+            },
+            { threshold: 0 }
+        )
+        const sentinel = document.getElementById("scroll-trigger");
+        if (sentinel) { observer.observe(sentinel)}
+
+        return () => observer.disconnect();
     }, []);
     
     return (
-        <header className={`w-full max-w-360 py-6 transition-all ease-in-out duration-300 fixed ${isScrolled ? 'py-8 bg-bg-light backdrop-blur-lg px-5 rounded-xl' : 'top-0 bg-bg'}`}>
+        <header className={`w-full max-w-360 py-6 transition-all ease-in-out duration-300 fixed ${isScrolled ? 'py-8 bg-card/40 backdrop-blur-lg px-5' : 'top-0 bg-bg'}`}>
             <nav className="w-full flex justify-between items-center">
                 <section className="flex items-center gap-16">
                     <section className="px-4">
-                        <article>
-                            Logo
-                        </article>
+                        <a href="/">
+                            <article>
+                                Logo
+                            </article>
+                        </a>
                     </section>
                     <section className="flex gap-8">
                         <a href="/#features">

@@ -13,8 +13,9 @@ export default function App() {
 
   const [isDark, setIsDark] = useState(false);
   return (
-    <main className="max-w-360 w-full min-h-screen h-full bg-orange-200 flex flex-col justify-start items-center">
+    <main className="max-w-360 w-full min-h-screen h-full flex flex-col justify-start items-center">
       <Header />
+      <div id="scroll-trigger" className="h-22.5" />
       <Hero />
       <button onClick={() => {
           setIsDark(!isDark);
