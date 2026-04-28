@@ -8,10 +8,7 @@ export const Header = () => {
     const queryClient = useQueryClient()
 
     const { data: user } = useQuery(userQueryOptions());
-
     if (!user) console.log("Sign In");
-
-    console.log(user)
 
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -34,8 +31,10 @@ export const Header = () => {
     }, []);
     
     return (
-        <header className={`w-full max-w-360 py-6 transition-all ease-in-out duration-300 fixed ${isScrolled ? 'py-8 bg-card/40 backdrop-blur-lg px-5' : 'top-0 bg-bg'}`}>
-            <nav className="w-full flex justify-between items-center">
+        <header className={`w-full flex justify-center py-6 transition-all ease-in-out duration-300 fixed 
+                            ${isScrolled ? 'py-8 bg-card/40 backdrop-blur-lg px-5' : 'top-0 bg-bg'}
+                        `}>
+            <nav className="max-w-360 w-full flex justify-between items-center self-center">
                 <section className="flex items-center gap-16">
                     <section className="px-4">
                         <a href="/">
