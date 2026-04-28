@@ -10,11 +10,11 @@ export const FeaturesCard = (props: CardProps) => {
                 <p className="text-text">icon</p>
             </section>
             <section className="text-left">
-                <article className="font-play text-text">
+                <article className="font-primary text-text">
                     <h2 className="font-semibold text-xl">{props.title}</h2>
                 </article>
                 <article className="mt-3">
-                    <p className="font-play text-text-muted">{props.description}</p>
+                    <p className="font-secondary text-text-muted">{props.description}</p>
                 </article>
             </section>
         </div>

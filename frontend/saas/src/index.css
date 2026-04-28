@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -14,6 +15,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 a {
@@ -70,7 +72,8 @@ summary::-webkit-details-marker {
 }
 
 @theme {
-  --font-play: "Play", sans-serif;
+  --font-primary: "Play", sans-serif;
+  --font-secondary: "Plus Jakarta Sans", sans-serif;
   --color-dark: oklch(0.1 0.1 203);
   --color-bg: oklch(0.15 0.1 203);
   --color-card: oklch(0.2 0.1 203);

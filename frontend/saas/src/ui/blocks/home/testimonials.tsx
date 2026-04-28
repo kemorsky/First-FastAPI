@@ -4,7 +4,7 @@ import { TestimonialCard } from "../../components/cards/testimonial"
 
 export const Testimonials = () => {
     return (
-        <Wrapper className="bg-gray-500">
+        <Wrapper className="bg-card">
             <h1>Testimonials</h1>
             <Container className="flex items-center justify-start gap-5 p-5">
                 <TestimonialCard // TODO - consider a carousel
