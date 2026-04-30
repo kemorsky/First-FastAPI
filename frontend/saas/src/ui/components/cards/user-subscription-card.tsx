@@ -10,6 +10,7 @@ export const UserSubscriptionCard = (props: CardProps) => {
     return (
         <div className="bg-gray-600 max-w-95 p-4 gap-4 rounded-2xl w-full flex flex-col items-start justify-start">
             <ul className="flex flex-col text-left">
+                <li>Plan: {props.plan.name}</li>
                 <li>Price: {props.price}</li>
                 <li>Status: {props.status}</li>
                 <li>Subscription Created: {props.current_period_start}</li>

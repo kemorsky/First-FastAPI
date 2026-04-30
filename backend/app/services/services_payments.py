@@ -76,9 +76,15 @@ async def handle_user_subscription(current_user: User = Depends(get_current_user
         ).first() # TODO - return all active subscriptions (test feature)
     )
 
+    logger.info(f"Checking data info: {subscription}")
+
     if not subscription:
         logger.warning(f"No active subscription has been found");
         raise HTTPException(status_code=404, detail="No subscriptions found for user")
+    
+    if subscription.current_period_end < datetime.now(timezone.utc):
+        subscription.status = "canceled"
+        db.commit()
     
     try:
         user_subscription = {
@@ -90,7 +96,8 @@ async def handle_user_subscription(current_user: User = Depends(get_current_user
             "status": subscription.status,
             "cancel_at_period_end": subscription.cancel_at_period_end,
             "current_period_start": subscription.current_period_start,
-            "current_period_end": subscription.current_period_end
+            "current_period_end": subscription.current_period_end,
+            "plan": subscription.plan
         }
 
         return user_subscription

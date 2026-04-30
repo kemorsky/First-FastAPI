@@ -4,6 +4,7 @@ import { userQueryOptions, userSubscriptionQueryOptions } from '../../../queries
 import { UserInfoCard } from "../../components/cards/user-info-card";
 import { UserSubscriptionCard } from "../../components/cards/user-subscription-card"
 import { Button } from "../../shared/buttons"
+import type { UserSubscription } from "../../../types/types";
 export const UserInfo = () => {
     const { handleCancelSubscription } = usePayment();
     const { data: user } = useQuery(userQueryOptions());
@@ -15,7 +16,11 @@ export const UserInfo = () => {
     if (!user || !user_subscription) return console.log("Fetching user and user subscription...");
 
     console.log(user_subscription);
+    console.log(user);
 
+    const user_past_subscriptions: UserSubscription[] = user.purchases.filter(purchase => purchase.status === "canceled") || [];
+    console.log(user_past_subscriptions);
+    
     // TODO - refresh user and user subscription upon changes in data
     // when passed to UserInfoCard and UserSubscriptionCard
 
@@ -28,6 +33,17 @@ export const UserInfo = () => {
             <UserSubscriptionCard {...user_subscription}>
                 <Button onClick={() => {handleCancelSubscription()}} text="Cancel" />
             </UserSubscriptionCard>
+            <div>
+                {user_past_subscriptions?.map((sub) => {
+                    return (
+                        <article key={sub.id}>
+                            <p>
+                                {sub.plan.name}
+                            </p>
+                        </article>
+                    )
+                })}
+            </div>
         </div>
     )
 }

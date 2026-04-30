@@ -43,6 +43,7 @@ class UserSubscriptionResponse(UserSubscriptionBase):
     plan_id: int
     price: float | None = None
     stripe_subscription_id: str
+    plan: PlanBase
 
     status: str
     cancel_at_period_end: bool
