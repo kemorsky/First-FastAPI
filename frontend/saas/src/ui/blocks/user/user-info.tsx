@@ -5,6 +5,8 @@ import { UserInfoCard } from "../../components/cards/user-info-card";
 import { UserSubscriptionCard } from "../../components/cards/user-subscription-card"
 import { Button } from "../../shared/buttons"
 import type { UserSubscription } from "../../../types/types";
+import Container from "../../shared/container";
+import Wrapper from "../../shared/wrapper";
 export const UserInfo = () => {
     const { handleCancelSubscription } = usePayment();
     const { data: user } = useQuery(userQueryOptions());
@@ -25,25 +27,28 @@ export const UserInfo = () => {
     // when passed to UserInfoCard and UserSubscriptionCard
 
     return (
-        <div className="w-full flex justify-between">
-            <div className="flex flex-col items-start gap-6">
-                <h1>User Info</h1>
-                <UserInfoCard {...user} />
-            </div>
-            <UserSubscriptionCard {...user_subscription}>
-                <Button onClick={() => {handleCancelSubscription()}} text="Cancel" />
-            </UserSubscriptionCard>
-            <div>
-                {user_past_subscriptions?.map((sub) => {
-                    return (
-                        <article key={sub.id}>
-                            <p>
-                                {sub.plan.name}
-                            </p>
-                        </article>
-                    )
-                })}
-            </div>
-        </div>
+        <Wrapper>
+            <Container>
+                <div className="w-full flex justify-between">
+                    <div className="w-full flex flex-col items-start gap-6">
+                        <UserInfoCard {...user} />
+                    </div>
+                    <UserSubscriptionCard {...user_subscription}>
+                        <Button className="self-end" onClick={() => {handleCancelSubscription()}} text="Cancel" />
+                    </UserSubscriptionCard>
+                    <div>
+                        {user_past_subscriptions?.map((sub) => {
+                            return (
+                                <article key={sub.id}>
+                                    <p>
+                                        {sub.plan.name}
+                                    </p>
+                                </article>
+                            )
+                        })}
+                    </div>
+                </div>
+            </Container>
+        </Wrapper>
     )
 }
