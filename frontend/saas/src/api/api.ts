@@ -1,4 +1,4 @@
-import { type Plan, type User, type UserSubscription } from "../types/types"
+import { type Plan, type User, type UserSubscription, type BillingResponse } from "../types/types"
 
 type RequestOptions = {
     method?: string,
@@ -56,6 +56,17 @@ export const getMe = async (): Promise<User> => {
         return data;
     } catch (error) {
         throw new Error (`Error fetching user: ${error}`);
+    }
+}
+
+export const getBillingHistory = async (): Promise<BillingResponse> => {
+    try {
+        const data = await apiRequest(`${URL}/payments/billing`, {
+            credentials: "include"
+        })
+        return data;
+    } catch (error) {
+        throw new Error (`Error fetching billing history: ${error}`);
     }
 }
 

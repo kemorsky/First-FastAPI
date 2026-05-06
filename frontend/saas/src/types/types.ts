@@ -33,3 +33,28 @@ export type UserSubscription = {
     plan: Plan;
     user: User;
 }
+
+export type PaymentMethod = {
+  brand: string
+  last4: string
+  exp_month: number
+  exp_year: number
+} | null
+
+export type Invoice = {
+  id?: string
+  amount_paid: number
+  currency: string
+  description: string
+  status: string
+  date: number
+  invoice_pdf?: string
+  hosted_invoice_url: string
+}
+
+export type BillingResponse = {
+  billing_email: string
+  payment_method: PaymentMethod
+  subscription: UserSubscription
+  invoices: Invoice[]
+}

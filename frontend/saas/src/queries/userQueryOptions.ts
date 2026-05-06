@@ -1,5 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import { getMe, getUserSubscription } from "../api/api";
+import { getBillingHistory, getMe, getUserSubscription } from "../api/api";
 
 export function userQueryOptions() {
     return queryOptions(
@@ -7,7 +7,8 @@ export function userQueryOptions() {
             queryKey: ["user"],
             queryFn: () => getMe(),
             staleTime: 5 * 60 * 1000,
-            retry: false
+            retry: 1,
+            retryDelay: 2000
         },    
     );
 };
@@ -19,6 +20,18 @@ export function userSubscriptionQueryOptions() {
             queryFn: () => getUserSubscription(),
             staleTime: 5 * 60 * 1000,
             enabled: false
+        }
+    )
+};
+
+export function userBillingHistoryQueryOptions() {
+    return queryOptions(
+        {
+            queryKey: ["billing"],
+            queryFn: () => getBillingHistory(),
+            staleTime: 5 * 60 * 1000,
+            retry: 1,
+            retryDelay: 2000
         }
     )
 };
