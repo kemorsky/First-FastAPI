@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.models.models import User, UserSubscription
 from app.core.security import get_current_user
-from app.services.services_payments import create_checkout_session, customer_subscription_created, customer_subscription_updated, customer_subscription_deleted, handle_user_subscription, handle_cancel_user_subscription
+from app.services.services_payments import create_checkout_session, customer_subscription_created, customer_subscription_updated, customer_subscription_deleted, handle_user_subscription, handle_cancel_user_subscription, customer_billing_history
 
 logging.basicConfig(
     level=logging.INFO,
@@ -39,7 +39,7 @@ async def create_checkout_session_route(payload: CheckoutSessionCreate, current_
     except stripe.error.StripeError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     
-@router.post("/cancel-subscription")
+@router.post("/cancel-subscription") # may have to add a response_model of UserSubscription
 async def cancel_user_subscription(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         return await handle_cancel_user_subscription(current_user, db)
@@ -47,6 +47,14 @@ async def cancel_user_subscription(current_user: User = Depends(get_current_user
         logger.error(f"Error canceling subscription: {e}")
         raise HTTPException(status_code=500, detail="Could not cancel subscription")
     
+@router.get("/billing")
+async def billing_history(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    try:
+        return await customer_billing_history(current_user, db)
+    except Exception as e:
+        logger.error(f"Error fetching billing history: {e}")
+        raise HTTPException(status_code=500, detail="Could not fetch billing history")
+
 @router.post("/webhook")
 async def stripe_webhook(request: Request, stripe_signature: str = Header(None), db: Session = Depends(get_db)):
     payload = await request.body()

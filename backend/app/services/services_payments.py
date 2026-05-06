@@ -73,15 +73,16 @@ async def handle_user_subscription(current_user: User = Depends(get_current_user
         db.query(UserSubscription).filter(
             UserSubscription.user_id == current_user.id,
             UserSubscription.status == "active"
-        ).first() # TODO - return all active subscriptions (test feature)
+        ).first()
     )
 
     logger.info(f"Checking data info: {subscription}")
 
     if not subscription:
         logger.warning(f"No active subscription has been found");
-        raise HTTPException(status_code=404, detail="No subscriptions found for user")
-    
+        # raise HTTPException(status_code=404, detail="No subscriptions found for user")
+        # return {"No subscription found for user"}
+
     if subscription.current_period_end < datetime.now(timezone.utc):
         subscription.status = "canceled"
         db.commit()
@@ -122,12 +123,12 @@ async def handle_cancel_user_subscription(current_user: User = Depends(get_curre
     
     try:
         stripe.Subscription.modify(subscription.stripe_subscription_id, cancel_at_period_end=True)
-        subscription.status = "canceled"
+        subscription.status = "active"
         subscription.cancel_at_period_end = True
         db.commit()
 
         return {
-            subscription.status: "canceled",
+            subscription.status: "active",
             subscription.cancel_at_period_end: True
         }
     
@@ -252,3 +253,87 @@ async def customer_subscription_deleted(subscription: dict, db: Session = Depend
     db.commit()
 
     return {"status": "canceled"}
+
+async def customer_billing_history(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if not current_user.stripe_customer_id:
+        raise HTTPException(status_code=400, detail="No customer ID")
+
+    try:
+        customer = stripe.Customer.retrieve(current_user.stripe_customer_id);
+
+        payment_methods = stripe.PaymentMethod.list(
+            customer=current_user.stripe_customer_id,
+            type="card"
+        )
+
+        default_pm = payment_methods.data[0] if payment_methods.data else None
+
+        invoices = stripe.Invoice.list(
+            customer=current_user.stripe_customer_id,
+            limit=10
+        )
+
+        # subscription = db.query(UserSubscription).filter(
+        #     UserSubscription.user_id == current_user.id,
+        #     UserSubscription.status == "active"
+        # ).first();
+
+        # if not subscription:
+        #     logger.warning(f"No active subscription has been found");
+        #     raise HTTPException(status_code=404, detail="No subscriptions found for user")
+        #     return {"No subscription found for user"}
+
+        # if subscription.current_period_end < datetime.now(timezone.utc):
+        #     subscription.status = "canceled"
+        #     db.commit()
+
+        def describe_invoice(inv):
+            mapping = {
+                "subscription_create": "Subscription started",
+                "subscription_cycle": "Recurring payment",
+                "subscription_update": "Subscription updated",
+                "manual": "Manual invoice",
+            }
+            return mapping.get(inv.billing_reason, "Other")
+    
+        return {
+            "billing_email": customer.email,
+
+            "payment_method": {
+                "brand": default_pm.card.brand,
+                "last4": default_pm.card.last4,
+                "exp_month": default_pm.card.exp_month,
+                "exp_year": default_pm.card.exp_year,
+            } if default_pm else None,
+
+            # "subscription": {
+            #     "id": subscription.id,
+            #     "user_id": current_user.id,
+            #     "plan_id": subscription.plan_id,
+            #     "price": subscription.plan.price, # not plan.price
+            #     "stripe_subscription_id": subscription.stripe_subscription_id,
+            #     "status": subscription.status,
+            #     "cancel_at_period_end": subscription.cancel_at_period_end,
+            #     "current_period_start": subscription.current_period_start,
+            #     "current_period_end": subscription.current_period_end,
+            #     "plan": subscription.plan
+            # } if subscription else None,
+
+            "invoices": [
+                {
+                    "id": inv.id,
+                    "amount_paid": inv.amount_paid / 100,
+                    "currency": inv.currency,
+                    "status": inv.status,
+                    "date": inv.created,
+                    "invoice_pdf": inv.invoice_pdf,
+                    "hosted_invoice_url": inv.hosted_invoice_url,
+                    "description": describe_invoice(inv),
+                }
+                for inv in invoices.data
+            ]
+        }
+    
+    except stripe.error.StripeError as e:
+        logger.error(f"Stripe error: {e}")
+        raise HTTPException(status_code=400, detail="Stripe error")
