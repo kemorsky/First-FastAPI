@@ -42,13 +42,13 @@ export type PaymentMethod = {
 } | null
 
 export type Invoice = {
-  id?: string
+  id: string
   amount_paid: number
   currency: string
   description: string
   status: string
   date: number
-  invoice_pdf?: string
+  invoice_pdf: string
   hosted_invoice_url: string
 }
 

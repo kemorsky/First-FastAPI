@@ -5,7 +5,7 @@ type ButtonProps = {
     onClick?: () => void;
     disabled?: boolean;
     className?: string;
-    variant?: "primary" | "secondary" | "learn-more";
+    variant?: "primary" | "secondary" | "learn-more" | "download-pdf";
 }
 
 export const Button = (props: ButtonProps) => {
@@ -14,6 +14,7 @@ export const Button = (props: ButtonProps) => {
                 props.variant === "primary" ? "bg-red-200" : "",
                 props.variant === "secondary" ? "bg-red-400" : "",
                 props.variant === "learn-more" ? "bg-red-600" : "",
+                props.variant === "download-pdf" ? "bg-red-500" : "",
                 props.disabled ? "cursor-not-allowed, bg-gray-600" : "cursor-pointer",
                 props.className
             )} 

@@ -1,4 +1,6 @@
 import { type Invoice } from "../../../types/types"
+import { Button } from "../../shared/buttons"
+
 
 export default function BillingCard(props: Invoice) {
     return (
@@ -8,7 +10,11 @@ export default function BillingCard(props: Invoice) {
             <td>{props.currency.toUpperCase()}</td>
             <td>{props.description}</td>
             <td>{props.status.charAt(0).toUpperCase() + props.status.slice(1)}</td>
-            <td><button>D</button></td>
+            <td>
+                <a href={props.invoice_pdf} target="_blank" rel="noopener noreferrer">
+                    <Button variant="download-pdf" text="D"/>
+                </a>
+            </td>
         </tr>
     )
 };
