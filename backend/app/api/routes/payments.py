@@ -10,6 +10,9 @@ from app.db.database import get_db
 from app.models.models import User, UserSubscription
 from app.core.security import get_current_user
 from app.services.services_payments import create_checkout_session, customer_subscription_created, customer_subscription_updated, customer_subscription_deleted, handle_user_subscription, handle_cancel_user_subscription, customer_billing_history
+from pyrate_limiter import Duration, Limiter, Rate
+from fastapi_limiter.depends import RateLimiter
+from app.core.rate_limiter import user_identifier
 
 logging.basicConfig(
     level=logging.INFO,
@@ -21,7 +24,14 @@ router = APIRouter(prefix="/api/payments", tags=["payments"])
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-@router.get("/get-user-subscription", response_model=UserSubscriptionResponse)
+@router.get("/get-user-subscription", response_model=UserSubscriptionResponse, dependencies=[
+    Depends(
+        RateLimiter(
+            limiter=Limiter(Rate(5, Duration.MINUTE)),
+            identifier=user_identifier
+        )
+    )
+])
 async def get_user_subscription(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         return await handle_user_subscription(current_user, db)

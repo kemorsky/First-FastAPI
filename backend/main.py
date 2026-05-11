@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 import logging
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -20,11 +20,6 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
-app.include_router(products_router)
-app.include_router(payments_router)
-app.include_router(auth_router)
-app.include_router(user_router)
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],  # Or * when in dev
@@ -33,8 +28,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(products_router)
+app.include_router(payments_router)
+app.include_router(auth_router)
+app.include_router(user_router)
+
 @app.get("/")
-async def root():
+async def root(request: Request):
     logger.debug("Debug info - verbose details for troubleshooting")
     logger.info("Processing request to root endpoint")
     return {"message": "Hello World"}

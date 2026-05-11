@@ -48,4 +48,6 @@ def get_current_user(request: Request, db: Session = Depends(get_db)): # add tok
     if user.disabled:
         raise HTTPException(status_code=401, detail="User is disabled")
     
+    request.state.user = user
+    
     return user

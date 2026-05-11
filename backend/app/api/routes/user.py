@@ -23,7 +23,7 @@ async def get_users(db: Session = Depends(get_db)):
     return crud.get_users(db)
 
 @router.get("/me", response_model=UserResponse)
-async def get_user(current_user: User = Depends(get_current_user)):
+async def get_user(request: Request, current_user: User = Depends(get_current_user)):
     try:
         return current_user
     except Exception as e:
