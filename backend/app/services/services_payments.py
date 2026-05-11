@@ -292,6 +292,7 @@ async def customer_billing_history(current_user: User = Depends(get_current_user
                 "subscription_create": "Subscription started",
                 "subscription_cycle": "Recurring payment",
                 "subscription_update": "Subscription updated",
+                "subscription_cancel": "Subscription canceled",
                 "manual": "Manual invoice",
             }
             return mapping.get(inv.billing_reason, "Other")

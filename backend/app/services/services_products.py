@@ -2,7 +2,6 @@ import stripe
 from sqlalchemy.orm import Session
 from app.models.models import Plan
 from app.utils.config import settings
-from app.db.database import get_db
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 

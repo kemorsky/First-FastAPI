@@ -29,7 +29,6 @@ def get_current_user(request: Request, db: Session = Depends(get_db)): # add tok
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         logger.info(f"Raw cookies: {request.cookies}")
-        logger.info(f"Token used: {token}")
         if not payload:
             raise HTTPException(status_code=401, detail="Invalid token - payload")
 
