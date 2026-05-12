@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey, ARRAY
 from sqlalchemy.orm import relationship, Mapped
 from app.db.database import Base
 from datetime import datetime
@@ -20,6 +20,7 @@ class Plan(Base):
 
     stripe_product_name = Column(String, unique=True, nullable=False)
     stripe_price_id = Column(String, unique=True, nullable=False)
+    stripe_marketing_features = Column(ARRAY(String), nullable=True)
 
     price = Column(Float, nullable=False)
 

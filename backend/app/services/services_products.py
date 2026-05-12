@@ -22,7 +22,11 @@ def sync_products_from_stripe(db: Session):
             description=product.description or "",
             price=price.unit_amount / 100,  # Stripe uses cents
             stripe_product_name=product.id,
-            stripe_price_id=price.id
+            stripe_price_id=price.id,
+            stripe_marketing_features=[
+                feature["name"]
+                for feature in product.marketing_features
+            ]
         )
         db.add(plan)
 

@@ -61,6 +61,7 @@ class PlanResponse(PlanBase):
     id: int
     stripe_product_name: str
     stripe_price_id: str
+    stripe_marketing_features: list[str]
 
     model_config = ConfigDict(from_attributes=True)
 
