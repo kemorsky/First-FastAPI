@@ -1,17 +1,12 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { userQueryOptions } from '../../../queries/userQueryOptions';
 import HorizontalRule from "../../shared/horizontal-rule";
-import { signOut } from "../../../api/api";
 
 export const UserInfoCard = () => {
     const { data: user, isLoading: isUserLoading } = useSuspenseQuery({
         ...userQueryOptions(),
     });
     const date = new Date(user.created_at);
-    
-    const handleSignOut = async () => {
-        await signOut();
-    };
 
     return (
         <div className="bg-gray-600 w-full max-w-120 p-4 gap-4 rounded-2xl flex flex-col items-start justify-start">
@@ -37,7 +32,6 @@ export const UserInfoCard = () => {
                     <span className="ml-12">{user.disabled.toString()}</span> 
                 </p>
             </article>
-            <button className="mt-3 text-left cursor-pointer" onClick={handleSignOut}>Sign Out</button>
         </div>
     )
 }
