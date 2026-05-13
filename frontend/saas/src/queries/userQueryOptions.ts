@@ -19,7 +19,7 @@ export function userSubscriptionQueryOptions() {
             queryKey: ["user_subscription"],
             queryFn: () => getUserSubscription(),
             staleTime: 5 * 60 * 1000,
-            enabled: false
+            // enabled: false,
         }
     )
 };

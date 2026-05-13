@@ -122,3 +122,17 @@ async def auth_callback(request: Request, db: Session = Depends(get_db)):
         )
 
         return response
+    
+@router.get("/signout")
+def sign_out():
+    try:
+        response = RedirectResponse(settings.FRONTEND_URI, status_code=302)
+
+        response.delete_cookie(
+            key="access_token"
+        )
+
+        return response
+    except Exception as e:
+        logger.error(f"Error logging out: {e}")
+        raise HTTPException(status_code=500, detail="Error logging out")
