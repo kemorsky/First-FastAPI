@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Spinner from "../shared/spinner";
 
 export default function UserInfoCardSkeleton() {

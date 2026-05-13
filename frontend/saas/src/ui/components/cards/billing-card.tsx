@@ -1,7 +1,6 @@
 import { type Invoice } from "../../../types/types"
 import { Button } from "../../shared/buttons"
 
-
 export default function BillingCard(props: Invoice) {
     return (
         <tr className="hover:bg-blue-600">

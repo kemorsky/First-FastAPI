@@ -14,18 +14,18 @@ export const UserInfo = () => {
         <Wrapper>
             <Container>
                 <div className="w-full flex justify-between">
-                    <div className="w-full flex flex-col items-start gap-6">
+                    <div className="flex flex-col items-start gap-6">
                         <Suspense fallback={<UserInfoCardSkeleton />}>
                             <UserInfoCard />
                         </Suspense>
                     </div>
                     
-                    <div className="w-full max-w-240 flex flex-col items-start gap-6">
+                    <div className="w-full max-w-180 flex flex-col items-start gap-6">
                         <Suspense fallback={<UserInfoCardSkeleton />}>
                             <UserSubscriptionCard />
                         </Suspense>
 
-                        <div className="bg-gray-600 w-full max-w-240 p-4 gap-4 rounded-2xl flex flex-col items-start justify-start">
+                        <div className="bg-gray-600 w-full max-w-180 p-4 gap-4 rounded-2xl flex flex-col items-start justify-start">
                             <section className="flex justify-center items-start gap-3">
                                 <p className="text-[1.125rem] font-semibold">Billing History</p>
                             </section>

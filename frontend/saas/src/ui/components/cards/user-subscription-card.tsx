@@ -26,7 +26,7 @@ export const UserSubscriptionCard = () => {
             </Activity>
             
             <Activity mode={user_subscription ? "visible" : "hidden"}>
-                <div className="bg-gray-600 w-full max-w-120 p-4 gap-4 rounded-2xl flex flex-col items-start justify-start">
+                <div className="bg-gray-600 w-full max-w-120 p-4 gap-4 rounded-2xl flex flex-col items-start justify-start self-end">
                     <section className="flex justify-center items-start gap-3">
                         <p className="text-[1.125rem] font-semibold">Current Subscription</p>
                     </section>

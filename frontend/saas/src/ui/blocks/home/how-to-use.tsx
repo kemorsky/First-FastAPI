@@ -10,7 +10,7 @@ export const HowToUse = () => {
                     <div className="border border-border rounded-xl min-w-120 h-80 w-full">
                         {/* <img src="" alt="" /> */}
                     </div>
-                    <article className="min-w-120 w-full flex flex-col items-start p-3">
+                    <article className="min-w-120 w-full flex flex-col items-start p-3 gap-4">
                         <p className="text-left text-[1.125rem] text-text">From setup to usage stage, the software is very easy and intuitive to use:</p>
                         <ul className="list-dist">
                             <li className="mb-4 text-text-muted">
