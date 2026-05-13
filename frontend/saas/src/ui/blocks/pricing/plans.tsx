@@ -19,13 +19,14 @@ export const Plans = () => {
     return (
         <Wrapper>
             <Container>
-                <h1>Plans</h1>
-                <section className="flex gap-8">
+                <h1 className="text-4xl font-secondary font-bold mb-10">Get Started Now</h1>
+                <section className="flex gap-8 justify-center">
                     {plans?.map((plan) => (
                         <PlanCard key={plan.id}
                                 name={plan.name} 
                                 description= {plan.description} 
                                 price={plan.price}
+                                stripe_marketing_features={plan.stripe_marketing_features}
                         >
                             <Button onClick={() => {handleCreateCheckoutSession(plan.id as number)}} text="Subscribe" variant="secondary" disabled={!user ? true : false} />
                         </PlanCard>
