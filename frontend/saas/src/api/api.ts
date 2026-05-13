@@ -48,6 +48,10 @@ export const signIn = async () => {
     window.location.href = `${URL}/auth/signin` // fetch doesn't allow OAuth2 to work due to CORS issues
 }
 
+export const signOut = async () => {
+    window.location.href = `${URL}/auth/signout`
+}
+
 export const getMe = async (): Promise<User> => {
     try {
         const data = await apiRequest(`${URL}/users/me`, {
