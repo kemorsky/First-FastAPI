@@ -6,10 +6,10 @@ export const Hero = () => {
     return (
         <Wrapper className="light:bg-red-800 bg-bg">
             <Container className="min-h-132 h-full flex flex-col justify-between items-center">
-                <article className="max-w-100 max-h-132 h-full text-left flex flex-col items-center justify-center gap-4">
+                <article className="max-w-100 max-h-132 h-full text-left">
                     <h2 className="text-[3rem] text-center font-semibold font-primary text-text leading-14">Navigate Your Documentation The Right Way</h2>
-                    <p className="font-secondary text-text-muted">Your answer is there. You just need to ask.</p>
-                    <div className="flex items-center justify-center gap-3">
+                    <p className="font-secondary text-center text-text-muted mt-4">Your answer is there. You just need to ask.</p>
+                    <div className="flex items-center justify-center gap-3 mt-6">
                         <Button text="Sign Up" variant="secondary" />
                         <Button text="Learn More" variant="learn-more" />
                     </div>

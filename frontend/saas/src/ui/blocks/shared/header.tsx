@@ -35,14 +35,14 @@ export const Header = () => {
                             ${isScrolled ? 'py-8 bg-card/40 backdrop-blur-lg px-5' : 'top-0 bg-bg'}
                         `}>
             <nav className="max-w-300 w-full flex justify-between items-center">
-                <section className="px-4">
+                <section className="w-full max-w-60 px-4">
                     <a href="/">
                         <article>
                             Logo
                         </article>
                     </a>
                 </section>
-                <section className="flex gap-8">
+                <section className="w-full max-w-60 flex gap-8">
                     <a href="/#features">
                         <p className="font-semibold text-text hover:text-text-muted transition-colors">
                             Features
@@ -59,7 +59,7 @@ export const Header = () => {
                         </p>
                     </a>
                 </section>
-                <section className="">
+                <section className="w-full max-w-60">
                     <Activity mode={!user ? "visible" : "hidden"}>
                         <section className="flex gap-4 px-4">
                             <Button onClick={() => handleSignIn()} text="Sign In" variant="primary" />

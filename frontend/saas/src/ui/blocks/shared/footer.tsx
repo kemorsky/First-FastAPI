@@ -1,19 +1,53 @@
 export const Footer = () => {
     return (
-        <footer id="contact" className="bg-gray-200 w-full flex flex-col items-center justify-center">
-            <h1>Footer</h1>
-            <section className="max-w-300 w-full flex justify-between">
+        <footer id="contact" className="bg-gray-200 w-full flex flex-col items-start justify-between p-6">
+            <section className="max-w-150 w-full flex justify-between">
                 <ul>
-                    <a href="">
-                        <li>test</li>
-                    </a>
+                    <li className="mb-6">
+                        <a href="">test</a>
+                    </li>
+                    <li className="mb-6">
+                        <a href="">test</a>
+                    </li>
+                    <li className="mb-6">
+                        <a href="">test</a>
+                    </li>
+                    <li className="mb-6">
+                        <a href="">test</a>
+                    </li>
                 </ul>
                 <ul>
-                    <a href="">
-                        <li>test</li>
-                    </a>
+                    <li className="mb-6">
+                        <a href="">test</a>
+                    </li>
+                    <li className="mb-6">
+                        <a href="">test</a>
+                    </li>
+                    <li className="mb-6">
+                        <a href="">test</a>
+                    </li>
+                    <li className="mb-6">
+                        <a href="">test</a>
+                    </li>
+                </ul>
+                 <ul>
+                    <li className="mb-6">
+                        <a href="">test</a>
+                    </li>
+                    <li className="mb-6">
+                        <a href="">test</a>
+                    </li>
+                    <li className="mb-6">
+                        <a href="">test</a>
+                    </li>
+                    <li className="mb-6">
+                        <a href="">test</a>
+                    </li>
                 </ul>
             </section>
+            <article className="self-end">
+                <p>Copyright something placeholder @2026</p>
+            </article>
         </footer>
     )
 }
