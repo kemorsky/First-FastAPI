@@ -10,11 +10,11 @@ export const PlanCard = (props: CardProps) => {
 
     return (
         <div className="bg-gray-600 max-w-95 flex flex-col rounded-2xl">
-            <section className="w-full flex flex-col items-start justify-start">
+            <section className="w-full">
                 <h1 className="p-4 text-3xl font-secondary font-bold">{props.name}</h1>
             </section>
             <HorizontalRule />
-            <section className="w-full flex flex-col items-start justify-start">
+            <section className="w-full flex flex-col items-center justify-center">
                 <article className="p-4 ">
                     <h1 className="text-left text-5xl font-secondary font-bold">{props.price} SEK</h1>
                     <p className="text-gray-400">(Billed at the end of period)</p>

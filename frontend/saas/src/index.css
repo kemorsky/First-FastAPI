@@ -44,6 +44,21 @@ button {
   transition: border-color 0.25s;
 }
 
+/* p.content {
+  box-sizing: border-box;
+  max-width: 400px;
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 10px;
+  transition: max-height 400ms ease-out, border 0ms linear;
+}
+
+details[open] + p.content {
+  max-height: 400px;
+  border-color: #888;
+  transition: max-height 400ms ease-out, border 0ms linear;
+} */
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -67,7 +82,8 @@ summary::-webkit-details-marker {
 }
 
 @theme {
-  --font-primary: "Play", sans-serif;
+  /* --font-primary: "Play", sans-serif; */
+  --font-primary: "Plus Jakarta Sans", sans-serif;
   --font-secondary: "Plus Jakarta Sans", sans-serif;
   --color-dark: oklch(0.1 0.1 203);
   --color-bg: oklch(0.15 0.1 203);
