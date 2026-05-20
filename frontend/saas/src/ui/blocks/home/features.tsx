@@ -5,7 +5,7 @@ import { FeaturesCard } from "../../components/cards/features-card"
 export const Features = () => {
     return (
         <Wrapper id="features" className="bg-dark">
-            <Container className="max-w-250 flex flex-col items-center justify-center border border-border">
+            <Container className="flex flex-col items-center justify-center border border-border">
                 {/* <h1 className="font-primary">Features</h1> */}
                 <section className="w-full sm:flex-row sm:flex flex-col items-center justify-center border-b border-border">
                     <FeaturesCard className="sm:w-[60%] w-full sm:border-r border-b border-border"

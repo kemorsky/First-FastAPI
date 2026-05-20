@@ -10,7 +10,7 @@ export const TestimonialCard = (props: CardProps) => {
             <section className="flex flex-col gap-6 text-text">
                 <p className="text-left">icon</p>
                 <article className="text-left">
-                    <p className="italic text-muted">{props.testimony}</p>
+                    <p className="text-text-muted">{props.testimony}</p>
                 </article>
             </section>
             <article className="mt-3 text-left">
