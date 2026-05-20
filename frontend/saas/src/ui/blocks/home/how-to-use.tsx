@@ -47,6 +47,7 @@ export const HowToUse = () => {
                     <section className="w-full flex justify-center sm:flex-row flex-col gap-12">
                         {stepData.map((step) => (
                             <HowToUseStepCard 
+                                className={`${step === activeStep ? "border-t border-border " : ""}`}
                                 onClick={() => {handleClick(step)}} 
                                 key={step.id} 
                                 id={step.id} 
