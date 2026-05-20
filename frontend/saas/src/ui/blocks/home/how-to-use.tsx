@@ -1,7 +1,40 @@
+import { useState } from "react";
+import type { Step } from "../../../types/types";
 import Wrapper from "../../shared/wrapper"
 import Container from "../../shared/container"
+import { HowToUseStepDisplay } from "./how-to-use-step-display";
+import { HowToUseStepCard } from "../../components/cards/how-to-use-step-card";
+
+const stepData: Step[] = [
+    {
+        id: 1,
+        title: "Test 1",
+        description: "This is test 1",
+    },
+    {
+        id: 2,
+        title: "Test 2",
+        description: "This is test 2",
+    },
+    {
+        id: 3,
+        title: "Test 3",
+        description: "This is test 3",
+    },
+]
 
 export const HowToUse = () => {
+    const [ activeStep, setActiveStep ] = useState<Step | null>(null);
+
+    if (!activeStep) {
+        setActiveStep(stepData[0]);
+    }
+
+    const handleClick = (step: Step) => {
+        setActiveStep(step);
+        console.log(activeStep);
+    }
+
     return (
         <Wrapper className="bg-bg">
             <Container>
@@ -30,6 +63,23 @@ export const HowToUse = () => {
                             </li>
                         </ul>
                     </article>
+                </div>
+
+                <div className="flex flex-col gap-8 items-center justify-between sm:mt-10 mt-6">
+                    <h2>New steps test</h2>
+                    {activeStep && (
+                        <HowToUseStepDisplay step={activeStep} />  
+                    )}
+                    <section className="flex sm:flex-row flex-col gap-4">
+                        {stepData.map((step) => (
+                            <HowToUseStepCard 
+                                onClick={() => {handleClick(step)}} 
+                                key={step.id} id={step.id} 
+                                title={step.title} 
+                                description={step.description} 
+                            />
+                        ))}
+                        </section>
                 </div>
             </Container>
         </Wrapper>

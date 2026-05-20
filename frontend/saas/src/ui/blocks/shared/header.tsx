@@ -34,7 +34,7 @@ export const Header = () => {
         <header className={`w-full flex justify-center items-center py-6 transition-all ease-in-out duration-300 fixed 
                             ${isScrolled ? 'py-8 bg-card/40 backdrop-blur-lg px-5' : 'top-0 bg-bg'}
                         `}>
-            <nav className="max-w-300 w-full flex justify-between items-center">
+            <nav className="max-w-360 w-full flex justify-between items-center">
                 <section className="w-full max-w-60 px-4">
                     <a href="/">
                         <article>

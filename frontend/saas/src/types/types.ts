@@ -59,3 +59,10 @@ export type BillingResponse = {
   subscription: UserSubscription
   invoices: Invoice[]
 }
+
+export type Step = {
+    id: number;
+    title: string;
+    description: string;
+    onClick?: () => void;
+}
