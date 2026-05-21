@@ -1,12 +1,10 @@
 import { Activity, useState, useEffect } from "react"
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { userQueryOptions } from '../../../queries/userQueryOptions';
 import { signIn } from '../../../api/api';
 import { Button } from "../../shared/buttons"
 
 export const Header = () => {
-    const queryClient = useQueryClient()
-
     const { data: user } = useQuery(userQueryOptions());
     if (!user) console.log("Sign In");
 
@@ -14,7 +12,6 @@ export const Header = () => {
 
     const handleSignIn = async () => {
         await signIn();
-        queryClient.invalidateQueries({ queryKey: ["user"] });
     };
 
     useEffect(() => { // ver 0.2, replace scroll listener with intersection observer

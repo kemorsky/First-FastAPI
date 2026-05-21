@@ -6,9 +6,9 @@ export function userQueryOptions() {
         {
             queryKey: ["user"],
             queryFn: () => getMe(),
-            staleTime: 5 * 60 * 1000,
+            staleTime: 30 * 60 * 1000,
             retry: 1,
-            retryDelay: 2000
+            retryDelay: 2000,
         },    
     );
 };
@@ -18,8 +18,7 @@ export function userSubscriptionQueryOptions() {
         {
             queryKey: ["user_subscription"],
             queryFn: () => getUserSubscription(),
-            staleTime: 5 * 60 * 1000,
-            // enabled: false,
+            staleTime: 30 * 60 * 1000,
         }
     )
 };
@@ -29,7 +28,7 @@ export function userBillingHistoryQueryOptions() {
         {
             queryKey: ["billing"],
             queryFn: () => getBillingHistory(),
-            staleTime: 5 * 60 * 1000,
+            staleTime: 30 * 60 * 1000,
             retry: 1,
             retryDelay: 2000
         }
