@@ -19,6 +19,7 @@ export const PlanCard = (props: CardProps) => {
                     <h1 className="text-left text-5xl font-secondary font-bold">{props.price} SEK</h1>
                     <p className="text-gray-400">(Billed at the end of period)</p>
                 </article>
+                {props.children}
             </section>
             <section className=" w-full flex flex-col items-start justify-start px-4 pb-4 gap-6">
                 <p className="text-left">{props.description}</p>
@@ -35,7 +36,7 @@ export const PlanCard = (props: CardProps) => {
                         )
                     })}
                 </ul>
-                {props.children}
+                
             </section>
         </div>
     )
