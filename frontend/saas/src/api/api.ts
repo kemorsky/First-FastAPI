@@ -59,7 +59,8 @@ export const getMe = async (): Promise<User> => {
         })
         return data;
     } catch (error) {
-        throw new Error (`Error fetching user: ${error}`);
+        console.error(`Error fetching user: ${error}`);
+        throw error;
     }
 }
 
@@ -70,7 +71,8 @@ export const getBillingHistory = async (): Promise<BillingResponse> => {
         })
         return data;
     } catch (error) {
-        throw new Error (`Error fetching billing history: ${error}`);
+        console.error(`Error fetching billing history: ${error}`);
+        throw error;
     }
 }
 
@@ -81,7 +83,8 @@ export const getUserSubscription = async (): Promise<UserSubscription> => {
         })
         return data;
     } catch (error) {
-        throw new Error (`Error fetching user subscription: ${error}`);
+        console.error(`Error fetching user subscription: ${error}`);
+        throw error;
     }
 }
 
@@ -94,7 +97,8 @@ export const cancelSubscription = async (): Promise<UserSubscription> => {
         console.log(data)
         return data;
     } catch (error) {
-        throw new Error (`Error canceling user subscription: ${error}`);
+        console.error(`Error canceling user subscription: ${error}`);
+        throw error;
     }
 }
 
@@ -107,6 +111,7 @@ export const createCheckoutSession = async (plan_id: number) => {
         })
         window.location.href = data.checkout_url
     } catch (error) {
-        throw new Error (`Error creating checkout session: ${error}`);
+        console.error(`Error creating checkout session: ${error}`);
+        throw error;
     }
 }
