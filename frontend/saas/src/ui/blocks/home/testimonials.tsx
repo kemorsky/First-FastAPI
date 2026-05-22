@@ -13,7 +13,7 @@ export const Testimonials = () => {
             <Container className="overflow-hidden py-4 mt-6">
                 <div className="carousel flex">
                     <div className="animate-carousel flex shrink-0 items-center justify-center gap-4 pr-4">
-                        <TestimonialCard // TODO - consider a carousel
+                        <TestimonialCard
                             testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
                             name="Test Tester" 
                             title="Test Title"
@@ -56,42 +56,6 @@ export const Testimonials = () => {
                             title="Test Title"
                         />
                     </div>
-                    {/* <div className="carousel-content min-h-0 flex items-center justify-center gap-4">
-                        <div className="flex items-center justify-center gap-4">
-                            <TestimonialCard // TODO - consider a carousel
-                                testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
-                                name="Test Tester" 
-                                title="Test Title"
-                            />
-                            <TestimonialCard 
-                                testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
-                                name="Test Tester" 
-                                title="Test Title"
-                            />
-                            <TestimonialCard 
-                                testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
-                                name="Test Tester" 
-                                title="Test Title"
-                            />
-                        </div>
-                        <div aria-hidden className="flex items-center justify-center gap-4">
-                            <TestimonialCard // TODO - consider a carousel
-                                testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
-                                name="Test Tester" 
-                                title="Test Title"
-                            />
-                            <TestimonialCard 
-                                testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
-                                name="Test Tester" 
-                                title="Test Title"
-                            />
-                            <TestimonialCard 
-                                testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
-                                name="Test Tester" 
-                                title="Test Title"
-                            />
-                        </div>
-                    </div> */}
                 </div>
             </Container>
         </Wrapper>
