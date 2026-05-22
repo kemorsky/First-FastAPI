@@ -10,22 +10,89 @@ export const Testimonials = () => {
                 <h2 className="font-secondary mb-6">See for yourself</h2>
                 <button className="bg-green-300">Testimonials</button>
             </section>
-            <Container className="flex items-center justify-start gap-5 p-5">
-                <TestimonialCard // TODO - consider a carousel
-                    testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
-                    name="Test Tester" 
-                    title="Test Title"
-                />
-                <TestimonialCard 
-                    testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
-                    name="Test Tester" 
-                    title="Test Title"
-                />
-                <TestimonialCard 
-                    testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
-                    name="Test Tester" 
-                    title="Test Title"
-                />
+            <Container className="overflow-hidden py-4 mt-6">
+                <div className="carousel flex">
+                    <div className="animate-carousel flex shrink-0 items-center justify-center gap-4 pr-4">
+                        <TestimonialCard // TODO - consider a carousel
+                            testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                            name="Test Tester" 
+                            title="Test Title"
+                        />
+                        <TestimonialCard 
+                            testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                            name="Test Tester" 
+                            title="Test Title"
+                        />
+                        <TestimonialCard 
+                            testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                            name="Test Tester" 
+                            title="Test Title"
+                        />
+                            <TestimonialCard 
+                            testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                            name="Test Tester" 
+                            title="Test Title"
+                        />
+                    </div>
+                    <div aria-hidden className="animate-carousel  flex shrink-0 items-center justify-center gap-4 pr-4">
+                        <TestimonialCard
+                            testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                            name="Test Tester" 
+                            title="Test Title"
+                        />
+                        <TestimonialCard 
+                            testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                            name="Test Tester" 
+                            title="Test Title"
+                        />
+                        <TestimonialCard 
+                            testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                            name="Test Tester" 
+                            title="Test Title"
+                        />
+                            <TestimonialCard 
+                            testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                            name="Test Tester" 
+                            title="Test Title"
+                        />
+                    </div>
+                    {/* <div className="carousel-content min-h-0 flex items-center justify-center gap-4">
+                        <div className="flex items-center justify-center gap-4">
+                            <TestimonialCard // TODO - consider a carousel
+                                testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                                name="Test Tester" 
+                                title="Test Title"
+                            />
+                            <TestimonialCard 
+                                testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                                name="Test Tester" 
+                                title="Test Title"
+                            />
+                            <TestimonialCard 
+                                testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                                name="Test Tester" 
+                                title="Test Title"
+                            />
+                        </div>
+                        <div aria-hidden className="flex items-center justify-center gap-4">
+                            <TestimonialCard // TODO - consider a carousel
+                                testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                                name="Test Tester" 
+                                title="Test Title"
+                            />
+                            <TestimonialCard 
+                                testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                                name="Test Tester" 
+                                title="Test Title"
+                            />
+                            <TestimonialCard 
+                                testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
+                                name="Test Tester" 
+                                title="Test Title"
+                            />
+                        </div>
+                    </div> */}
+                </div>
             </Container>
         </Wrapper>
         

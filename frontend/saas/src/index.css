@@ -44,6 +44,11 @@ button {
   transition: border-color 0.25s;
 }
 
+.carousel::-webkit-scrollbar, .carousel-content::-webkit-scrollbar {
+  display: none;
+  pointer-events: none;
+}
+
 /* p.content {
   box-sizing: border-box;
   max-width: 400px;
@@ -81,7 +86,14 @@ summary::-webkit-details-marker {
   }
 }
 
+@keyframes carousel {
+  from {transform: translateX(0);}
+  to {transform: translateX(-100%);}
+}
+
 @theme {
+  --animate-carousel: carousel 10s linear infinite;
+  
   /* --font-primary: "Play", sans-serif; */
   --font-primary: "Space Grotesk", sans-serif;
   --font-secondary: "Plus Jakarta Sans", sans-serif;
