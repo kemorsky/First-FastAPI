@@ -1,4 +1,5 @@
 interface CardProps {
+    icon: string;
     testimony: string;
     name: string;
     title: string;
@@ -8,7 +9,7 @@ export const TestimonialCard = (props: CardProps) => {
     return (
         <div className="testimonial-card bg-bg max-w-95 w-full font-secondary min-h-84 border border-border p-4 gap-4 rounded-2xl flex flex-col items-start justify-between">
             <section className="flex flex-col gap-6 text-text">
-                <p className="text-left">icon</p>
+                <p className="text-left">{props.icon}</p>
                 <article className="text-left">
                     <p className="text-text-muted">{props.testimony}</p>
                 </article>

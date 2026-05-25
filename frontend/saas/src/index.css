@@ -101,6 +101,11 @@ details[open] .details-content {
   to {transform: translateX(-100%);}
 }
 
+@keyframes carousel2 {
+  from {transform: translateX(-100%);}
+  to {transform: translateX(0);}
+}
+
 @keyframes topBorder {
   from {  width: 1px; }
   to { width: 100%; }
@@ -113,6 +118,7 @@ details[open] .details-content {
 
 @theme {
   --animate-carousel: carousel 10s linear infinite;
+  --animate-carousel2: carousel2 10s linear infinite;
   --animate-test: test 4s linear;
   --animate-topBorder: topBorder 0.1s linear;
   --animate-details: details 0.2s linear;
