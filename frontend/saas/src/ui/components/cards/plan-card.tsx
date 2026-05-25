@@ -9,24 +9,24 @@ export const PlanCard = (props: CardProps) => {
     console.log(props)
 
     return (
-        <div className="bg-gray-600 max-w-95 flex flex-col rounded-2xl">
+        <div className="bg-gray-600 w-full flex flex-col max-h-120 max-w-75 sm:max-w-120 rounded-2xl">
             <section className="w-full">
                 <h1 className="p-4 text-3xl font-secondary font-bold">{props.name}</h1>
             </section>
             <HorizontalRule />
-            <section className="w-full flex flex-col items-center justify-center">
+            <section className="w-full flex flex-col items-center justify-center mb-6">
                 <article className="p-4 ">
                     <h1 className="text-left text-5xl font-secondary font-bold">{props.price} SEK</h1>
                     <p className="text-gray-400">(Billed at the end of period)</p>
                 </article>
                 {props.children}
             </section>
-            <section className=" w-full flex flex-col items-start justify-start px-4 pb-4 gap-6">
+            {/* <section className=" w-full flex flex-col items-start justify-start px-4 pb-4 gap-6">
                 <p className="text-left">{props.description}</p>
-            </section>
+            </section> */}
             <HorizontalRule />
             <section className=" w-full flex flex-col items-center justify-center p-4 gap-6">
-                <ul className="text-left self-start">
+                <ul className="text-left self-start mb-6">
                     {props.stripe_marketing_features.map((feature) => {
                         return (
                             <li className="font-secondary font-semibold mb-2" key={feature}>

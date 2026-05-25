@@ -62,7 +62,9 @@ export type BillingResponse = {
 
 export type Step = {
     id: number;
+    image: string;
     title: string;
     description: string;
+    details: string;
     onClick?: () => void;
 }

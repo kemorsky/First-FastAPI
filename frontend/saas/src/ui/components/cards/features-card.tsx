@@ -8,7 +8,7 @@ interface CardProps {
 
 export const FeaturesCard = (props: CardProps) => {
     return (
-        <div className={cn("bg-card p-4 max-h-68 h-full gap-3 w-full basis-[50%] flex flex-col items-start justify-start border border-transparent", props.className)}>
+        <div className={cn("animate-test bg-card p-4 max-h-68 h-full gap-3 w-full basis-[50%] flex flex-col items-start justify-start", props.className)}>
             <section className="flex flex-col gap-4 items-start justify-start font-primary text-text">
                 <p className="text-text">icon</p>
                 <h2 className="font-semibold text-[1.25rem] ">{props.title}</h2>

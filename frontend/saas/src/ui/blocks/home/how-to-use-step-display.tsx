@@ -6,9 +6,11 @@ type StepProps = {
 
 export const HowToUseStepDisplay = (props: StepProps) => {
     return (
-        <section className="w-full max-w-180 h-full min-h-60 rounded-xl border border-border">
-            <p>{props.step.title}</p>
-            <p>{props.step.description}</p>
+        <section className="w-full h-full min-h-60 flex justify-between p-4 rounded-xl">
+            <article className="w-90 p-4 text-left">
+                <p>{props.step.details}</p>
+            </article>
+            <img className="max-w-180" src={props.step.image} alt="step image"/>
         </section>
     );
 };

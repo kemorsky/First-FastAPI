@@ -28,13 +28,13 @@ export const Testimonials = () => {
                             name="Test Tester" 
                             title="Test Title"
                         />
-                            <TestimonialCard 
+                        <TestimonialCard 
                             testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
                             name="Test Tester" 
                             title="Test Title"
                         />
                     </div>
-                    <div aria-hidden className="animate-carousel  flex shrink-0 items-center justify-center gap-4 pr-4">
+                    <div aria-hidden className="animate-carousel flex shrink-0 items-center justify-center gap-4 pr-4">
                         <TestimonialCard
                             testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
                             name="Test Tester" 
@@ -50,7 +50,7 @@ export const Testimonials = () => {
                             name="Test Tester" 
                             title="Test Title"
                         />
-                            <TestimonialCard 
+                        <TestimonialCard 
                             testimony="testy test of testimony testy test of testimony testy test of testimony testy test of testimony " 
                             name="Test Tester" 
                             title="Test Title"
