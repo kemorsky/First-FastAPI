@@ -4,7 +4,7 @@ import { Collapsible } from "../../components/collapsible"
 
 export const FAQ = () => {
     return (
-        <Wrapper className="bg-gray-500">
+        <Wrapper className="bg-dark">
             <Container className="w-full min-h-100 flex flex-col items-center gap-4">
                 <h1>FAQ</h1>
                 <Collapsible question="Testing whether this collapsible will work?" answer="If you're seeing this, then it will!" />

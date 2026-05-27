@@ -5,7 +5,7 @@ type ButtonProps = {
     onClick?: () => void;
     disabled?: boolean;
     className?: string;
-    variant?: "primary" | "secondary" | "learn-more" | "subscribe" | "download-pdf";
+    variant?: "primary" | "secondary" | "learn-more" | "subscribe" | "download-pdf" | "arrow-down";
 }
 
 export const Button = (props: ButtonProps) => {
@@ -16,6 +16,7 @@ export const Button = (props: ButtonProps) => {
                 props.variant === "learn-more" ? "bg-red-600" : "",
                 props.variant === "subscribe" ? "w-full max-w-80 rounded-[3rem] bg-bg hover:bg-bg/80" : "",
                 props.variant === "download-pdf" ? "bg-red-500" : "",
+                props.variant === "arrow-down" ? "transition-transform duration-300 group-open:rotate-180" : "",
                 props.disabled ? "cursor-not-allowed, bg-gray-600" : "cursor-pointer",
                 props.className
             )} 
