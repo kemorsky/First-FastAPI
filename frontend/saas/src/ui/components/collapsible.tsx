@@ -1,5 +1,5 @@
-import { FAQIcon } from "../../../public/assets/icons/faq-svgrepo";
-import { FAQArrowDown } from "../../../public/assets/icons/faq-arrow-down";
+import { FAQIcon } from "../../assets/icons/faq-svgrepo";
+import { FAQArrowDown } from "../../assets/icons/faq-arrow-down";
 
 interface CollapsibleProps {
     question: string;

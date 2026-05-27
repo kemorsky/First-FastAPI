@@ -5,31 +5,36 @@ import Container from "../../shared/container";
 import Wrapper from "../../shared/wrapper";
 import BillingTable from "./billing-table";
 import UserInfoCardSkeleton from "../../skeletons/user-info-card-skeleton";
+import useAuth from "../../../hooks/useAuth";
+import HorizontalRule from "../../shared/horizontal-rule";
 
 export const UserInfo = () => {
+    const { user, isPending } = useAuth();
     // TODO - refresh user and user subscription upon changes in data
     // when passed to UserInfoCard and UserSubscriptionCard
 
     return (
         <Wrapper>
             <Container>
-                <div className="w-full flex justify-between">
-                    <div className="flex flex-col items-start gap-6">
-                        <Suspense fallback={<UserInfoCardSkeleton />}>
-                            <UserInfoCard />
-                        </Suspense>
-                    </div>
-                    
-                    <div className="w-full max-w-180 flex flex-col items-start gap-6">
+                <div className="w-full flex flex-col justify-between gap-6">
+                    <div className="flex items-start justify-between">
+                        {isPending || !user ? ( 
+                            <UserInfoCardSkeleton />
+                        ) : (
+                            <UserInfoCard user={user}/> 
+                        )}
                         <Suspense fallback={<UserInfoCardSkeleton />}>
                             <UserSubscriptionCard />
                         </Suspense>
 
-                        <div className="bg-gray-600 w-full max-w-180 p-4 gap-4 rounded-2xl flex flex-col items-start justify-start">
+                    </div>
+                    
+                    <div className="w-full flex justify-end items-end">
+                        <div className="bg-gray-600 w-full max-w-240 p-4 gap-4 rounded-2xl flex flex-col items-start justify-start self-end">
                             <section className="flex justify-center items-start gap-3">
                                 <p className="text-[1.125rem] font-semibold">Billing History</p>
                             </section>
-                            <hr className="text-black w-full h-1"/>
+                            <HorizontalRule />
                             <Suspense fallback={<UserInfoCardSkeleton />}>
                                 <BillingTable />
                             </Suspense>

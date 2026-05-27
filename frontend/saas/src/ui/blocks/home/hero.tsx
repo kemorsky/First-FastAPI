@@ -15,7 +15,7 @@ export const Hero = () => {
                     </div>
                 </article>
                 <article className="max-w-240 w-full max-h-160 h-full object-contain">
-                    <img className="-rotate-x-45 -rotate-z-20 shadow-hero" src="../../../assets/images/hero-image.png" alt="hero section image" />
+                    <img className="-rotate-x-45 -rotate-z-20 shadow-hero" src="../../../../src/assets/images/hero-image.png" alt="hero section image" />
                 </article>
             </Container>
         </Wrapper>
