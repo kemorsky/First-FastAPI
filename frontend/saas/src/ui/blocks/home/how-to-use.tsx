@@ -52,12 +52,11 @@ export const HowToUse = () => {
                     )}
                     <section className="w-full flex justify-center sm:flex-row flex-col gap-12">
                         {stepData.map((step) => (
-                            <div className="flex flex-col">
+                            <div key={step.id} className="flex flex-col">
                                 <span className={`${step === activeStep ? "h-px bg-border animate-topBorder" : "h-px"}`}/>
                                 <HowToUseStepCard 
                                     className={`${step === activeStep ? "" : ""}`}
-                                    onClick={() => {handleClick(step)}} 
-                                    key={step.id} 
+                                    onClick={() => {handleClick(step)}}  
                                     id={step.id} 
                                     image={step.image}
                                     title={step.title} 

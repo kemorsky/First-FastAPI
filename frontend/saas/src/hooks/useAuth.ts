@@ -1,10 +1,15 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { userQueryOptions } from "../queries/userQueryOptions";
 
 export default function useAuth() {
-    const { data: user, isLoading: isUserLoading } = useSuspenseQuery({
-        ...userQueryOptions(),
+    const { data: user, isLoading, isPending, error } = useQuery({
+        ...userQueryOptions(), 
     });
 
-    return {user};
+    return {
+        user,
+        isLoading,
+        isPending,
+        error
+    };
 }

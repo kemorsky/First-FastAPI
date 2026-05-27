@@ -7,8 +7,7 @@ export function userQueryOptions() {
             queryKey: ["user"],
             queryFn: () => getMe(),
             staleTime: 30 * 60 * 1000,
-            retry: 1,
-            retryDelay: 2000,
+            retry: false,
         },    
     );
 };

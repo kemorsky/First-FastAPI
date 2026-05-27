@@ -1,12 +1,10 @@
-import { Activity, useState, useEffect } from "react"
-import { useQuery } from "@tanstack/react-query";
-import { userQueryOptions } from '../../../queries/userQueryOptions';
+import { useState, useEffect } from "react"
 import { signIn } from '../../../api/api';
 import { Button } from "../../shared/buttons"
+import useAuth from "../../../hooks/useAuth";
 
 export const Header = () => {
-    const { data: user } = useQuery(userQueryOptions());
-    if (!user) console.log("Sign In");
+    const { user, isPending } = useAuth();
 
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -57,13 +55,12 @@ export const Header = () => {
                     </a>
                 </section>
                 <section className="w-full max-w-60">
-                    <Activity mode={!user ? "visible" : "hidden"}>
+                    {isPending ? null : !user ? (
                         <section className="flex gap-4 px-4">
                             <Button onClick={() => handleSignIn()} text="Sign In" variant="primary" />
                             <Button text="Sign Up" variant="secondary" />
                         </section>
-                    </Activity>
-                    <Activity mode={user ? "visible" : "hidden"}>
+                    ) : (
                         <section className="flex items-center gap-4 px-4">
                             <a href="/user">
                                 <img 
@@ -73,7 +70,7 @@ export const Header = () => {
                             </a>
                             <p>{user?.full_name}</p>
                         </section>
-                    </Activity>
+                    )}
                 </section>
             </nav>
         </header>
