@@ -56,9 +56,9 @@ export const Header = () => {
                 </section>
                 <section className="w-full max-w-60">
                     {isPending ? null : !user ? (
-                        <section className="flex gap-4 px-4">
+                        <section className="flex items-center justify-center gap-4 px-4">
                             <Button onClick={() => handleSignIn()} text="Sign In" variant="primary" />
-                            <Button text="Sign Up" variant="secondary" />
+                            {/* <Button text="Sign Up" variant="secondary" /> */}
                         </section>
                     ) : (
                         <section className="flex items-center gap-4 px-4">

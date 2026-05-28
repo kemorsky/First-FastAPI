@@ -4,7 +4,7 @@ import { Button } from "../../shared/buttons"
 
 export const Hero = () => {
     return (
-        <Wrapper className="light:bg-red-800 bg-bg">
+        <Wrapper className="light:bg-red-800 bg-bg pt-10">
             <Container className="min-h-132 h-full flex flex-col gap-10 justify-between items-center">
                 <article className="max-w-100 max-h-132 h-full text-left">
                     <h2 className="text-[3rem] text-center font-semibold font-primary text-text leading-14">Navigate Your Documentation The Right Way</h2>

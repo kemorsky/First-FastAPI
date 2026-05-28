@@ -8,7 +8,7 @@ interface WrapperProps {
 
 export default function Wrapper(props: WrapperProps) {
     return (
-        <section id={props.id} className={cn("w-full py-20", props.className)}>
+        <section id={props.id} className={cn("w-full py-30", props.className)}>
             {props.children}
         </section>
     )

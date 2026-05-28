@@ -107,7 +107,7 @@ details[open] .details-content {
 }
 
 @keyframes topBorder {
-  from {  width: 1px; }
+  from { width: 1px; }
   to { width: 100%; }
 }
 

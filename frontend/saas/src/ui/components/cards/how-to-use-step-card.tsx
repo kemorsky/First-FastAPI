@@ -6,11 +6,11 @@ type CardProps = Step & {
 }
 
 export const HowToUseStepCard = (props: CardProps) => {
-    console.log("testing re-renders")
+    
     return (
         <section 
             onClick={props.onClick} 
-            className={cn("w-70 h-40 flex flex-col items-center justify-center gap-4 p-4 border-t border-transparent transition-colors", props.className)}
+            className={cn("w-full max-w-65 h-40 flex flex-col items-center justify-start gap-4 p-4 border-t border-transparent transition-colors", props.className)}
         >
             <article className="w-full text-left">
                 <p className="mb-4 font-secondary text-[1.125rem] font-semibold">{props.title}</p>

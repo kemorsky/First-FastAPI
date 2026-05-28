@@ -7,11 +7,11 @@ interface CardProps {
 
 export const TestimonialCard = (props: CardProps) => {
     return (
-        <div className="testimonial-card bg-bg max-w-95 w-full font-secondary min-h-84 border border-border p-4 gap-4 rounded-2xl flex flex-col items-start justify-between">
+        <div className="testimonial-card bg-bg max-w-95 w-full font-secondary border border-border p-4 gap-4 rounded-2xl flex flex-col items-start justify-between">
             <section className="flex flex-col gap-6 text-text">
                 <p className="text-left">{props.icon}</p>
                 <article className="text-left">
-                    <p className="text-text-muted">{props.testimony}</p>
+                    <p className="text-text-muted italic">"{props.testimony}"</p>
                 </article>
             </section>
             <article className="mt-3 text-left">

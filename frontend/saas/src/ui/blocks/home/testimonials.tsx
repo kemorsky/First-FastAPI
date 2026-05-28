@@ -38,15 +38,15 @@ export const Testimonials = () => {
     ];
 
     return (
-        <Wrapper className="bg-card">
+        <Wrapper className="bg-card" id="testimonials">
             <section>
-                <h1 className="text-3xl font-bold font-primary mb-4">Approved by customers</h1>
+                <h1 className="text-4xl font-bold font-primary mb-2">Approved by customers</h1>
                 <h2 className="font-secondary mb-6">See for yourself</h2>
                 <button className="bg-green-300">Testimonials</button>
             </section>
-            <Container className="overflow-hidden py-4 mt-6 flex flex-col gap-6">
-                <div className="carousel flex">
-                    <div className="animate-carousel flex shrink-0 items-center justify-center gap-4 pr-4">
+            <Container className="max-h-150 carousel overflow-hidden py-4 mt-6 flex flex-col gap-6">
+                <div className="flex">
+                    <div className="animate-carousel flex shrink-0 items-start justify-center gap-4 pr-4">
                         {testimonialsFirstColumn.map((card) => {
                             return (
                                 <TestimonialCard 
@@ -60,7 +60,7 @@ export const Testimonials = () => {
                         })}
                         
                     </div>
-                    <div aria-hidden className="animate-carousel flex shrink-0 items-center justify-center gap-4 pr-4">
+                    <div aria-hidden className="animate-carousel flex shrink-0 items-start justify-center gap-4 pr-4">
                         {testimonialsSecondColumn.map((card) => {
                             return (
                                 <TestimonialCard 
@@ -74,8 +74,8 @@ export const Testimonials = () => {
                         })}
                     </div>
                 </div>
-                <div className="carousel flex">
-                    <div className="animate-carousel2 flex shrink-0 items-center justify-center gap-4 pr-4">
+                <div className="flex">
+                    <div className="animate-carousel2 flex shrink-0 items-start justify-center gap-4 pr-4">
                         {testimonialsFirstColumn.map((card) => {
                             return (
                                 <TestimonialCard 
@@ -89,7 +89,7 @@ export const Testimonials = () => {
                         })}
                         
                     </div>
-                    <div aria-hidden className="animate-carousel2 flex shrink-0 items-center justify-center gap-4 pr-4">
+                    <div aria-hidden className="animate-carousel2 flex shrink-0 items-start justify-center gap-4 pr-4">
                         {testimonialsSecondColumn.map((card) => {
                             return (
                                 <TestimonialCard 
