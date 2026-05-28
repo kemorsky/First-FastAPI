@@ -21,4 +21,4 @@ async def get_products_route(db: Session = Depends(get_db)):
         return get_products(db)
     except Exception as e:
         logger.error(f"Error retrieving products: {e}")
-        raise HTTPException(status_code=500, detail="Error retrieving products")
+        raise HTTPException(status_code=500, detail={"type":"Failure", "reason":"Unable to retrieve products"})

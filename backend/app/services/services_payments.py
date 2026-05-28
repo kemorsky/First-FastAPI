@@ -20,7 +20,7 @@ async def create_checkout_session(plan_id: int, current_user: User = Depends(get
 
     plan = crud.create_checkout_session(db, plan_id)
     if not plan:
-        raise HTTPException(status_code=400, detail="Plan could not go through")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"type": "BAD_REQUEST","message": "Could not subscribe to plan"})
 
     existing = db.query(UserSubscription).filter(
         UserSubscription.user_id == current_user.id,
@@ -30,7 +30,7 @@ async def create_checkout_session(plan_id: int, current_user: User = Depends(get
 
     if existing: # check whether user is subscribed to the plan via its id. If yes, prevent checkout link from being formed
         logger.warning(f"Subscription already exists for user {current_user.id} and plan {plan_id}")
-        raise HTTPException(status_code=400, detail="User already has this plan")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"type": "BAD_REQUEST","message": "User already has this plan"})
     
     if not current_user.stripe_customer_id:
         customer = stripe.Customer.create(
@@ -65,7 +65,7 @@ async def create_checkout_session(plan_id: int, current_user: User = Depends(get
 
         return {"checkout_url": session.url}
     except stripe.error.StripeError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 # Show user's active subscription without fetching the whole user like in api/auth/users/me
 async def handle_user_subscription(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -80,8 +80,7 @@ async def handle_user_subscription(current_user: User = Depends(get_current_user
 
     if not subscription:
         logger.warning(f"No active subscription has been found");
-        # raise HTTPException(status_code=404, detail="No subscriptions found for user")
-        # return {"No subscription found for user"}
+        raise HTTPException(status_code=404, detail={"type": "NOT_FOUND", "message": "No subscriptions found for user"})
 
     if subscription.current_period_end < datetime.now(timezone.utc):
         subscription.status = "canceled"
@@ -105,7 +104,7 @@ async def handle_user_subscription(current_user: User = Depends(get_current_user
     
     except Exception as e:
         logger.error(f"Failed to retrieve user's subscription: {e}")
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str("Failed to retrieve user's subscription"))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"type": "BAD_REQUEST", "message": "Failed to retrieve user's subscription"})
 
 # Cancel user subscription call to Stripe (not deleting from db)
 async def handle_cancel_user_subscription(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -119,7 +118,7 @@ async def handle_cancel_user_subscription(current_user: User = Depends(get_curre
 
     if not subscription:
         logger.warning(f"No active subscription found")
-        raise HTTPException(status_code=404, detail="No active subscription")
+        raise HTTPException(status_code=404, detail={"type": "NOT_FOUND", "message": "User has no active subscription"})
     
     try:
         stripe.Subscription.modify(subscription.stripe_subscription_id, cancel_at_period_end=True)
@@ -134,7 +133,7 @@ async def handle_cancel_user_subscription(current_user: User = Depends(get_curre
     
     except Exception as e:
         logger.error(f"Failed to cancel user's subscription: {e}")
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str("Failed to cancel user's subscription"))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"type": "BAD_REQUEST", "message": "Failed to cancel user's subscription"})
 
 # Webhook event - customer subscription created
 async def customer_subscription_created(subscription: dict, db: Session):
@@ -143,7 +142,7 @@ async def customer_subscription_created(subscription: dict, db: Session):
     stripe_subscription_id = subscription["id"]
 
     if not stripe_subscription_id:
-        raise HTTPException(status_code=400, detail="No subscription ID")
+        raise HTTPException(status_code=400, detail={"type": "BAD_REQUEST", "message": "Unable to find subscription ID"})
 
     user_id = subscription["metadata"].get("user_id")
     plan_id = subscription["metadata"].get("plan_id")
@@ -182,14 +181,14 @@ async def customer_subscription_created(subscription: dict, db: Session):
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Failed to commit subscription to DB: {e}")
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to commit subscription to DB")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"type": "BAD_REQUEST", "message": "Failed to commit subscription to DB"})
 
 # Webhook event - customer subscription updated
 async def customer_subscription_updated(subscription: dict, db: Session = Depends(get_db)):
     stripe_subscription_id = subscription["id"]
 
     if not stripe_subscription_id:
-        raise HTTPException(status_code=400, detail="No subscription ID")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"type": "BAD_REQUEST", "message": "Unable to find subscription ID"})
 
     existing = db.query(UserSubscription).filter(
         UserSubscription.stripe_subscription_id == stripe_subscription_id
@@ -238,7 +237,7 @@ async def customer_subscription_deleted(subscription: dict, db: Session = Depend
     stripe_subscription_id = subscription["id"]
 
     if not stripe_subscription_id:
-        raise HTTPException(status_code=400, detail="No subscription ID")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"type": "BAD_REQUEST", "message": "Unable to find subscription ID"})
 
     existing = db.query(UserSubscription).filter(
         UserSubscription.stripe_subscription_id == stripe_subscription_id
@@ -256,7 +255,7 @@ async def customer_subscription_deleted(subscription: dict, db: Session = Depend
 
 async def customer_billing_history(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     if not current_user.stripe_customer_id:
-        raise HTTPException(status_code=400, detail="No customer ID")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"type": "BAD_REQUEST", "message": "Unable to find customer ID"})
 
     try:
         customer = stripe.Customer.retrieve(current_user.stripe_customer_id);
@@ -337,4 +336,4 @@ async def customer_billing_history(current_user: User = Depends(get_current_user
     
     except stripe.error.StripeError as e:
         logger.error(f"Stripe error: {e}")
-        raise HTTPException(status_code=400, detail="Stripe error")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Stripe error")

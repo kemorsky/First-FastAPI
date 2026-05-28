@@ -21,20 +21,22 @@ export const apiRequest = async (url: string, options: RequestOptions = {}) => {
             ...options
         })
         if (!response.ok) {
-          let errorMessage = 'An unknown error occurred';
+          let message = 'Request failed';
+          let type = 'Error';
           try {
-            const data = await response.json();
-            if (data?.message) {
-              errorMessage = data.message;
-            }
+            const errorData = await response.json();
+            
+            type = errorData.detail.type;
+            message = errorData.detail.message;
+            
           } catch (error) {
             console.error(error)
           }
-            throw new Error(`${errorMessage}`)
+            throw Error(`${type}: ${message}`)
         };
         return await response.json();
     } catch (error) {
-        console.error("API Error:", error);
+        console.error(error);
         throw error;
     }
 }
@@ -52,12 +54,17 @@ export const signOut = async () => {
     window.location.href = `${URL}/auth/signout`
 }
 
-export const getMe = async (): Promise<User> => {
+export const getMe = async (): Promise<User | null> => {
     try {
-        const data = await apiRequest(`${URL}/users/me`, {
+        const response = await apiRequest(`${URL}/users/me`, {
             credentials: "include"
         })
-        return data;
+
+        if (response.status === 401) {
+            return null;
+        }
+
+        return response;
     } catch (error) {
         console.error(`Error fetching user: ${error}`);
         throw error;

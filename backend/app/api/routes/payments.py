@@ -36,7 +36,7 @@ async def get_user_subscription(current_user: User = Depends(get_current_user), 
     try:
         return await handle_user_subscription(current_user, db)
     except stripe.error.StripeError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 @router.get("/get-plans", response_model=list[PlanResponse])
 async def get_plans(db: Session = Depends(get_db)):
@@ -99,4 +99,4 @@ async def stripe_webhook(request: Request, stripe_signature: str = Header(None),
         return {"status": "success"}
     except Exception as e:
         logger.error(f"Error processing webhook: {e}")
-        raise HTTPException(status_code=500, detail="Error processing webhook")
+        raise HTTPException(status_code=500, detail={"type": "FAILURE", "message":"Unable to process webhook"})

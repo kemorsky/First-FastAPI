@@ -24,7 +24,7 @@ def get_current_user(request: Request, db: Session = Depends(get_db)): # add tok
     token = request.cookies.get("access_token") # or token_header # --- TODO - remove when in prod
     
     if not token: # checking it here allows the server to request identification without bloating the routes themselves
-        raise HTTPException(status_code=401, detail="Not authenticated")
+        raise HTTPException(status_code=401, detail={"type":"Missing authentication", "message":"Token not found"})
     
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
@@ -43,10 +43,10 @@ def get_current_user(request: Request, db: Session = Depends(get_db)): # add tok
     user = crud.get_user(db, user_id)
 
     if not user:
-        raise HTTPException(status_code=401, detail="User not found")  
+        raise HTTPException(status_code=404, detail={"type":"NOT_FOUND", "message":"User not found"})  
 
     if user.disabled:
-        raise HTTPException(status_code=401, detail="User is disabled")
+        raise HTTPException(status_code=401, detail={"type":"Missing authentication", "message":"User is disabled"})
     
     request.state.user = user
     

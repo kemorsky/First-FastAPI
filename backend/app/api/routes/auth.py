@@ -55,13 +55,13 @@ def sign_in():
         return RedirectResponse(url)
     except Exception as e:
         logger.error(f"Error logging in: {e}")
-        raise HTTPException(status_code=500, detail="Error logging in")
+        raise HTTPException(status_code=500, detail={"type":"FAILURE", "message":"Unable to sign in"})
 
 @router.get("/callback")
 async def auth_callback(request: Request, db: Session = Depends(get_db)):
     code = request.query_params.get("code")
     if not code:
-        raise HTTPException(status_code=400, detail="Authorization Code not found")
+        raise HTTPException(status_code=400, detail={"type":"BAD_REQUEST", "message":"Authorization Code not found"})
 
     data = {
         "code": code,
@@ -78,7 +78,7 @@ async def auth_callback(request: Request, db: Session = Depends(get_db)):
         google_access_token = token_data.get("access_token")
         if not google_access_token:
             logger.error("Access token not found")
-            raise HTTPException(status_code=400, detail="Access token not found")
+            raise HTTPException(status_code=400, detail={"type":"BAD_REQUEST", "message":"Access token not found"})
         
         headers = {"Authorization": f"Bearer {google_access_token}"}
         userinfo_response = await client.get(settings.GOOGLE_USERINFO_ENDPOINT, headers=headers)
@@ -135,4 +135,4 @@ def sign_out():
         return response
     except Exception as e:
         logger.error(f"Error logging out: {e}")
-        raise HTTPException(status_code=500, detail="Error logging out")
+        raise HTTPException(status_code=500, detail={"type":"FAILURE", "message":"Unable to sign out"})
