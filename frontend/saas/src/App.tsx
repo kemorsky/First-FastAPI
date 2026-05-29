@@ -1,5 +1,4 @@
 import './App.css'
-import { useState } from 'react';
 import { Header } from './ui/blocks/shared/header';
 import { Hero } from './ui/blocks/home/hero';
 import { Features } from './ui/blocks/home/features';
@@ -11,18 +10,11 @@ import { Footer } from './ui/blocks/shared/footer';
 
 export default function App() {
 
-  const [isDark, setIsDark] = useState(false);
   return (
     <main className="w-full bg-bg min-h-screen h-full flex flex-col justify-start items-center">
       <Header />
       <div id="scroll-trigger" className="h-22.5" />
       <Hero />
-      <button onClick={() => {
-          setIsDark(!isDark);
-          document.documentElement.classList.toggle("light");
-        }}>
-          {isDark ? "Light" : "Dark"}
-      </button>
       <Features />
       <HowToUse />
       <Testimonials />
