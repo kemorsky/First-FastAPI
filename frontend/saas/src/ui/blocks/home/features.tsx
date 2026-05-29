@@ -10,21 +10,21 @@ export const Features = () => {
                 <h2 className="font-secondary text-text-muted">Designed with your comfort and time management in mind </h2>
             </article>
             <Container className="flex flex-col gap-[1px] items-center justify-center bg-border border border-transparent">
-                <section className="w-full sm:flex-row sm:flex flex-col gap-[1px] items-center justify-center">
+                <section className="w-full sm:flex-row flex flex-col gap-[1px] items-center justify-center">
                     <FeaturesCard 
-                                title="Test" 
-                                description="Compile your data and documentation in one place within the platform. Keep everything under the same hood and it will never get lost. "/>
+                                title="Data Management" 
+                                description="Compile your data and documentation in one place within the platform. Update it whenever you want, refresh, and keep working. Keep everything under the same hood and it will never get lost. "/>
                     <FeaturesCard 
-                                title="Test2" 
-                                description="Cycle through content that you and you alone control thanks to the new generation powered search engine."/>
+                                title="Correct, Adjust, Apply" 
+                                description="Cycle through content that you and you alone control thanks to the new generation powered search engine. In the event of doubt, ask for a correction, or request the source to control it yourself."/>
                 </section>
-                <section className="w-full sm:flex-row sm:flex flex-col gap-[1px] items-center justify-center">
+                <section className="w-full sm:flex-row flex flex-col gap-[1px] items-center justify-center">
                     <FeaturesCard 
-                                title="Test3" 
+                                title="Pinpoint Accuracy" 
                                 description="Use the compiled search results to blow the dust off the legacy parts of your documentation. Search results will adjust to your prompt and the content. "/>
                     <FeaturesCard 
-                                title="Test4" 
-                                description="Calibrate the output whenever you want. Settings are easily adjustable, user-friendly, and responsive to your needs."/>
+                                title="Output Control" 
+                                description="Calibrate the output whenever you want. Theme, font, text pattern and detail - settings are easily adjustable, user-friendly, and responsive to your needs."/>
                 </section>
             </Container>
         </Wrapper>

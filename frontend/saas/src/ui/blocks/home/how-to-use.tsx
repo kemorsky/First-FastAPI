@@ -55,11 +55,8 @@ export const HowToUse = () => {
                 <h2 className="font-secondary text-text-muted">Our trusted process will handle the searching for you</h2>
             </article>
             <Container className="">
-                <div className="flex flex-col gap-8 items-center justify-between p-6">
-                    {activeStep && (
-                        <HowToUseStepDisplay step={activeStep} />  
-                    )}
-                    <section className="w-full flex justify-between sm:flex-row flex-col">
+                <div className="flex flex-col gap-8 items-center justify-between p-4 sm:p-6">
+                    <section className="w-full flex justify-center flex-row flex-wrap sm:gap-4">
                         {stepData.map((step) => (
                             <div key={step.id} className="flex flex-col">
                                 <span className={`${step === activeStep ? "h-px bg-linear-to-r from-sky-500 to-red-300 animate-topBorder" : "h-px"}`}/>
@@ -74,7 +71,10 @@ export const HowToUse = () => {
                                 />
                             </div>
                         ))}
-                        </section>
+                    </section>
+                    {activeStep && (
+                        <HowToUseStepDisplay step={activeStep} />  
+                    )}
                 </div>
             </Container>
         </Wrapper>
