@@ -3,6 +3,7 @@ import App from "../App";
 import Success from "../pages/success";
 import Pricing from "../pages/pricing";
 import User from "../pages/user";
+import TestimonialsPage from "../pages/testimonials";
 
 const router = createBrowserRouter([
     {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
         path: "/pricing",
         Component: Pricing
     },
+    {
+        path: "/testimonials",
+        Component: TestimonialsPage
+    }
 ])
 
 export default router

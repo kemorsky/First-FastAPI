@@ -8,7 +8,7 @@ interface CollapsibleProps {
 
 export const Collapsible = (props: CollapsibleProps) => {
     return (
-        <details className="animate-details group bg-bg w-full max-w-217 max-h-50 p-4 rounded-sm border border-border select-none text-left overflow-hidden">
+        <details className="animate-details group bg-bg w-full max-w-217 p-4 rounded-sm border border-border select-none text-left overflow-hidden">
             <summary className="cursor-pointer flex items-center justify-between min-h-8 py-3">
                 <section className="flex self-center gap-4">
                     <FAQIcon />

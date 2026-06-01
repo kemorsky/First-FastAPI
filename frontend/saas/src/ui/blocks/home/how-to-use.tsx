@@ -51,7 +51,7 @@ export const HowToUse = () => {
     return (
         <Wrapper className="bg-bg" id="how-to-use">
             <article className="mb-15">
-                <h1 className="text-4xl font-bold font-primary mb-2">How To Use</h1>
+                <h1 className="text-4xl font-bold font-primary mb-2 text-text">How To Use</h1>
                 <h2 className="font-secondary text-text-muted">Our trusted process will handle the searching for you</h2>
             </article>
             <Container className="">

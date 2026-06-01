@@ -14,7 +14,7 @@ export const HowToUseStepCard = (props: CardProps) => {
             className={cn("w-full max-w-43 sm:max-w-65 h-full max-h-40 p-4 border-t border-transparent transition-colors cursor-pointer", props.className)}
         >
             <article className="w-full text-left">
-                <p className="mb-4 font-secondary text-[1.125rem] font-semibold">{props.title}</p>
+                <p className="mb-4 font-secondary text-text text-[1.125rem] font-semibold">{props.title}</p>
                 <p className="font-secondary text-[0.875rem] text-text-muted ">{props.description}</p>
             </article>
         </section>

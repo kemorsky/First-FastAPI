@@ -1,6 +1,7 @@
 import Wrapper from "../../shared/wrapper"
 import Container from "../../shared/container"
 import { TestimonialCard } from "../../components/cards/testimonial"
+import { Button } from "../../shared/buttons"
 
 export const Testimonials = () => {
     const testimonialsFirstColumn = [
@@ -40,9 +41,9 @@ export const Testimonials = () => {
     return (
         <Wrapper className="bg-card" id="testimonials">
             <section>
-                <h1 className="text-4xl font-bold font-primary mb-2">Approved by customers</h1>
-                <h2 className="font-secondary mb-6">See for yourself</h2>
-                <button className="bg-green-300">Testimonials</button>
+                <h1 className="text-4xl font-bold font-primary mb-2 text-text">Approved by customers</h1>
+                <h2 className="font-secondary mb-6 text-text-muted">See for yourself</h2>
+                <Button variant="secondary" className="" text="Testimonials" />
             </section>
             <Container className="max-h-150 carousel overflow-hidden py-4 mt-6 flex flex-col gap-6">
                 <div className="flex">

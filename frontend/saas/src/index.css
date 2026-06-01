@@ -128,7 +128,7 @@ details[open] .details-content {
   /* --font-primary: "Play", sans-serif; */
   --font-primary: "Space Grotesk", sans-serif;
   --font-secondary: "Plus Jakarta Sans", sans-serif;
-  --color-dark: oklch(0.1 0.1 203);
+  /* --color-dark: oklch(0.1 0.1 203);
   --color-bg: oklch(0.15 0.1 203);
   --color-card: oklch(0.2 0.1 203);
   --color-text: oklch(0.96 0.1 203);
@@ -141,7 +141,22 @@ details[open] .details-content {
   --danger: oklch(0.7 0.2 30);
   --warning: oklch(0.7 0.2 100);
   --success: oklch(0.7 0.2 160);
-  --info: oklch(0.7 0.2 260);
+  --info: oklch(0.7 0.2 260); */
+
+  --color-dark: oklch(0.92 0.065 228);
+  --color-bg: oklch(0.96 0.065 228);
+  --color-card: oklch(1 0.065 228);
+  --color-text: oklch(0.15 0.13 228);
+  --color-text-muted: oklch(0.4 0.13 228);
+  --highlight: oklch(1 0.13 228);
+  --color-border: oklch(0.6 0.13 228);
+  --color-border-muted: oklch(0.7 0.13 228);
+  --color-primary: oklch(0.4 0.13 228);
+  --color-secondary: oklch(0.4 0.13 48);
+  --danger: oklch(0.5 0.13 30);
+  --warning: oklch(0.5 0.13 100);
+  --success: oklch(0.5 0.13 160);
+  --info: oklch(0.5 0.13 260);
 
   /* light mode values stored for later
   **

@@ -6,7 +6,7 @@ export const Features = () => {
     return (
         <Wrapper id="features" className="bg-dark">
             <article className="mb-15">
-                <h1 className="text-4xl font-bold font-primary mb-2">Features</h1>
+                <h1 className="text-4xl font-bold font-primary mb-2 text-text">Features</h1>
                 <h2 className="font-secondary text-text-muted">Designed with your comfort and time management in mind </h2>
             </article>
             <Container className="flex flex-col gap-[1px] items-center justify-center bg-border border border-transparent">
