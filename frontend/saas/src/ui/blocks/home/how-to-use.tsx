@@ -10,22 +10,22 @@ const stepData: Step[] = [
         id: 1,
         image: "../../../../src/assets/images/step-image.png",
         title: "Feed",
-        description: "Import your documentation and data into the platform",
-        details: "Compile your documents and data and upload them to the platform. Once completed the platform will be ready to use."
+        description: "Import your data to the platform",
+        details: "Compile your documents, data, or GitHub repository and upload them to the platform. Once completed the platform will be ready to use."
     },
     {
         id: 2,
         image: "../../../../src/assets/images/step-image.png",
         title: "Ask",
         description: "State your question to the software and await its compiled answer",
-        details: "Input your question into the rield and press the button."
+        details: "Input your question into the field and press the button."
     },
     {
         id: 3,
         image: "../../../../src/assets/images/step-image.png",
         title: "Read",
         description: "Examine the output and control the content. When in doubt, ask again",
-        details: "The software will search through its database compiled by you and you alone and use its algorithm to find the answer and compile it into a comprehensible, easy to follow answer."
+        details: "The software will search through its database using it's AI-powered algorithm to find and compile relevant data into a comprehensible, easy to follow answer. For maximum accuracy you can toggle direct links to sources in the settings.\n"
     },
     {
         id: 4,
