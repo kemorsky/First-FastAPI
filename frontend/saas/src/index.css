@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');@import "tailwindcss";
+@import "./animations.css";
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -42,21 +43,6 @@ button {
   pointer-events: none;
 }
 
-/* p.content {
-  box-sizing: border-box;
-  max-width: 400px;
-  max-height: 0;
-  overflow: hidden;
-  padding: 0 10px;
-  transition: max-height 400ms ease-out, border 0ms linear;
-}
-
-details[open] + p.content {
-  max-height: 400px;
-  border-color: #888;
-  transition: max-height 400ms ease-out, border 0ms linear;
-} */
-
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -96,32 +82,17 @@ details[open] .details-content {
   }
 }
 
-@keyframes carousel {
-  from {transform: translateX(0);}
-  to {transform: translateX(-100%);}
-}
-
-@keyframes carousel2 {
-  from {transform: translateX(-100%);}
-  to {transform: translateX(0);}
-}
-
-@keyframes topBorder {
-  from { width: 1px; }
-  to { width: 100%; }
-}
-
-@keyframes details {
-  from { height: 64px; }
-  to { height: 120px; }
-}
-
 @theme {
+  --animate-fadeIn: fadeIn 0.3s linear;
+  --animate-headerTextFadeIn: headerTextFadeIn 0.3s linear;
+  --animate-heroImageDropDown: heroImageDropDown 0.5s linear;
   --animate-carousel: carousel 10s linear infinite;
   --animate-carousel2: carousel2 10s linear infinite;
   --animate-test: test 4s linear;
   --animate-topBorder: topBorder 0.1s linear;
   --animate-details: details 0.2s linear;
+  --animate-howToUseDisplayFadeIn: howToUseDisplayFadeIn 0.3s linear;
+  --animate-howToUseDisplayTextFadeDown: howToUseDisplayTextFadeDown 0.3s linear;
 
   --shadow-hero: -10px 10px 20px -3px rgba(255,255,255,0.54);
   

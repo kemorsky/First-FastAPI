@@ -8,28 +8,28 @@ import { HowToUseStepCard } from "../../components/cards/how-to-use-step-card";
 const stepData: Step[] = [
     {
         id: 1,
-        image: "../../../../src/assets/images/step-image.png",
+        image: "../../../../src/assets/images/step-image-1.png",
         title: "Feed",
         description: "Import your data to the platform",
         details: "Compile your documents, data, or GitHub repository and upload them to the platform. Once completed the platform will be ready to use."
     },
     {
         id: 2,
-        image: "../../../../src/assets/images/step-image.png",
+        image: "../../../../src/assets/images/step-image-2.png",
         title: "Ask",
         description: "State your question to the software and await its compiled answer",
         details: "Input your question into the field and press the button."
     },
     {
         id: 3,
-        image: "../../../../src/assets/images/step-image.png",
+        image: "../../../../src/assets/images/step-image-3.png",
         title: "Read",
         description: "Examine the output and control the content. When in doubt, ask again",
         details: "The software will search through its database using it's AI-powered algorithm to find and compile relevant data into a comprehensible, easy to follow answer. For maximum accuracy you can toggle direct links to sources in the settings.\n"
     },
     {
         id: 4,
-        image: "../../../../../src/assets/images/step-image.png",
+        image: "../../../../../src/assets/images/step-image-4.png",
         title: "Apply",
         description: "Test the output and apply if to your issues",
         details: "Use your refreshed knowledge and apply it wherever necessary. The more detailed the fed documentation and question, the better the answer. If in doubt, ask again."
@@ -37,16 +37,13 @@ const stepData: Step[] = [
 ]
 
 export const HowToUse = () => {
-    const [ activeStep, setActiveStep ] = useState<Step | null>(null);
-
-    if (!activeStep) {
-        setActiveStep(stepData[0]);
-    }
+    const [ activeStep, setActiveStep ] = useState<Step>(stepData[0]);
 
     const handleClick = (step: Step) => {
         setActiveStep(step);
-        console.log(activeStep);
     }
+
+    console.log(activeStep);
 
     return (
         <Wrapper className="bg-bg" id="how-to-use">
@@ -59,10 +56,10 @@ export const HowToUse = () => {
                     <section className="w-full flex justify-center flex-row flex-wrap sm:gap-4">
                         {stepData.map((step) => (
                             <div key={step.id} className="flex flex-col">
-                                <span className={`${step === activeStep ? "h-px bg-linear-to-r from-sky-500 to-red-300 animate-topBorder" : "h-px"}`}/>
+                                <span className={`${step.id === activeStep.id ? "h-px bg-linear-to-r from-sky-500 to-red-300 animate-topBorder" : "h-px"}`}/>
                                 <HowToUseStepCard 
                                     className={`${step === activeStep ? "bg-card border-b rounded-b-lg opacity-100" : "opacity-75"}`}
-                                    onClick={() => {handleClick(step)}}  
+                                    onClick={() => {handleClick(step)}}
                                     id={step.id} 
                                     image={step.image}
                                     title={step.title} 

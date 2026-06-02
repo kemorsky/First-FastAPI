@@ -11,7 +11,7 @@ export const HowToUseStepCard = (props: CardProps) => {
         <section 
             tabIndex={0}
             onClick={props.onClick} 
-            className={cn("w-full max-w-43 sm:max-w-65 h-full max-h-40 p-4 border-t border-transparent transition-colors cursor-pointer", props.className)}
+            className={cn("w-full max-w-43 sm:max-w-65 h-full max-h-40 p-4 border border-transparent rounded-b-lg transition-colors cursor-pointer", props.className)}
         >
             <article className="w-full text-left">
                 <p className="mb-4 font-secondary text-text text-[1.125rem] font-semibold">{props.title}</p>
