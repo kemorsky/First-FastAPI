@@ -14,9 +14,9 @@ export const UserInfo = () => {
     // when passed to UserInfoCard and UserSubscriptionCard
 
     return (
-        <Wrapper>
+        <Wrapper className="bg-bg">
             <Container>
-                <div className="w-full flex flex-col justify-between gap-6">
+                <div className="w-full max-w-225 mx-auto flex flex-col justify-between gap-6">
                     <div className="flex items-start justify-between">
                         {isPending || !user ? ( 
                             <UserInfoCardSkeleton />
@@ -30,9 +30,9 @@ export const UserInfo = () => {
                     </div>
                     
                     <div className="w-full flex justify-end items-end">
-                        <div className="bg-gray-600 w-full max-w-240 p-4 gap-4 rounded-2xl flex flex-col items-start justify-start self-end">
+                        <div className="w-full max-w-240 p-4 gap-4 rounded-2xl flex flex-col items-start justify-start self-end">
                             <section className="flex justify-center items-start gap-3">
-                                <p className="text-[1.125rem] font-semibold">Billing History</p>
+                                <p className="text-[1.25rem] font-secondary font-semibold text-text">Billing History</p>
                             </section>
                             <HorizontalRule />
                             <Suspense fallback={<UserInfoCardSkeleton />}>

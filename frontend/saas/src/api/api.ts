@@ -73,10 +73,11 @@ export const getMe = async (): Promise<User | null> => {
 
 export const getBillingHistory = async (): Promise<BillingResponse> => {
     try {
-        const data = await apiRequest(`${URL}/payments/billing`, {
+        const response = await apiRequest(`${URL}/payments/billing`, {
             credentials: "include"
         })
-        return data;
+
+        return response;
     } catch (error) {
         console.error(`Error fetching billing history: ${error}`);
         throw error;
@@ -85,10 +86,11 @@ export const getBillingHistory = async (): Promise<BillingResponse> => {
 
 export const getUserSubscription = async (): Promise<UserSubscription> => {
     try {
-        const data = await apiRequest(`${URL}/payments/get-user-subscription`, {
+        const response = await apiRequest(`${URL}/payments/get-user-subscription`, {
             credentials: "include"
         })
-        return data;
+
+        return response;
     } catch (error) {
         console.error(`Error fetching user subscription: ${error}`);
         throw error;

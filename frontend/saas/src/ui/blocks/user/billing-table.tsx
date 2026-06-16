@@ -20,7 +20,7 @@ export default function BillingTable() {
     }
 
     return (
-        <table className="w-full table-auto text-left">
+        <table className="w-full table-auto text-left text-text">
             <thead>
                 <tr>
                     <th>Date</th>

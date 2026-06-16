@@ -27,7 +27,7 @@ export const PlanCard = (props: CardProps) => {
             <HorizontalRule />
             <section className=" w-full flex flex-col items-center justify-center p-4 gap-6">
                 <ul className="text-left self-start mb-6">
-                    {props.stripe_marketing_features.map((feature) => {
+                    {props.stripe_marketing_features?.map((feature) => {
                         return (
                             <li className="font-secondary font-semibold mb-2" key={feature}>
                                 <span className="mr-2">✓</span>

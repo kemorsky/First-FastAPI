@@ -15,8 +15,31 @@ export const UserInfoCard = (props: Props) => {
     };
 
     return (
-        <div className="bg-gray-600 w-full max-w-120 p-4 gap-4 rounded-2xl flex flex-col items-start justify-start">
-            <section className="flex justify-center items-start gap-3">
+        <div className="text-text w-full max-w-120 p-4 gap-4 rounded-2xl flex flex-col items-start justify-start">
+            <section className="w-full flex gap-4">
+                <section className="flex justify-center items-start gap-3">
+                    <img className="w-14 h-14 rounded-full bg-blue-200"
+                        src={props.user.picture.toString()}
+                        alt="user profile image" width={40} height={40}
+                />
+                    
+                </section>
+                <article className="text-left font-secondary">
+                    <p className="text-[1.25rem] font-semibold">{props.user.full_name}</p>
+                    <p className="mt-3">
+                        {props.user.email}
+                    </p>
+                    <p className="mt-1">
+                        
+                        Joined {date.toLocaleString()}
+                    </p>
+                    <button className="mt-3 text-left cursor-pointer" onClick={handleSignOut}>
+                        Sign Out
+                    </button>
+                </article>
+
+            </section>
+            {/* <section className="flex justify-center items-start gap-3">
                 <img className="w-10 h-10 rounded-full bg-blue-200"
                     src={props.user.picture.toString()}
                     alt="user profile image" width={40} height={40}
@@ -38,7 +61,7 @@ export const UserInfoCard = (props: Props) => {
                     <span className="ml-12">{props.user.disabled.toString()}</span> 
                 </p>
             </article>
-            <button className="mt-3 text-left cursor-pointer" onClick={handleSignOut}>Sign Out</button>
-        </div>
+            <button className="mt-3 text-left cursor-pointer" onClick={handleSignOut}>Sign Out</button> */}
+        </div> 
     )
 }

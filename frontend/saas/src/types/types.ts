@@ -4,7 +4,7 @@ export type Plan = {
   description?: string;
   stripe_product_name?: string;
   stripe_price_id?: string;
-  stripe_marketing_features: string[];
+  stripe_marketing_features?: string[];
   price?: number;
 }
 
