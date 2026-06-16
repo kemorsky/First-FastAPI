@@ -4,8 +4,8 @@ import { Button } from "../../shared/buttons"
 
 export const Hero = () => {
     return (
-        <Wrapper className="light:bg-red-800 bg-bg pt-10">
-            <Container className="min-h-132 h-full flex flex-col gap-10 justify-between items-center">
+        <Wrapper className="light:bg-red-800 bg-bg pt-4">
+            <Container className="border-none min-h-132 h-full flex flex-col py-10 gap-10 justify-between items-center">
                 <article className="max-w-100 max-h-132 h-full text-left">
                     <h2 className="animate-headerTextFadeIn text-[3rem] text-center font-semibold font-primary text-text leading-14">Navigate Your Documentation The Right Way</h2>
                     <p className="font-secondary text-center text-text-muted mt-4">Your answer is there. You just need to ask.</p>
@@ -14,7 +14,7 @@ export const Hero = () => {
                         <Button text="Learn More" variant="learn-more" />
                     </div>
                 </article>
-                <article className="animate-heroImageDropDown max-w-240 w-full h-full object-contain">
+                <article className="animate-heroImageDropDown max-w-200 w-full h-full object-contain">
                     <img className="-rotate-x-45 -rotate-z-20 shadow-hero" src="../../../../src/assets/images/hero-image.png" alt="hero section image"/>
                 </article>
             </Container>

@@ -47,32 +47,34 @@ export const HowToUse = () => {
 
     return (
         <Wrapper className="bg-bg" id="how-to-use">
-            <article className="mb-15">
-                <h1 className="text-4xl font-bold font-primary mb-2 text-text">How To Use</h1>
-                <h2 className="font-secondary text-text-muted">Our trusted process will handle the searching for you</h2>
-            </article>
-            <Container className="">
-                <div className="flex flex-col gap-8 items-center justify-between p-4 sm:p-6">
-                    <section className="w-full flex justify-center flex-row flex-wrap sm:gap-4">
-                        {stepData.map((step) => (
-                            <div key={step.id} className="flex flex-col">
-                                <span className={`${step.id === activeStep.id ? "h-px bg-linear-to-r from-sky-500 to-red-300 animate-topBorder" : "h-px"}`}/>
-                                <HowToUseStepCard 
-                                    className={`${step === activeStep ? "bg-card border-b rounded-b-lg opacity-100" : "opacity-75"}`}
-                                    onClick={() => {handleClick(step)}}
-                                    id={step.id} 
-                                    image={step.image}
-                                    title={step.title} 
-                                    description={step.description} 
-                                    details={step.details}
-                                />
-                            </div>
-                        ))}
-                    </section>
-                    {activeStep && (
-                        <HowToUseStepDisplay step={activeStep} />  
-                    )}
-                </div>
+            <Container>
+                <article className="mb-15">
+                    <h1 className="text-4xl font-bold font-primary mb-2 text-text">How To Use</h1>
+                    <h2 className="font-secondary text-text-muted">Our trusted process will handle the searching for you</h2>
+                </article>
+                <Container className="py-0 border-none">
+                    <div className="flex flex-col gap-8 items-center justify-between p-4 sm:p-6">
+                        <section className="w-full flex justify-center flex-row flex-wrap sm:gap-4">
+                            {stepData.map((step) => (
+                                <div key={step.id} className="flex flex-col">
+                                    <span className={`${step.id === activeStep.id ? "h-px bg-linear-to-r from-sky-500 to-red-300 animate-topBorder" : "h-px"}`}/>
+                                    <HowToUseStepCard 
+                                        className={`${step === activeStep ? "bg-card border-b rounded-b-lg opacity-100" : "opacity-75"}`}
+                                        onClick={() => {handleClick(step)}}
+                                        id={step.id} 
+                                        image={step.image}
+                                        title={step.title} 
+                                        description={step.description} 
+                                        details={step.details}
+                                    />
+                                </div>
+                            ))}
+                        </section>
+                        {activeStep && (
+                            <HowToUseStepDisplay step={activeStep} />  
+                        )}
+                    </div>
+                </Container>
             </Container>
         </Wrapper>
     )

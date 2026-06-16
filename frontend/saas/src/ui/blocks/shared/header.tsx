@@ -29,15 +29,15 @@ export const Header = () => {
         <header className={`z-70 w-full flex justify-center items-center py-6 transition-all ease-in-out duration-300 fixed 
                             ${isScrolled ? 'py-8 bg-card/40 backdrop-blur-lg px-5' : 'top-0 bg-bg'}
                         `}>
-            <nav className="max-w-360 w-full flex justify-between items-center">
-                <section className="w-full max-w-60 px-4">
+            <nav className="max-w-360 w-full h-full max-h-10.5 flex justify-between items-center">
+                <section className="w-full max-h-10.5 max-w-60 px-4">
                     <a href="/">
                         <article>
                             Logo
                         </article>
                     </a>
                 </section>
-                <section className="w-full max-w-60 flex gap-8">
+                <section className="w-full h-full max-w-60 flex gap-8">
                     <a href="/#features">
                         <p className="font-semibold text-text hover:text-text-muted transition-colors">
                             Features
@@ -54,14 +54,14 @@ export const Header = () => {
                         </p>
                     </a>
                 </section>
-                <section className="w-full max-w-60">
+                <section className="w-full h-full max-w-60">
                     {isPending ? null : !user ? (
                         <section className="flex items-center justify-center gap-4 px-4">
                             <Button onClick={() => handleSignIn()} text="Sign In" variant="primary" />
                             {/* <Button text="Sign Up" variant="secondary" /> */}
                         </section>
                     ) : (
-                        <section className="flex items-center gap-4 px-4">
+                        <section className="h-full flex items-center gap-4 px-4">
                             <a href="/user">
                                 <img 
                                     className="w-10 h-10 rounded-full"

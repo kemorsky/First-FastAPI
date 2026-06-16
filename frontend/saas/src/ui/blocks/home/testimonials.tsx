@@ -40,70 +40,72 @@ export const Testimonials = () => {
 
     return (
         <Wrapper className="bg-card" id="testimonials">
-            <section>
-                <h1 className="text-4xl font-bold font-primary mb-2 text-text">Approved by customers</h1>
-                <h2 className="font-secondary mb-6 text-text-muted">See for yourself</h2>
-                <Button variant="secondary" className="" text="Testimonials" />
-            </section>
-            <Container className="max-h-150 carousel overflow-hidden py-4 mt-6 flex flex-col gap-6">
-                <div className="flex">
-                    <div className="animate-carousel flex shrink-0 items-start justify-center gap-4 pr-4">
-                        {testimonialsFirstColumn.map((card) => {
-                            return (
-                                <TestimonialCard 
-                                    key={card.id}
-                                    icon={card.icon}
-                                    testimony={card.testimony}
-                                    name={card.name}
-                                    title={card.title}
-                                />
-                            )
-                        })}
-                        
+            <Container>
+                <section>
+                    <h1 className="text-4xl font-bold font-primary mb-2 text-text">Approved by customers</h1>
+                    <h2 className="font-secondary mb-6 text-text-muted">See for yourself</h2>
+                    <Button variant="secondary" className="" text="Testimonials" />
+                </section>
+                <Container className="py-0 border-none max-h-150 carousel overflow-hidden mt-6 flex flex-col gap-6">
+                    <div className="flex">
+                        <div className="animate-carousel flex shrink-0 items-start justify-center gap-4 pr-4">
+                            {testimonialsFirstColumn.map((card) => {
+                                return (
+                                    <TestimonialCard 
+                                        key={card.id}
+                                        icon={card.icon}
+                                        testimony={card.testimony}
+                                        name={card.name}
+                                        title={card.title}
+                                    />
+                                )
+                            })}
+                            
+                        </div>
+                        <div aria-hidden className="animate-carousel flex shrink-0 items-start justify-center gap-4 pr-4">
+                            {testimonialsSecondColumn.map((card) => {
+                                return (
+                                    <TestimonialCard 
+                                        key={card.id}
+                                        icon={card.icon}
+                                        testimony={card.testimony}
+                                        name={card.name}
+                                        title={card.title}
+                                    />
+                                )
+                            })}
+                        </div>
                     </div>
-                    <div aria-hidden className="animate-carousel flex shrink-0 items-start justify-center gap-4 pr-4">
-                        {testimonialsSecondColumn.map((card) => {
-                            return (
-                                <TestimonialCard 
-                                    key={card.id}
-                                    icon={card.icon}
-                                    testimony={card.testimony}
-                                    name={card.name}
-                                    title={card.title}
-                                />
-                            )
-                        })}
+                    <div className="flex">
+                        <div className="animate-carousel2 flex shrink-0 items-start justify-center gap-4 pr-4">
+                            {testimonialsFirstColumn.map((card) => {
+                                return (
+                                    <TestimonialCard 
+                                        key={card.id}
+                                        icon={card.icon}
+                                        testimony={card.testimony}
+                                        name={card.name}
+                                        title={card.title}
+                                    />
+                                )
+                            })}
+                            
+                        </div>
+                        <div aria-hidden className="animate-carousel2 flex shrink-0 items-start justify-center gap-4 pr-4">
+                            {testimonialsSecondColumn.map((card) => {
+                                return (
+                                    <TestimonialCard 
+                                        key={card.id}
+                                        icon={card.icon}
+                                        testimony={card.testimony}
+                                        name={card.name}
+                                        title={card.title}
+                                    />
+                                )
+                            })}
+                        </div>
                     </div>
-                </div>
-                <div className="flex">
-                    <div className="animate-carousel2 flex shrink-0 items-start justify-center gap-4 pr-4">
-                        {testimonialsFirstColumn.map((card) => {
-                            return (
-                                <TestimonialCard 
-                                    key={card.id}
-                                    icon={card.icon}
-                                    testimony={card.testimony}
-                                    name={card.name}
-                                    title={card.title}
-                                />
-                            )
-                        })}
-                        
-                    </div>
-                    <div aria-hidden className="animate-carousel2 flex shrink-0 items-start justify-center gap-4 pr-4">
-                        {testimonialsSecondColumn.map((card) => {
-                            return (
-                                <TestimonialCard 
-                                    key={card.id}
-                                    icon={card.icon}
-                                    testimony={card.testimony}
-                                    name={card.name}
-                                    title={card.title}
-                                />
-                            )
-                        })}
-                    </div>
-                </div>
+                </Container>
             </Container>
         </Wrapper>
         

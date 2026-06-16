@@ -59,14 +59,14 @@ details {
 .details-content {
   overflow: hidden;
   box-sizing: border-box;
-  transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+  transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
   max-height: 0;
 }
 
 details[open] .details-content {
   max-height: 200px; /* Needs to be larger than your tallest content */
   opacity: 1;
-  transition: max-height 400ms ease-out, border 0ms linear;
+  transition: max-height 400ms ease-in-out, border 0ms linear;
 }
 
 @media (prefers-color-scheme: light) {
@@ -90,7 +90,7 @@ details[open] .details-content {
   --animate-carousel2: carousel2 10s linear infinite;
   --animate-test: test 4s linear;
   --animate-topBorder: topBorder 0.1s linear;
-  --animate-details: details 0.2s linear;
+  --animate-details: details 0.2s ease-in-out linear;
   --animate-howToUseDisplayFadeIn: howToUseDisplayFadeIn 0.3s linear;
   --animate-howToUseDisplayTextFadeDown: howToUseDisplayTextFadeDown 0.3s linear;
 

@@ -7,7 +7,7 @@ interface ContainerProps {
 
 export default function Container(props: ContainerProps) {
     return (
-        <div className={cn("max-w-300 w-full m-auto", props.className)}>
+        <div className={cn("max-w-300 w-full border-x border-border py-30 m-auto", props.className)}>
             {props.children}
         </div>
     )
