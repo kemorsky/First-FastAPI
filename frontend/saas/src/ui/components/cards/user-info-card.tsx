@@ -15,7 +15,7 @@ export const UserInfoCard = (props: Props) => {
     };
 
     return (
-        <div className="text-text w-full max-w-120 p-4 gap-4 rounded-2xl flex flex-col items-start justify-start">
+        <div className="text-text w-full max-w-120 gap-4 rounded-2xl flex flex-col items-start justify-start">
             <section className="w-full flex gap-4">
                 <section className="flex justify-center items-start gap-3">
                     <img className="w-14 h-14 rounded-full bg-blue-200"

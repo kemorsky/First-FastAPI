@@ -68,3 +68,10 @@ export type Step = {
     details: string;
     onClick?: () => void;
 }
+
+export type Tab = {
+  id: number;
+  title: string;
+  href: string;
+  content: React.ReactNode;
+}

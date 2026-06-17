@@ -6,7 +6,6 @@ export default function UserPage() {
     return (
         <main className="w-full bg-bg min-h-screen h-full flex flex-col justify-start items-center">
             <Header />
-            <h1>User</h1>
             <UserInfo />
             <Footer />
         </main>

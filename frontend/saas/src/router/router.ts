@@ -4,6 +4,7 @@ import Success from "../pages/success";
 import Pricing from "../pages/pricing";
 import User from "../pages/user";
 import TestimonialsPage from "../pages/testimonials";
+import { UserInfoRundown, Activity, BillingHistory } from "../ui/blocks/user/user-info";
 
 const router = createBrowserRouter([
     {
@@ -13,6 +14,20 @@ const router = createBrowserRouter([
     {
         path: "/user",
         Component: User,
+        children: [
+            {
+                path: "/user/info",
+                Component: UserInfoRundown
+            },
+            {
+                path: "/user/billing-history",
+                Component: BillingHistory
+            },
+            {
+                path: "/user/activity",
+                Component: Activity
+            }
+        ]
     },
     {
         path: "/success",
