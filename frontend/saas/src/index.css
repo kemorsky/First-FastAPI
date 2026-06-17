@@ -28,8 +28,6 @@ body {
 }
 
 button {
-  border: 1px solid transparent;
-  padding: 0.5rem 1rem;
   font-weight: 600;
   font-family: "Plus Jakarta Sans", sans-serif;
 }

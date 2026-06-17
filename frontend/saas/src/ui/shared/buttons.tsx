@@ -10,7 +10,7 @@ type ButtonProps = {
 
 export const Button = (props: ButtonProps) => {
     return (
-        <button className={cn("bg-gray-200 text-base transition-colors rounded-lg", 
+        <button className={cn("bg-gray-200 text-base transition-colors rounded-lg px-3 py-2", 
                 props.variant === "primary" ? "bg-primary" : "",
                 props.variant === "secondary" ? "bg-secondary" : "",
                 props.variant === "learn-more" ? "bg-secondary" : "",

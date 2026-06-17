@@ -5,7 +5,7 @@ type CardProps = Step & {
     className?: string;
 }
 
-export const HowToUseStepCard = (props: CardProps) => {
+export default function HowToUseStepCard(props: CardProps) {
     
     return (
         <section 

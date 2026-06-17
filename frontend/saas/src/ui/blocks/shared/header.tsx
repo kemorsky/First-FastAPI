@@ -26,10 +26,10 @@ export const Header = () => {
     }, []);
     
     return (
-        <header className={`z-70 w-full flex justify-center items-center py-6 transition-all ease-in-out duration-300 fixed 
+        <nav className={`z-70 w-full flex justify-center items-center py-6 transition-all ease-in-out duration-300 fixed 
                             ${isScrolled ? 'py-8 bg-card/40 backdrop-blur-lg px-5' : 'top-0 bg-bg'}
                         `}>
-            <nav className="max-w-360 w-full h-full max-h-10.5 flex justify-between items-center">
+            <header className="max-w-360 w-full h-full max-h-10.5 flex justify-between items-center">
                 <section className="w-full max-h-10.5 max-w-60 px-4">
                     <a href="/">
                         <article>
@@ -62,7 +62,7 @@ export const Header = () => {
                         </section>
                     ) : (
                         <section className="h-full flex items-center gap-4 px-4">
-                            <a href="/user">
+                            <a href="/user/info">
                                 <img 
                                     className="w-10 h-10 rounded-full"
                                     src={user?.picture.toString()} 
@@ -72,7 +72,7 @@ export const Header = () => {
                         </section>
                     )}
                 </section>
-            </nav>
-        </header>
+            </header>
+        </nav>
     )
 }

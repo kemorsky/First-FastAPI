@@ -3,7 +3,7 @@ import type { Step } from "../../../types/types";
 import Wrapper from "../../shared/wrapper"
 import Container from "../../shared/container"
 import { HowToUseStepDisplay } from "./how-to-use-step-display";
-import { HowToUseStepCard } from "../../components/cards/how-to-use-step-card";
+import HowToUseStepCard from "../../components/cards/how-to-use-step-card";
 
 const stepData: Step[] = [
     {
