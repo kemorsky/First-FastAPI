@@ -89,7 +89,6 @@ const tabData: Tab[] = [
 ]
 
 export const UserInfo = () => {
-    const { user, isPending } = useAuth();
     const [ activeTab, setActiveTab ] = useState<Tab>(tabData[0]);
 
     const navigate = useNavigate();
@@ -107,7 +106,7 @@ export const UserInfo = () => {
                 <div className="w-full max-w-250 h-full max-h-250 mx-auto p-4 rounded-2xl flex flex-col items-start justify-start gap-6">
                     <section className="h-8 flex gap-2 border-b border-border">
                         {tabData.map((tab) => (     
-                            <section className="flex flex-col h-full items-center justify-between">                     
+                            <section key={tab.id} className="flex flex-col h-full items-center justify-between">                     
                                 <button 
                                     key={tab.id} 
                                     onClick={() => {handleClick(tab)}} 
