@@ -68,6 +68,8 @@ async def create_checkout_session(plan_id: int, current_user: User = Depends(get
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 # Show user's active subscription without fetching the whole user like in api/auth/users/me
+
+# TODO : Fix error crashing frontend due to invalid UserSubscriptionResponse match in returned value
 async def handle_user_subscription(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     subscription = (
         db.query(UserSubscription).filter(
@@ -78,8 +80,28 @@ async def handle_user_subscription(current_user: User = Depends(get_current_user
 
     logger.info(f"Checking data info: {subscription}")
 
-    if not subscription:
+    if subscription == None:
         logger.warning(f"No active subscription has been found");
+        subscription = {
+            "id": 0,
+            "user_id": 0,
+            "plan_id": 0,
+            "price": 0, # not plan.price
+            "stripe_subscription_id": "",
+            "status": "No subscription found",
+            "cancel_at_period_end": False,
+            "current_period_start": 0,
+            "current_period_end": 0,
+            "plan": {
+                "name": "",
+                "description": "",
+                "price": 0,
+
+            }
+        }
+
+        return subscription
+        
         raise HTTPException(status_code=404, detail={"type": "NOT_FOUND", "message": "No subscriptions found for user"})
 
     if subscription.current_period_end < datetime.now(timezone.utc):
@@ -272,20 +294,6 @@ async def customer_billing_history(current_user: User = Depends(get_current_user
             limit=10
         )
 
-        # subscription = db.query(UserSubscription).filter(
-        #     UserSubscription.user_id == current_user.id,
-        #     UserSubscription.status == "active"
-        # ).first();
-
-        # if not subscription:
-        #     logger.warning(f"No active subscription has been found");
-        #     raise HTTPException(status_code=404, detail="No subscriptions found for user")
-        #     return {"No subscription found for user"}
-
-        # if subscription.current_period_end < datetime.now(timezone.utc):
-        #     subscription.status = "canceled"
-        #     db.commit()
-
         def describe_invoice(inv):
             mapping = {
                 "subscription_create": "Subscription started",
@@ -305,19 +313,6 @@ async def customer_billing_history(current_user: User = Depends(get_current_user
                 "exp_month": default_pm.card.exp_month,
                 "exp_year": default_pm.card.exp_year,
             } if default_pm else None,
-
-            # "subscription": {
-            #     "id": subscription.id,
-            #     "user_id": current_user.id,
-            #     "plan_id": subscription.plan_id,
-            #     "price": subscription.plan.price, # not plan.price
-            #     "stripe_subscription_id": subscription.stripe_subscription_id,
-            #     "status": subscription.status,
-            #     "cancel_at_period_end": subscription.cancel_at_period_end,
-            #     "current_period_start": subscription.current_period_start,
-            #     "current_period_end": subscription.current_period_end,
-            #     "plan": subscription.plan
-            # } if subscription else None,
 
             "invoices": [
                 {

@@ -3,7 +3,6 @@ import secrets
 from app.db.database import get_db
 from app.models.models import User
 from fastapi import Request, APIRouter, Depends, HTTPException
-from fastapi.responses import JSONResponse, RedirectResponse
 from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse, RedirectResponse
 from app.utils.config import settings
