@@ -1,5 +1,5 @@
 import './App.css'
-import { Header } from './ui/blocks/shared/header';
+import { Navbar } from './ui/blocks/shared/navbar';
 import { Hero } from './ui/blocks/home/hero';
 import { Features } from './ui/blocks/home/features';
 import { HowToUse } from './ui/blocks/home/how-to-use';
@@ -12,7 +12,7 @@ export default function App() {
 
   return (
     <main className="w-full bg-bg min-h-screen h-full flex flex-col justify-start items-center">
-      <Header />
+      <Navbar />
       <div id="scroll-trigger" className="h-22.5" />
       <Hero />
       <Features />

@@ -13,7 +13,7 @@ import HorizontalRule from "../../shared/horizontal-rule";
 export const UserInfoRundown = () => {
     const { user, isPending } = useAuth();
     return (
-        <div className="w-full flex items-start justify-between">
+        <div className="w-full flex flex-col md:flex-row items-start justify-between">
             {isPending || !user ? ( 
                 <UserInfoCardSkeleton />
             ) : (
@@ -102,7 +102,7 @@ export const UserInfo = () => {
 
     return (
         <Wrapper className="bg-bg">
-            <Container className="h-full min-h-175 pb-0">
+            <Container className="h-full min-h-175 pb-0 pt-8">
                 <div className="w-full max-w-250 h-full max-h-250 mx-auto p-4 rounded-2xl flex flex-col items-start justify-start gap-6">
                     <section className="h-8 flex gap-2 border-b border-border">
                         {tabData.map((tab) => (     
@@ -120,7 +120,7 @@ export const UserInfo = () => {
                     </section>
 
                     {activeTab && (
-                        <section className="w-full h-full max-h-110 border border-border rounded-xl p-4 flex gap-4 items-start justify-start text-text overflow-y-auto">
+                        <section className="w-full h-135 border border-border rounded-xl p-6 flex gap-4 items-start justify-start text-text overflow-y-auto">
                             <Outlet />
                         </section>
                     )}

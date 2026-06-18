@@ -20,7 +20,7 @@ export default function BillingTable() {
     }
 
     return (
-        <table className="w-full table-auto text-left text-text">
+        <table className="w-full table-auto text-left text-text border-separate border-spacing-y-2">
             <thead>
                 <tr>
                     <th>Date</th>
@@ -31,7 +31,7 @@ export default function BillingTable() {
                     <th>Invoice</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody className="">
                 {billing?.invoices.map((invoice) => (
                     <BillingCard key={invoice.id} 
                         id={invoice.id}

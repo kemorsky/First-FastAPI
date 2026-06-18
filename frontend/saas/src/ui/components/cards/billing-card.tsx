@@ -3,7 +3,7 @@ import { Button } from "../../shared/buttons"
 
 export default function BillingCard(props: Invoice) {
     return (
-        <tr className="hover:bg-blue-600 text-text ">
+        <tr className="hover:bg-blue-600 text-text">
             <td>{props.date}</td>
             <td>{props.amount_paid}</td>
             <td>{props.currency.toUpperCase()}</td>

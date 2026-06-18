@@ -3,7 +3,7 @@ import { signIn } from '../../../api/api';
 import { Button } from "../../shared/buttons"
 import useAuth from "../../../hooks/useAuth";
 
-export const Header = () => {
+export const Navbar = () => {
     const { user, isPending } = useAuth();
 
     const [isScrolled, setIsScrolled] = useState(false);
@@ -30,7 +30,7 @@ export const Header = () => {
                             ${isScrolled ? 'py-8 bg-card/40 backdrop-blur-lg px-5' : 'top-0 bg-bg'}
                         `}>
             <header className="max-w-360 w-full h-full max-h-10.5 flex justify-between items-center">
-                <section className="w-full max-h-10.5 max-w-60 px-4">
+                <section className="w-full max-h-10.5 max-w-60 px-4  text-text">
                     <a href="/">
                         <article>
                             Logo
@@ -61,7 +61,7 @@ export const Header = () => {
                             {/* <Button text="Sign Up" variant="secondary" /> */}
                         </section>
                     ) : (
-                        <section className="h-full flex items-center gap-4 px-4">
+                        <section className="h-full flex items-center gap-4 px-4 text-text">
                             <a href="/user/info">
                                 <img 
                                     className="w-10 h-10 rounded-full"

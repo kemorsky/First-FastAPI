@@ -5,7 +5,7 @@ export const Footer = () => {
     return (
         <footer id="contact" className="bg-dark w-full p-6">
             <section className="max-w-300 mx-auto flex flex-col items-start justify-between ">
-                <section className="font-secondary max-w-175 w-full flex justify-between text-left">
+                <section className="font-secondary max-w-175 w-full flex flex-wrap gap-4 md:gap-0 justify-between text-left">
                     <ul>
                         <li className="mb-6 font-semibold text-text">Quick Links</li>
                         <li className="mb-6 text-[0.875rem] text-text-muted">
@@ -42,7 +42,7 @@ export const Footer = () => {
                         </li>
                     </ul>
                 </section>
-                <article className="self-end text-text-muted">
+                <article className="self-center md:self-end text-text-muted mt-4">
                     <p>Copyright something placeholder @2026</p>
                 </article>
             </section>
