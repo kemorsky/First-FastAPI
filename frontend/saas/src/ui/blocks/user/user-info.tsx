@@ -11,7 +11,12 @@ import useAuth from "../../../hooks/useAuth";
 import HorizontalRule from "../../shared/horizontal-rule";
 
 export const UserInfoRundown = () => {
-    const { user, isPending } = useAuth();
+    const { user, isPending, redirectMissingAuth } = useAuth();
+
+    if (!user) {
+        redirectMissingAuth();
+    };
+
     return (
         <div className="w-full flex flex-col md:flex-row items-start justify-between">
             {isPending || !user ? ( 
@@ -22,7 +27,6 @@ export const UserInfoRundown = () => {
             <Suspense fallback={<UserInfoCardSkeleton />}>
                 <UserSubscriptionCard />
             </Suspense>
-
         </div>
     )
 }
@@ -53,7 +57,7 @@ const tabData: Tab[] = [
     {
         id: 1,
         title: "User Info",
-        href: "/user/info",
+        href: "/user",
         content: <UserInfoRundown />
     },
     {

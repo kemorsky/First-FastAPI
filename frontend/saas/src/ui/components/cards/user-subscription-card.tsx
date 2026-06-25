@@ -17,7 +17,7 @@ export const UserSubscriptionCard = () => {
     const datePeriodEnd = new Date(user_subscription.current_period_end);
 
     return (
-        <>
+        <section>
             <Activity mode={!user_subscription ? "visible" : "hidden"}>
                 <div className="bg-gray-600 w-full max-w-120 gap-4 rounded-2xl flex flex-col items-start justify-start">
                     <section className="flex justify-center items-start gap-3">
@@ -78,6 +78,6 @@ export const UserSubscriptionCard = () => {
                     )}
                 </div>
             </Activity>
-        </>
+        </section>
     )
 }

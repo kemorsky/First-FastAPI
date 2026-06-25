@@ -4,6 +4,7 @@ import Success from "../pages/success";
 import Pricing from "../pages/pricing";
 import User from "../pages/user";
 import TestimonialsPage from "../pages/testimonials";
+import AccessDeniedPage from "../pages/access-denied";
 import { UserInfoRundown, Activity, BillingHistory } from "../ui/blocks/user/user-info";
 
 const router = createBrowserRouter([
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
         Component: User,
         children: [
             {
-                path: "/user/info",
+                path: "/user",
                 Component: UserInfoRundown
             },
             {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
     {
         path: "/testimonials",
         Component: TestimonialsPage
+    },
+    {
+        path: "/access-denied",
+        Component: AccessDeniedPage
     }
 ])
 

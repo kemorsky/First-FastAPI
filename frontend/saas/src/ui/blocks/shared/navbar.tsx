@@ -62,7 +62,7 @@ export const Navbar = () => {
                         </section>
                     ) : (
                         <section className="h-full flex items-center gap-4 px-4 text-text">
-                            <a href="/user/info">
+                            <a href="/user">
                                 <img 
                                     className="w-10 h-10 rounded-full"
                                     src={user?.picture.toString()} 
